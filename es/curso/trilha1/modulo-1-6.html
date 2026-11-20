@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 1.6 — Transportes de comunicación | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha1/modulo-1-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha1/modulo-1-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha1/modulo-1-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400" href="index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-emerald-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400 transition-colors" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 1.6</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 1.6</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📡 Transportes de comunicación
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Descubre cómo viajan los datos entre el Client y el Server: STDIO para uso local, HTTP para la web y SSE para streaming en tiempo real.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">20</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Teoría</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📡 Qué son los transportes</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        En MCP, el <strong class="text-neutral-100">transporte</strong> es la capa que define <strong class="text-neutral-100">como</strong> Client y Server se comunican físicamente: por qué canal viajan los datos. El protocolo MCP en sí es independiente del transporte: define el formato de los mensajes (el «qué»), pero no impone cómo llegan esos mensajes a su destino (el «cómo»). Esto significa que el mismo server puede funcionar mediante distintos medios de comunicación sin necesidad de cambiar su lógica interna.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piensa en el transporte como el <strong class="text-neutral-100">medio de envío</strong> de un mensaje. Puedes enviar la misma carta por correo postal, por correo electrónico o leerla por teléfono: el contenido del mensaje es idéntico, pero el <strong class="text-neutral-100">canal</strong> cambia. En MCP, el mensaje JSON-RPC es siempre el mismo, pero puede viajar por STDIO (dentro de la misma máquina), HTTP (por la red) o SSE (streaming por la red). El server no necesita saber qué transporte se está usando: solo procesa los mensajes que llegan.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          MCP admite oficialmente <strong class="text-neutral-100">tres transportes</strong>: STDIO, HTTP y SSE. Esta separación entre protocolo y transporte es un patrón arquitectónico consolidado: el propio HTTP funciona sobre TCP, pero podría funcionar sobre cualquier protocolo de transporte confiable. Esta independencia es lo que permite que MCP sea tan flexible: funciona tanto en un script local en tu máquina como en un servidor en la nube que atiende a miles de clientes simultáneamente.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🖥️ STDIO — Standard Input/Output</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El transporte <strong class="text-neutral-100">STDIO</strong> (Standard Input/Output) es el más simple y directo de los tres. En este modo, el Client y el Server se ejecutan en la <strong class="text-neutral-100">la misma máquina</strong>, y la comunicación ocurre a través de los canales estándar de entrada y salida del proceso: el famoso stdin y stdout. El Client inicia el Server como un proceso hijo y envía mensajes por el stdin del proceso. El Server responde por stdout. Sin red, sin puertos, sin configuración HTTP: solo dos procesos que se comunican directamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          En STDIO, el Client <strong class="text-neutral-100">inicia</strong> (inicia) el Server como un proceso hijo en el sistema operativo. La comunicación fluye a través de los pipes estándar: el Client escribe en el <strong class="text-neutral-100">stdin</strong> del Server y lee del <strong class="text-neutral-100">stdout</strong> del Server. Cada mensaje es una línea JSON-RPC terminada en un salto de línea. Es el transporte más rápido porque no hay sobrecarga de red: los datos pasan directamente por la memoria del sistema operativo. Es ideal para herramientas locales como el acceso a archivos, la ejecución de comandos y la integración con IDEs.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          STDIO es perfecto para <strong class="text-neutral-100">desarrollo local</strong> y herramientas que se ejecutan en tu computadora. Si tu servidor MCP accede a archivos locales, ejecuta scripts o interactúa con programas instalados en la máquina, STDIO es la opción natural. También es la más fácil de depurar: puedes ver literalmente los mensajes que se intercambian en la terminal.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">✅ Usa STDIO para</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Herramientas que se ejecutan en la máquina local</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Desarrollo y pruebas rápidas</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Integración con IDE y editores de código</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Acceso al sistema de archivos local</li>
+</ul>
+</div>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evita STDIO para</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Comunicación entre máquinas diferentes</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Servers que deben atender a múltiples clients</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Deploy en la nube o en contenedores remotos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Escenarios que requieren comunicación por Internet</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 HTTP — Comunicación por la red</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El transporte <strong class="text-neutral-100">HTTP</strong> permite que Client y Server estén en <strong class="text-neutral-100">máquinas diferentes</strong>, comunicándose a través de la red. El Server expone endpoints HTTP y el Client envía solicitudes estándar (POST) que contienen mensajes JSON-RPC. Es el transporte ideal para servers remotos, API en la nube y situaciones en las que se necesita acceder al server desde varios clients simultáneamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          En el transporte HTTP, el Server MCP se ejecuta como un <strong class="text-neutral-100">servicio web</strong> que escucha en un puerto (ej.: puerto 3000). El Client envía mensajes JSON-RPC como cuerpo de las solicitudes <strong class="text-neutral-100">POST</strong> para el endpoint del servidor. El servidor procesa la solicitud y devuelve la respuesta en el cuerpo de la respuesta HTTP. Es el mismo modelo familiar de cualquier API REST, pero en lugar de tener varios endpoints, todos los mensajes MCP pasan por un único endpoint, con el tipo de operación definido dentro del JSON-RPC.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Flujo de una solicitud HTTP en el MCP</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 1</span>
+<p class="text-neutral-300 text-sm mt-1">El Client prepara un mensaje JSON-RPC (por ejemplo, para llamar a una tool) y lo envía como cuerpo de una solicitud POST HTTP al endpoint del Server.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 2</span>
+<p class="text-neutral-300 text-sm mt-1">El Server recibe la solicitud, deserializa el JSON-RPC, identifica el método solicitado y ejecuta la lógica correspondiente.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 3</span>
+<p class="text-neutral-300 text-sm mt-1">El Server prepara la respuesta JSON-RPC con el resultado (o el error) y la envía al Client en el cuerpo de la respuesta HTTP.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          HTTP es el protocolo más usado en la web, lo que hace que el transporte HTTP de MCP <strong class="text-neutral-100">nativamente compatible</strong> con toda la infraestructura existente: balanceadores de carga, proxies inversos, firewalls, certificados TLS y herramientas de monitoreo. Los servers MCP sobre HTTP pueden implementarse en cualquier plataforma de nube (AWS, GCP, Azure) y escalarse horizontalmente usando las mismas técnicas que se usan para cualquier API web tradicional.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📢 Server-Sent Events (SSE)</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">SSE</strong> (Server-Sent Events) es una extensión de HTTP que permite <strong class="text-neutral-100">transmisión unidireccional</strong> del Server al Client. En lugar de que el Client envíe una solicitud y espere la respuesta completa, el Server abre un canal persistente y envía datos continuamente a medida que están disponibles. En MCP, esto es ideal para operaciones largas, como procesar un archivo grande o ejecutar una consulta que demora, en las que el Client necesita recibir actualizaciones de progreso en tiempo real.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Con SSE, el Server puede enviar datos al Client <strong class="text-neutral-100">sin que el Client tenga que estar preguntando</strong> (sondeo). El Client realiza una sola solicitud HTTP y la conexión permanece abierta. El Server envía eventos por el canal cuando hay datos nuevos. En el contexto de MCP, esto permite que el server envíe notificaciones de progreso, resultados parciales y actualizaciones de estado en tiempo real. El Client usa POST para enviar mensajes al Server y el Server usa el canal SSE para enviar respuestas y notificaciones de vuelta.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Usa SSE cuando tu server MCP necesite enviar <strong class="text-neutral-100">actualizaciones en tiempo real</strong> al cliente; por ejemplo, el progreso del procesamiento de archivos, los logs de ejecución en vivo o los resultados que llegan gradualmente. SSE es compatible de forma nativa con los navegadores y funciona con la infraestructura HTTP existente, sin necesidad de WebSocket.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">✅ Usa SSE para</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Transmisión de resultados en tiempo real</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Operaciones largas con feedback de progreso</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Notificaciones del server al client</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Logs y monitoreo en vivo</li>
+</ul>
+</div>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evita SSE para</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sondeo repetitivo (SSE lo reemplaza)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Operaciones simples de request-response</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Escenarios locales donde STDIO es suficiente</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Entornos que no admiten conexiones prolongadas</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚖️ Comparación de transportes</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Cada transporte tiene sus ventajas y desventajas. La elección depende del escenario: dónde se ejecuta el server, a cuántos clients debe atender, si se necesita streaming y qué nivel de complejidad es aceptable. Entender las diferencias es fundamental para tomar la decisión correcta al implementar tu server MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<div class="overflow-x-auto">
+<table class="w-full text-sm mt-2">
+<thead>
+<tr class="border-b border-dark-600">
+<th class="text-left py-2 pr-4 text-neutral-400 font-semibold">Criterio</th>
+<th class="text-left py-2 px-4 text-neutral-400 font-semibold">STDIO</th>
+<th class="text-left py-2 px-4 text-neutral-400 font-semibold">HTTP</th>
+<th class="text-left py-2 px-4 text-neutral-400 font-semibold">SSE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 text-neutral-400">Ubicación</td>
+<td class="py-2 px-4">La misma máquina</td>
+<td class="py-2 px-4">Cualquier lugar</td>
+<td class="py-2 px-4">Cualquier lugar</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 text-neutral-400">Velocidad</td>
+<td class="py-2 px-4 text-emerald-400">Muy rápido</td>
+<td class="py-2 px-4">Rápido</td>
+<td class="py-2 px-4">Rápido</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 text-neutral-400">Complejidad</td>
+<td class="py-2 px-4 text-emerald-400">Mínima</td>
+<td class="py-2 px-4">Moderada</td>
+<td class="py-2 px-4">Moderada</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 text-neutral-400">Streaming</td>
+<td class="py-2 px-4 text-red-400">No</td>
+<td class="py-2 px-4 text-red-400">No</td>
+<td class="py-2 px-4 text-emerald-400">Sí</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-2 pr-4 text-neutral-400">Multi-client</td>
+<td class="py-2 px-4 text-red-400">No</td>
+<td class="py-2 px-4 text-emerald-400">Sí</td>
+<td class="py-2 px-4 text-emerald-400">Sí</td>
+</tr>
+<tr>
+<td class="py-2 pr-4 text-neutral-400">Caso ideal</td>
+<td class="py-2 px-4">Desarrollo local, IDEs</td>
+<td class="py-2 px-4">APIs en la nube</td>
+<td class="py-2 px-4">Tiempo real</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Actualmente, <strong class="text-neutral-100">STDIO se usa en aproximadamente el 70% de los servers MCP</strong> en producción, precisamente por ser el más sencillo de implementar y probar. HTTP aparece en cerca del 25% de los casos, principalmente en servers desplegados en la nube. SSE todavía es el menos adoptado (~5%), pero su participación crece a medida que más aplicaciones requieren streaming y feedback en tiempo real. La tendencia es que HTTP y SSE ganen terreno a medida que el ecosistema madura y más servers migran a entornos remotos.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🏗️ Eligiendo el transporte adecuado</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        En la práctica, elegir el transporte se reduce a responder algunas preguntas sencillas: ¿dónde se ejecutará el server? ¿Cuántos clientes necesitan conectarse? ¿Se necesita streaming? Si tienes dudas, la regla de oro es: <strong class="text-neutral-100">comienza con STDIO</strong>. Es el más fácil de configurar, probar y depurar. Cuando necesites acceso remoto, migra a HTTP. Cuando necesites streaming, agrega SSE.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Guía de decisión para elegir el transporte:</p>
+<ul class="space-y-3 text-sm">
+<li class="flex items-start gap-3">
+<span class="text-emerald-400 font-bold shrink-0">→</span>
+<span><strong class="text-neutral-100">¿Desarrollo local o IDE?</strong> Usa STDIO. Es el camino más corto entre tú y un server funcionando.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-emerald-400 font-bold shrink-0">→</span>
+<span><strong class="text-neutral-100">¿Server en la nube o múltiples clients?</strong> Usa HTTP. Aprovecha toda la infraestructura web existente.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-emerald-400 font-bold shrink-0">→</span>
+<span><strong class="text-neutral-100">¿Operaciones largas o streaming?</strong> Usa SSE. Da feedback en tiempo real sin polling.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-emerald-400 font-bold shrink-0">→</span>
+<span><strong class="text-neutral-100">¿Aún no lo sabes?</strong> Empieza con STDIO y migra después. MCP se diseñó para ofrecer esa flexibilidad.</span>
+</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Empieza siempre con <strong class="text-neutral-100">STDIO</strong> — es el más fácil de probar y depurar. Puedes tener un server funcionando en minutos, sin configurar puertos, URLs ni certificados. Cuando estés conforme con la lógica del server, migrar a HTTP o SSE solo requiere cambiar la capa de transporte; todo el código del server permanece igual. Esa es la ventaja de separar protocolo y transporte en MCP.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          No compliques las cosas al principio. Un error común entre principiantes es querer usar HTTP o SSE cuando STDIO resuelve perfectamente el problema. Configurar el transporte de red agrega complejidad innecesaria en las etapas iniciales: puertos, CORS, autenticación, TLS, firewalls. <strong class="text-neutral-100">Enfócate primero en la lógica de tu server</strong> — tools, resources, prompts — y solo después preocúpate por el transporte de producción. Optimiza cuando exista una necesidad real, no por anticipado.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-emerald-900/40 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Los transportes definen CÓMO se comunican el Client y el Server: el protocolo MCP es independiente del transporte.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>STDIO usa stdin/stdout para la comunicación local: es más sencillo, más rápido e ideal para el desarrollo.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>HTTP permite la comunicación remota mediante solicitudes estándar: es ideal para servers en la nube y múltiples clients.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>SSE amplía HTTP con streaming: el server envía datos continuamente sin que el client tenga que estar preguntando.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>STDIO domina con ~70% del uso actual; HTTP cubre situaciones remotas y SSE crece para el streaming en tiempo real.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Empieza con STDIO y migra a HTTP/SSE cuando haya una necesidad real: el código del server no cambia.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Ruta:</strong> Ruta 2 - Entorno de desarrollo
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="../trilha2/index.html">
+            Siguiente Ruta →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

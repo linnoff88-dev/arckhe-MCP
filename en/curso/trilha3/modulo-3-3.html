@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 3.3 — Understanding Decorators and Schemas | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Track 3</a>
+<span>/</span>
+<span class="text-neutral-300">Module 3.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 3.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🎨 Understanding Decorators and Schemas
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Discover how FastMCP uses Python decorators and JSON schemas to register tools and validate parameters automatically.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Theoretical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎨 What Are Decorators</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Decorators are one of Python’s most elegant features. Using the syntax <code class="text-purple-400">@</code>, you can modify a function's behavior without changing its code. FastMCP uses this feature to turn ordinary Python functions into MCP tools—without configuration files, manual registration, or boilerplate code. Just add the decorator, and the magic happens.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">decorator</strong> in Python is a function that receives another function as an argument and returns a modified version of it. The syntax <code class="text-purple-400">@decorator</code> is just a shortcut for <code class="text-purple-400">funcao = decorator(funcao)</code>. With FastMCP, the decorator <code class="text-purple-400">@mcp.tool()</code> does three things: <strong class="text-neutral-100">(1)</strong> registers the function in the server’s tool list; <strong class="text-neutral-100">(2)</strong> extracts metadata (name, parameters, description) using Python introspection; and <strong class="text-neutral-100">(3)</strong> keeps the original function intact — it continues to work normally like any Python function.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of a decorator as a <strong class="text-neutral-100">badge that marks the function as "available to AI"</strong>. Just as a product on a store shelf needs a price tag to be sold, a Python function needs the decorator <code class="text-purple-400">@mcp.tool()</code> to be visible as an MCP tool. Without the badge, the function exists, but no one outside the code knows it’s there. With the badge, it appears in the catalog of tools the model can use.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 @mcp.tool() in Detail</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The decorator <code class="text-purple-400">@mcp.tool()</code> is the most important component of FastMCP. It does the heavy lifting of connecting your Python code to the MCP protocol, automatically extracting everything the client needs to know about the tool: its name, description, and parameter schema. Let’s look at exactly what it extracts and how.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The decorator <code class="text-purple-400">@mcp.tool()</code> automatically extracts three essential pieces of information from the function: <strong class="text-neutral-100">Name</strong> — derived directly from the Python function name (e.g., <code class="text-purple-400">def buscar_clima</code> becomes the tool <code class="text-purple-400">buscar_clima</code>); <strong class="text-neutral-100">Description</strong> — extracted from the function's docstring, which the model reads to understand when and how to use the tool; and <strong class="text-neutral-100">Parameters</strong> — extracted from the type hints and automatically converted to JSON Schema for validation. All of this happens without any manual configuration.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          FastMCP’s "convention over configuration" approach is inspired by frameworks such as Ruby on Rails and FastAPI. Developer productivity studies show that eliminating boilerplate code can <strong class="text-neutral-100">increase development speed by up to 40%</strong>. With FastMCP, the same tool that would require ~30 lines of manual configuration (name, JSON schema, handler) is defined in just <strong class="text-neutral-100">3–5 lines</strong> of idiomatic Python with the decorator.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Functions without docstrings (tool without a description)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parameters without type hints (incomplete schema)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Generic function names like “process”</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting the parentheses: @mcp.tool vs @mcp.tool()</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Always include a descriptive docstring</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Type hints for all parameters</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Specific names: “buscar_clima,” “criar_tarefa”</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Always use @mcp.tool() with parentheses</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Parameter Schemas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Python type hints are the foundation of FastMCP’s schema system. Each Python type is automatically converted into an equivalent JSON Schema type, which the AI model uses to know exactly which parameters to send when calling the tool. The more precise the type hints, the more accurately the model will use the tool.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">FastMCP automatically converts Python type hints into JSON Schema:</p>
+<div class="grid grid-cols-2 gap-2 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">str</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "string"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">int</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "integer"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">float</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "number"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">bool</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "boolean"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">list</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "array"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">dict</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "object"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 col-span-2">
+<div class="text-purple-400 font-mono font-bold">Optional[str]</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "string" (optional)</div>
+</div>
+</div>
+<p class="mt-4">The model uses this schema to <strong class="text-neutral-100">validate</strong> the parameters before sending them — ensuring the tool always receives data in the correct format.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always use type hints <strong class="text-neutral-100">as specific as possible</strong>. Instead of <code class="text-purple-400">list</code>, use <code class="text-purple-400">list[str]</code>. Instead of <code class="text-purple-400">dict</code>, use <code class="text-purple-400">dict[str, int]</code>. The more information the schema contains, the more accurately the model will fill in the parameters. A parameter marked as <code class="text-purple-400">Optional[str] = None</code> tells the model it can omit this field when it isn't relevant.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📤 Return Types</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        What a tool returns is just as important as what it receives. FastMCP supports various return types and handles serialization automatically. Strings are returned directly, dictionaries and lists are converted to JSON, and complex types are handled transparently. Understanding return types helps you build tools that communicate results clearly to the model.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          MCP tools can return different types of data: <strong class="text-neutral-100"><code class="text-purple-400">str</code></strong> — the most common, returns plain text that the model can use directly; <strong class="text-neutral-100"><code class="text-purple-400">dict</code></strong> — for structured data, automatically serialized as JSON; <strong class="text-neutral-100"><code class="text-purple-400">list</code></strong> — for collections of items, also serialized as JSON. FastMCP converts any of these types into the correct MCP response format. For most cases, returning a <code class="text-purple-400">str</code> providing the formatted information is the simplest and most effective option.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Silently return None</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Return non-serializable objects</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Return generic error messages</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Return data without explanatory context</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Return clear, informative strings</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use dicts for structured data</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Include descriptive error messages</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Add context to the result for the model</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Return Serialization Flow</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">The Python function returns a value (str, dict, list, or another supported type).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">FastMCP detects the return type and converts it to the MCP content format (TextContent for strings, JSON for dicts/lists).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">The result is wrapped in a JSON-RPC response and sent back to the client, which passes it on to the model.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📖 Descriptions and Documentation</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Your functions’ docstrings aren’t just good programming practice — in the context of MCP, they’re the interface between the AI model and the tool. The model reads the description to decide when to use the tool and how to fill in its parameters. A poor description means the model will use the tool at the wrong time or with incorrect parameters. A good description means the tool will be used perfectly.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">docstring</strong> from the function becomes the <code class="text-purple-400">description</code> of the tool in the MCP protocol. The AI model reads this description to make three decisions: <strong class="text-neutral-100">(1)</strong> When to use — "is this tool relevant to what the user asked?"; <strong class="text-neutral-100">(2)</strong> How to use it — “what parameters should I pass?”; and <strong class="text-neutral-100">(3)</strong> What to expect—"what kind of result does this tool return?". The clearer, more specific, and more informative the description, the better the model uses the tool. Vague descriptions lead to imprecise use.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Write docstrings as if you were explaining the tool to a colleague who has never seen your code. Be <strong class="text-neutral-100">specific about what the tool does</strong>, mention <strong class="text-neutral-100">when it should be used</strong>, and describe <strong class="text-neutral-100">what each parameter means</strong>. For example: instead of "Fetch data," write "Fetch the current weather forecast for a Brazilian city. Return the temperature, humidity, and weather conditions."
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Poor descriptions</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Process data" — what? Which data?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Do the thing" — what thing?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Helper function" — helper for what?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Without a docstring (empty description)</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Good Descriptions</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Gets the weather forecast for a city"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Calculates the sum of two integers"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Sends an email to the specified recipient"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"List the 10 most recent GitHub repositories"</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚡ Best Practices</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Building MCP tools that work is easy. Building tools that work <em>well</em> requires attention to best practices. Clear names, complete type hints, descriptive docstrings, smart use of defaults and Optional — all of this directly affects the quality of the end user's experience with AI. Here are the practices that distinguish amateur tools from professional ones.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Best practices for MCP tools include: <strong class="text-neutral-100">Clear names</strong> — use descriptive verbs such as <code class="text-purple-400">buscar_clima</code>, <code class="text-purple-400">criar_tarefa</code>, <code class="text-purple-400">enviar_email</code>; <strong class="text-neutral-100">Complete type hints</strong> — annotate all parameters and the return value with precise types; <strong class="text-neutral-100">Descriptive docstrings</strong> — explain what the tool does, when to use it, and what each parameter means; <strong class="text-neutral-100">Smart defaults</strong> — use default values when a parameter has a more common value; and <strong class="text-neutral-100">Optional</strong> — use <code class="text-purple-400">Optional[tipo]</code> for fields that aren't required, allowing the model to omit them when they aren't relevant.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tools that do too many things (single responsibility principle)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parameters without type hints (incomplete schema)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Silent errors with no explanatory message</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Too many required parameters when they aren’t necessary</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>One tool = one clear responsibility</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Type hints + docstring for every tool</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Error handling with helpful messages</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use Optional and defaults for flexibility</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Never assume the model will send the correct parameters — <strong class="text-neutral-100">always validate inputs</strong> inside the function. Although JSON Schema helps, the model can send unexpected values (empty strings, out-of-range numbers, etc.). Use simple validations at the start of the function and return clear error messages when the data is invalid. A tool that fails with a helpful message is much better than one that crashes silently.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Python decorators use @ to modify functions — FastMCP uses them to register tools without extra code.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>O <code class="text-purple-400">@mcp.tool()</code> automatically extracts: name (of the function), description (from the docstring), and parameters (from the type hints).</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Python type hints (str, int, float, bool, list, dict, Optional) are automatically converted to JSON Schema.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Tools can return str, dict, or list—the FastMCP automatically serializes them to the MCP format.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Docstrings are the interface with the model — the better the description, the more correctly the model uses the tool.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Best practices: clear names, complete type hints, descriptive docstrings, defaults, and Optional when appropriate.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 3.4 — Calculator Server
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-4.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

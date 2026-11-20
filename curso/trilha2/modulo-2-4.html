@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 2.4 — Instalando o Claude Desktop | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-2-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha2/modulo-2-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha2/modulo-2-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Trilha 2</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 2.4</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 2.4</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🖥️ Instalando o Claude Desktop
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Instale e configure o Claude Desktop — o Host MCP que usaremos durante todo o curso.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">20</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Prático</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🖥️ O Que é o Claude Desktop</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O Claude Desktop é a aplicação oficial da Anthropic que traz o modelo Claude diretamente para o seu computador. Mais do que um simples chat, ele funciona como um <strong class="text-neutral-100">Host MCP</strong> completo — contendo o modelo de linguagem Claude e um Client MCP integrado que permite a conexão com servidores externos. Isso o torna a peça central do nosso ambiente de desenvolvimento MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">Claude Desktop</strong> é uma aplicação desktop da Anthropic que funciona como <strong class="text-neutral-100">Host MCP</strong>. Na arquitetura MCP, o Host é a aplicação que contém o modelo de IA e o Client MCP integrado. Isso significa que, ao instalar o Claude Desktop, você ganha automaticamente: o modelo Claude para processar linguagem natural, um Client MCP capaz de se conectar a múltiplos MCP Servers, e uma interface gráfica para interagir com tudo isso. É gratuito para uso básico e será a ferramenta principal ao longo de todo o curso.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O Claude Desktop foi um dos primeiros hosts MCP disponíveis ao público, lançado pela Anthropic junto com a especificação do protocolo. Ele suporta <strong class="text-neutral-100">múltiplos MCP Servers simultâneos</strong>, permitindo que o Claude acesse dezenas de ferramentas ao mesmo tempo. A aplicação está disponível para <strong class="text-neutral-100">Windows, macOS e Linux</strong>, cobrindo os três principais sistemas operacionais usados por desenvolvedores. A Anthropic mantém atualizações regulares que expandem as capacidades MCP do desktop.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📥 Download e Instalação</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O processo de download e instalação do Claude Desktop é direto e simples. A Anthropic disponibiliza instaladores nativos para cada sistema operacional, garantindo uma experiência de instalação familiar e sem surpresas. Em poucos minutos, você terá o aplicativo pronto para uso.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O Claude Desktop está disponível para download em <strong class="text-neutral-100">claude.ai/download</strong>. O site detecta automaticamente o seu sistema operacional e oferece o instalador correto. Para <strong class="text-neutral-100">Windows</strong>, você recebe um arquivo .exe que executa o instalador padrão. Para <strong class="text-neutral-100">macOS</strong>, um arquivo .dmg que basta arrastar para a pasta Aplicativos. Para <strong class="text-neutral-100">Linux</strong>, estão disponíveis pacotes .deb (Ubuntu/Debian) e .AppImage (universal). A instalação não requer privilégios de administrador na maioria dos casos.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Passos para instalação</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 1</span>
+<p class="text-neutral-300 text-sm mt-1">Acesse <strong class="text-neutral-100">claude.ai/download</strong> no seu navegador. O site detectará automaticamente seu sistema operacional e mostrará o botão de download correto.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 2</span>
+<p class="text-neutral-300 text-sm mt-1">Baixe o instalador e execute-o. Windows: duplo-clique no .exe e siga o wizard. Mac: abra o .dmg e arraste o ícone para Aplicativos. Linux: instale o .deb com <code class="text-blue-400">sudo dpkg -i</code> ou execute o .AppImage.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Abra o Claude Desktop após a instalação. Na primeira execução, você será direcionado para a tela de login. O aplicativo estará pronto para configuração.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O Claude Desktop <strong class="text-neutral-100">requer uma conta Anthropic</strong> para funcionar. Se você ainda não tem uma, crie gratuitamente em <strong class="text-neutral-100">claude.ai</strong> antes de prosseguir. O plano gratuito é suficiente para acompanhar todo o curso. Certifique-se também de que seu sistema atende aos requisitos mínimos: Windows 10+, macOS 12+ ou uma distribuição Linux moderna com suporte a .deb ou AppImage.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔑 Configuração Inicial</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Ao abrir o Claude Desktop pela primeira vez, você passará por um processo rápido de configuração inicial. É simples e intuitivo — basta fazer login com sua conta Anthropic, aceitar os termos de uso e familiarizar-se com a interface principal. Em menos de dois minutos, você estará pronto para usar o Claude localmente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A configuração inicial do Claude Desktop envolve três etapas simples: <strong class="text-neutral-100">fazer login</strong> com sua conta Anthropic (e-mail e senha ou login social), <strong class="text-neutral-100">aceitar os termos</strong> de uso e política de privacidade, e <strong class="text-neutral-100">explorar a interface</strong> principal. A interface consiste em um campo de chat central onde você conversa com o Claude, uma sidebar lateral para gerenciar conversas, e um menu de configurações onde futuramente veremos as opções relacionadas ao MCP. Neste momento, o Claude funciona como um assistente de chat padrão — ainda sem acesso a ferramentas externas.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Aproveite este momento para <strong class="text-neutral-100">explorar a interface sem pressa</strong>. Envie algumas mensagens de teste, crie uma nova conversa, teste o atalho de teclado para nova conversa (geralmente Ctrl+N ou Cmd+N). Familiarize-se com a sidebar e com o botão de configurações. Quanto mais confortável você estiver com a interface básica, mais fácil será quando começarmos a adicionar MCP Servers e a interface ganhar novos elementos visuais.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔌 Onde Ficam os MCP Servers</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A configuração dos MCP Servers no Claude Desktop é feita através de um arquivo JSON específico. Este arquivo é o coração da integração MCP — é nele que você declara quais servers o Claude pode acessar, como iniciá-los e quais argumentos passar. Saber onde ele fica no seu sistema operacional é essencial para os próximos passos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O arquivo de configuração dos MCP Servers chama-se <strong class="text-neutral-100">claude_desktop_config.json</strong> e fica em locais diferentes dependendo do sistema operacional:
+        </p>
+<ul class="mt-3 space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">macOS:</span> <code class="text-neutral-100">~/Library/Application Support/Claude/claude_desktop_config.json</code></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Windows:</span> <code class="text-neutral-100">%APPDATA%/Claude/claude_desktop_config.json</code></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Linux:</span> <code class="text-neutral-100">~/.config/Claude/claude_desktop_config.json</code></li>
+</ul>
+<p class="text-neutral-300 leading-relaxed mt-3">
+          Este arquivo é lido pelo Claude Desktop na inicialização. Qualquer alteração nele requer que você reinicie o aplicativo para que as mudanças sejam aplicadas.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Para navegar até o arquivo de configuração, use o terminal. No <strong class="text-neutral-100">macOS</strong>: <code class="text-primary">open ~/Library/Application\ Support/Claude/</code>. No <strong class="text-neutral-100">Windows</strong>: <code class="text-primary">explorer %APPDATA%\Claude</code>. No <strong class="text-neutral-100">Linux</strong>: <code class="text-primary">xdg-open ~/.config/Claude/</code>. Se a pasta ou o arquivo não existirem ainda, não se preocupe — criaremos no próximo módulo. Muitas vezes o arquivo só é criado após a primeira configuração manual.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Editar o arquivo com o Claude Desktop aberto sem reiniciar depois</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Colocar o arquivo em local diferente do padrão do OS</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar editores que adicionam BOM ou formatação invisível</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tentar encontrar configurações MCP dentro da interface gráfica</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Usar VS Code ou outro editor com suporte a JSON</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Sempre reiniciar o Claude Desktop após editar o config</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Fazer backup do arquivo antes de grandes mudanças</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Validar o JSON antes de salvar (JSONLint ou extensão do editor)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✅ Verificando a Instalação</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Antes de prosseguir para os próximos módulos, é importante verificar que tudo está funcionando corretamente. Uma instalação bem-sucedida do Claude Desktop é pré-requisito para todo o restante do curso. Vamos passar por um checklist completo para garantir que nada ficou para trás.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A verificação da instalação envolve quatro pontos essenciais: o <strong class="text-neutral-100">aplicativo abre</strong> sem erros ou crashes, o <strong class="text-neutral-100">login funciona</strong> e você consegue acessar sua conta, o <strong class="text-neutral-100">chat responde</strong> a mensagens normalmente (indicando conexão com o modelo), e o <strong class="text-neutral-100">diretório de configuração existe</strong> no caminho esperado para o seu sistema operacional. Se todos esses quatro pontos estiverem OK, sua instalação está completa e pronta para receber configurações MCP.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Checklist de verificação</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Verificação 1 — Aplicativo abre</span>
+<p class="text-neutral-300 text-sm mt-1">Clique no ícone do Claude Desktop. Ele deve abrir sem mensagens de erro, sem crashes e sem travamentos. A tela de chat deve aparecer normalmente.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Verificação 2 — Login funciona</span>
+<p class="text-neutral-300 text-sm mt-1">Você deve estar logado com sua conta Anthropic. Se pediu login, insira suas credenciais e confirme que a autenticação foi bem-sucedida.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Verificação 3 — Chat responde</span>
+<p class="text-neutral-300 text-sm mt-1">Envie uma mensagem simples como "Olá!" e verifique que o Claude responde. Isso confirma que a conexão com o modelo está funcionando.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Verificação 4 — Diretório config existe</span>
+<p class="text-neutral-300 text-sm mt-1">Navegue até o diretório de configuração do seu OS e confirme que ele existe. Se o arquivo <code class="text-blue-400">claude_desktop_config.json</code> ainda não existir, tudo bem — criaremos no próximo módulo.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Se o Claude Desktop não abrir ou apresentar erros, tente: <strong class="text-neutral-100">reinstalar</strong> o aplicativo, verificar se o seu sistema operacional está atualizado, desativar temporariamente o antivírus (alguns bloqueiam a primeira execução), ou checar a <strong class="text-neutral-100">página de status</strong> da Anthropic para possíveis indisponibilidades do serviço. Se o chat não responder, verifique sua conexão com a internet — o Claude Desktop precisa de acesso à rede para funcionar.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Primeiro Uso</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Com o Claude Desktop instalado e funcionando, vamos fazer o primeiro uso intencional. O objetivo é verificar que a comunicação com o modelo funciona perfeitamente e, ao mesmo tempo, observar o que ainda falta — as ferramentas MCP. Esse contraste será fundamental para entender o valor que os MCP Servers trarão nos próximos módulos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Envie a seguinte mensagem ao Claude: <strong class="text-neutral-100">"Olá, como você pode me ajudar?"</strong>. O Claude deve responder normalmente, listando suas capacidades de linguagem natural. Agora observe a interface com atenção: note que <strong class="text-neutral-100">não há ícone de martelo</strong> (🔨) na área de input. Esse ícone aparece quando há MCP Servers conectados e tools disponíveis. Sua ausência confirma que, neste momento, o Claude funciona apenas como assistente de chat — sem acesso a ferramentas externas. Nos próximos módulos, ao configurar MCP Servers, esse ícone aparecerá e o Claude ganhará superpoderes.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Experimente pedir ao Claude algo que ele <strong class="text-neutral-100">não pode fazer sem ferramentas</strong>: "Leia o arquivo README.md da minha pasta de projetos" ou "Qual é o clima agora na minha cidade?". Ele vai explicar que não tem acesso a arquivos ou à internet. Guarde essa experiência na memória — quando configurarmos os MCP Servers, você vai pedir exatamente as mesmas coisas e o Claude vai <strong class="text-neutral-100">executá-las de verdade</strong>. A diferença será impressionante.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>O Claude Desktop é a aplicação oficial da Anthropic que funciona como Host MCP, contendo o modelo Claude e um Client MCP integrado.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>O download é feito em claude.ai/download, com instaladores nativos para Windows (.exe), macOS (.dmg) e Linux (.deb/.AppImage).</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>A configuração inicial requer login com conta Anthropic e é concluída em menos de dois minutos.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>O arquivo de configuração MCP (claude_desktop_config.json) fica em diretórios específicos por sistema operacional.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>A verificação da instalação inclui: app abre, login funciona, chat responde e diretório de config existe.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Sem MCP Servers configurados, o Claude Desktop funciona apenas como chat — o ícone de martelo (tools) ainda não aparece.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 2.5 — Configurando o claude_desktop_config.json
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-2-5.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

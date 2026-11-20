@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ruta 2: Entorno de desarrollo | MCP — Del cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha2/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors" href="../../index.html">🔌 MCP — De cero al servidor</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-2">
+<a class="text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha1/index.html">T1</a>
+<a class="text-blue-400 bg-blue-500/10 px-3 py-1.5 rounded-lg text-sm font-medium" href="../trilha2/index.html">T2</a>
+<a class="text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha3/index.html">T3</a>
+<a class="text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha4/index.html">T4</a>
+<a class="text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha5/index.html">T5</a>
+<button class="ml-4 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 text-neutral-400 hidden" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Header -->
+<header class="bg-gradient-to-r from-blue-900/30 via-dark-800 to-dark-800 border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="text-center">
+<span class="inline-block px-4 py-1.5 bg-blue-500/20 text-blue-400 text-sm font-bold rounded-full mb-6 tracking-wider">RUTA 2</span>
+<h1 class="text-4xl md:text-5xl font-extrabold text-neutral-100 mb-6">🛠️ Entorno de desarrollo</h1>
+<p class="text-xl text-neutral-300 max-w-3xl mx-auto mb-10">Prepara todo lo necesario para crear MCP Servers: Python, Node.js, Claude Desktop y sus primeras configuraciones.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-blue-400">6</div>
+<div class="text-sm text-neutral-400">Módulos</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-blue-400">36</div>
+<div class="text-sm text-neutral-400">Temas</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-blue-400">~3h</div>
+<div class="text-sm text-neutral-400">Duración</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-blue-400">Básico</div>
+<div class="text-sm text-neutral-400">Nivel</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Navegação Rápida -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">Navegación rápida</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-1">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.1</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">🐍 Instalando Python y uv</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-2">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.2</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">📦 Instalando Node.js y npm</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-3">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.3</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">💻 Conociendo la terminal</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-4">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.4</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">🖥️ Instalando Claude Desktop</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-5">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.5</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">⚙️ Configuración de claude_desktop_config.json</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-blue-500/30 transition-colors group" href="#modulo-2-6">
+<span class="text-sm text-blue-400 font-bold">Módulo 2.6</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-blue-400 transition-colors mt-1">🧪 Primera prueba: MCP Server de ejemplo</h3>
+</a>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center mb-12">
+<div class="flex-1 border-t border-dark-700"></div>
+<span class="px-4 text-neutral-400 text-sm font-medium">Contenido detallado</span>
+<div class="flex-1 border-t border-dark-700"></div>
+</div>
+<!-- Module 2.1 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.1</span>
+<span class="text-sm text-neutral-400">~25 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🐍 Instalando Python y uv</h3>
+<p class="text-neutral-300 mb-6">Configura Python 3.11+ y el administrador de paquetes uv para el desarrollo con MCP.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🐍 Qué es Python</h4>
+<p class="text-sm text-neutral-400">Lenguaje principal para MCP Servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Python es un lenguaje de programación de alto nivel, conocido por su sintaxis sencilla y legibilidad. Es el lenguaje principal para desarrollar MCP Servers gracias al SDK oficial de Anthropic y a la amplia biblioteca de integraciones disponibles.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">El SDK oficial de MCP para Python es el más maduro y documentado. La mayoría de los ejemplos y tutoriales usan Python, por lo que es la opción más práctica para empezar.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Python 3.11+, lenguaje interpretado, tipado dinámico, ecosistema de paquetes, SDK de MCP para Python.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Instalando Python 3.11+</h4>
+<p class="text-sm text-neutral-400">Descarga y configuración paso a paso</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Python 3.11+ se puede instalar descargando el instalador oficial de python.org o usando administradores de versiones como pyenv. Se necesita la versión 3.11 o superior para que sea compatible con el SDK MCP y sus funciones de tipado moderno.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Sin Python instalado correctamente, ningún MCP Server en Python funcionará. Una instalación limpia evita problemas de permisos y conflictos de versiones en el futuro.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">python.org, pyenv, PATH del sistema, versión mínima 3.11, instalador por sistema operativo.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚡ Qué es uv</h4>
+<p class="text-sm text-neutral-400">Administrador moderno de paquetes de Python</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">uv es un gestor de paquetes y entornos virtuales de Python ultrarrápido, escrito en Rust. Reemplaza pip, venv y pip-tools con una sola herramienta que resuelve e instala dependencias entre 10 y 100 veces más rápido.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">uv es la herramienta recomendada por el ecosistema MCP para gestionar proyectos Python. Su velocidad y simplicidad hacen que el desarrollo sea mucho más productivo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">uv, Astral, Rust, resolución de dependencias, entornos virtuales, sustitución de pip.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Instalación de uv</h4>
+<p class="text-sm text-neutral-400">Configuración rápida mediante curl/pip</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">uv se puede instalar mediante curl (en Linux/Mac) o pip (en cualquier sistema). Se recomienda el comando curl porque instala directamente el binario compilado, sin depender de una instalación previa de Python.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">uv debe estar instalado y disponible en el PATH antes de crear cualquier proyecto MCP. Una instalación correcta evita problemas de permisos y conflictos.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">curl, pip install uv, binario independiente, PATH, permisos de instalación.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✅ Verificando la instalación</h4>
+<p class="text-sm text-neutral-400">Comandos para confirmar que todo funciona</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Después de instalar Python y uv, es esencial verificar que ambos estén accesibles desde la terminal. Los comandos python --version, python3 --version y uv --version confirman que las herramientas están en el PATH y funcionan correctamente.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Comprobar la instalación de inmediato previene frustraciones futuras. Muchos errores en tutoriales de MCP ocurren porque Python o uv no están configurados correctamente.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">python --version, uv --version, PATH, variables de entorno, solución de problemas de instalación.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Primera prueba</h4>
+<p class="text-sm text-neutral-400">Creando un entorno virtual con uv</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La primera prueba práctica consiste en usar uv para crear un entorno virtual aislado, instalar un paquete de prueba y ejecutar un script sencillo. Esto valida que toda la cadena Python + uv funciona correctamente en tu sistema.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Crear un entorno virtual es el primer paso de cualquier proyecto MCP en Python. Practicarlo ahora te asegura que sabrás hacerlo automáticamente cuando empieces a construir servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">uv venv, uv pip install, entorno virtual, aislamiento de dependencias, activación del venv.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-1')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-1.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 2.2 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.2</span>
+<span class="text-sm text-neutral-400">~20 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📦 Instalando Node.js y npm</h3>
+<p class="text-neutral-300 mb-6">Configuración alternativa para quienes prefieren TypeScript durante el desarrollo de MCP Servers.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Qué es Node.js</h4>
+<p class="text-sm text-neutral-400">Runtime de JavaScript para servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Node.js es un runtime que permite ejecutar JavaScript fuera del navegador. Basado en el motor V8 de Chrome, permite crear aplicaciones server-side, incluidos MCP Servers con TypeScript y el SDK oficial.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Node.js es la segunda opción oficial para desarrollar MCP Servers. Si ya conoces JavaScript o TypeScript, puede ser la forma más rápida de empezar a crear servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Node.js, runtime de JavaScript, V8, server-side, TypeScript, event loop, non-blocking I/O.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📥 Cómo instalar Node.js</h4>
+<p class="text-sm text-neutral-400">Mediante nvm o el instalador oficial</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Node.js se puede instalar mediante nvm (Node Version Manager), que permite administrar varias versiones, o con el instalador oficial de nodejs.org. Se recomienda nvm para desarrolladores que trabajan en distintos proyectos.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Una instalación correcta de Node.js evita problemas de permisos y conflictos de versiones. nvm facilita cambiar de versión según sea necesario para diferentes proyectos.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">nvm, nodejs.org, LTS vs Current, instalación por sistema operativo, administración de versiones.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Entendiendo npm</h4>
+<p class="text-sm text-neutral-400">Administrador de paquetes de Node</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">npm (Node Package Manager) es el gestor de paquetes predeterminado de Node.js. Permite instalar, actualizar y gestionar bibliotecas JavaScript/TypeScript, incluido el SDK MCP para TypeScript y todas sus dependencias.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Todo proyecto de Node.js usa npm para administrar dependencias. Entender cómo funciona es esencial para instalar el SDK de MCP y mantener tus proyectos organizados.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">npm, package.json, node_modules, npm install, npm init, registro de paquetes, semver.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Instalación de npx</h4>
+<p class="text-sm text-neutral-400">Ejecutor de paquetes sin instalación global</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">npx es una herramienta que viene con npm y permite ejecutar paquetes de Node.js sin instalarlos globalmente. Los descarga, ejecuta y elimina automáticamente. Se usa mucho para ejecutar MCP Servers de prueba y herramientas de scaffolding.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">npx se usa con frecuencia para ejecutar MCP Servers directamente, sin necesidad de instalarlos de forma permanente. Es la manera más rápida de probar servers de terceros.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">npx, ejecución temporal, sin instalación global, caché de paquetes, npm vs npx.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✅ Verificando la instalación</h4>
+<p class="text-sm text-neutral-400">node -v, npm -v, npx</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Comprobar la instalación con node -v, npm -v y npx --version confirma que todas las herramientas están accesibles en la terminal. Las versiones deben ser compatibles: se recomienda Node.js 18+ para el SDK MCP TypeScript.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Validar cada herramienta individualmente garantiza que no haya problemas de PATH o de versión. Una lista de verificación rápida ahorra horas de debugging después.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">node -v, npm -v, npx --version, versión mínima, compatibilidad, lista de verificación de validación.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Primera prueba</h4>
+<p class="text-sm text-neutral-400">Ejecutar un paquete con npx</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La primera prueba práctica consiste en ejecutar un paquete sencillo con npx para validar que Node.js y npm funcionan correctamente. Esto simula el flujo que se usará más adelante para ejecutar MCP Servers de TypeScript.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Probar la cadena completa Node.js + npm + npx con un ejemplo real garantiza que tu entorno esté listo para desarrollar MCP Servers en TypeScript.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">npx create-*, ejecución de paquetes, flujo de pruebas, validación del entorno, solución de problemas.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-2')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-2.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 2.3 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.3</span>
+<span class="text-sm text-neutral-400">~30 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">💻 Conociendo la terminal</h3>
+<p class="text-neutral-300 mb-6">Comandos esenciales de la terminal para quienes nunca han usado la línea de comandos.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💻 Qué es la terminal</h4>
+<p class="text-sm text-neutral-400">Interfaz de texto para controlar la computadora</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La terminal (o línea de comandos) es una interfaz basada en texto que permite interactuar con la computadora escribiendo comandos. A diferencia de la interfaz gráfica, la terminal ofrece un control preciso y automatizable del sistema operativo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Todo el desarrollo de MCP se hace en la terminal, desde instalar dependencias hasta ejecutar servers y configurar Claude Desktop. Dominar la terminal es un requisito fundamental.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Terminal, shell, bash, zsh, PowerShell, símbolo del sistema, interfaz CLI.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📂 Navegando entre carpetas</h4>
+<p class="text-sm text-neutral-400">cd, ls, pwd</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los comandos de navegación permiten moverte entre directorios en la terminal. cd (change directory) cambia de carpeta, ls (list) muestra el contenido de un directorio y pwd (print working directory) muestra dónde estás actualmente.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Navegar por el sistema de archivos es la habilidad más básica y más usada en la terminal. Necesitarás acceder a carpetas de proyectos, encontrar archivos de configuración y organizar tus MCP Servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">cd, ls, pwd, rutas absolutas frente a relativas, directorio de inicio (~), directorio padre (..).</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 Manipulando archivos</h4>
+<p class="text-sm text-neutral-400">crear, copiar, mover, eliminar</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los comandos para manipular archivos permiten crear (touch, mkdir), copiar (cp), mover/renombrar (mv) y eliminar (rm) archivos y directorios directamente desde la terminal, sin necesitar una interfaz gráfica.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Gestionar archivos desde el terminal es más rápido y preciso que hacerlo desde la interfaz gráfica. Crearás carpetas de proyecto, copiarás templates y organizarás tus MCP Servers constantemente.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">touch, mkdir, cp, mv, rm, rm -r, flags, confirmación de eliminación, permisos.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Cómo editar archivos</h4>
+<p class="text-sm text-neutral-400">nano, code, cat</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Editar archivos desde la terminal se puede hacer con editores como nano (simple, dentro de la terminal), code (abre VS Code) o visualizar el contenido con cat. Cada herramienta tiene su caso de uso ideal.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Tendrás que editar directamente archivos de configuración como claude_desktop_config.json. Saber usar al menos un editor de terminal es esencial para configurar MCP Servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">nano, vim, code (VS Code), cat, less, more, redirección de salida (&gt;, &gt;&gt;).</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Buscando y filtrando</h4>
+<p class="text-sm text-neutral-400">find, grep, pipe</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los comandos de búsqueda como find (localiza archivos por nombre o tipo) y grep (busca texto dentro de archivos) son grandes aliados. El pipe (|) permite encadenar comandos y enviar la salida de uno como entrada del siguiente.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Buscar archivos de configuración, encontrar errores en logs y filtrar resultados son tareas habituales en el desarrollo de MCP. Estos comandos ahorran mucho tiempo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">find, grep, pipe (|), expresiones regulares, filtros, encadenamiento de comandos.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚡ Atajos esenciales</h4>
+<p class="text-sm text-neutral-400">Tab, flechas, Ctrl+C, historial</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los atajos de teclado hacen que usar la terminal sea mucho más eficiente. Tab completa automáticamente comandos y rutas, las flechas recorren el historial, Ctrl+C cancela procesos y Ctrl+R busca comandos anteriores.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Los atajos transforman la terminal de una herramienta intimidante en una experiencia fluida. Ctrl+C en particular es esencial para detener MCP Servers durante el desarrollo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Autocompletado con Tab, flechas arriba/abajo, Ctrl+C, Ctrl+D, Ctrl+R, Ctrl+L, historial de comandos.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-3')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-3.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 2.4 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.4</span>
+<span class="text-sm text-neutral-400">~20 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🖥️ Instalando Claude Desktop</h3>
+<p class="text-neutral-300 mb-6">Configuración paso a paso de Claude Desktop en Windows, Mac y Linux.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🖥️ Qué es Claude Desktop</h4>
+<p class="text-sm text-neutral-400">Aplicación de escritorio de Anthropic</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop es la aplicación oficial de Anthropic que permite interactuar con Claude directamente en tu computadora. Funciona como un MCP Host y puede conectarse a MCP Servers locales y remotos para ampliar las capacidades de Claude.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop es el principal MCP Host para desarrollo y pruebas. Allí conectarás tus MCP Servers y verás cómo funcionan las tools en la práctica.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop, MCP Host, aplicación nativa, Anthropic, interfaz de chat, soporte para MCP.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📥 Descarga e instalación</h4>
+<p class="text-sm text-neutral-400">Paso a paso por sistema operativo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La descarga de Claude Desktop se realiza desde el sitio oficial de Anthropic (claude.ai/download). La instalación varía según el sistema: en Windows es un instalador .exe, en Mac un .dmg y en Linux un .deb o .AppImage, según la distribución.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Sin Claude Desktop instalado, no podrás probar tus MCP Servers de forma visual e interactiva. Es el entorno principal de desarrollo y validación.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">claude.ai/download, instalador por sistema operativo, permisos de instalación, requisitos del sistema, actualizaciones.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔑 Configuración inicial</h4>
+<p class="text-sm text-neutral-400">Inicio de sesión y primeras configuraciones</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La configuración inicial de Claude Desktop implica iniciar sesión con tu cuenta de Anthropic, aceptar los términos de uso y ajustar las preferencias básicas. Después de iniciar sesión, la aplicación está lista para usar Claude, pero aún no tiene MCP Servers conectados.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Una configuración inicial correcta garantiza que la aplicación funcione sin problemas. Los errores en esta etapa pueden impedir la conexión con MCP Servers más adelante.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Cuenta de Anthropic, inicio de sesión, términos de uso, preferencias, plan de suscripción, límites de uso.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔌 Dónde se encuentran los MCP Servers</h4>
+<p class="text-sm text-neutral-400">Ubicación del archivo de configuración</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los MCP Servers se registran en el archivo claude_desktop_config.json, ubicado en rutas específicas según el sistema: ~/Library/Application Support/Claude/ en Mac, %APPDATA%/Claude/ en Windows y ~/.config/Claude/ en Linux.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Saber dónde está el archivo de configuración es esencial para agregar, editar y depurar MCP Servers. Es el archivo que editarás con más frecuencia durante el desarrollo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json, rutas por SO, directorio de configuración, Application Support, AppData.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✅ Verificando la instalación</h4>
+<p class="text-sm text-neutral-400">Lista de verificación de validación</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La lista de validación incluye: la aplicación se abre sin errores, el inicio de sesión funciona, es posible enviar mensajes a Claude, se puede acceder al menú de configuración y el archivo de configuración existe en la ruta correcta del sistema.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Validar cada punto de la lista de verificación previene problemas cuando empieces a conectar MCP Servers. Un entorno saludable es la base para un desarrollo productivo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Lista de verificación, validación, solución de problemas, logs de errores, reinicio, soporte técnico.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Primer uso</h4>
+<p class="text-sm text-neutral-400">Probando una conversación básica</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El primer uso consiste en iniciar una conversación con Claude en Desktop, probar distintos tipos de preguntas y explorar la interfaz. Esto confirma que la aplicación funciona y te familiariza con el entorno donde probarás tus MCP Servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Conocer la interfaz de Claude Desktop antes de agregar MCP Servers te permite identificar rápidamente los cambios cuando se conecten los servers, como la aparición de nuevas tools en la interfaz.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Interfaz de chat, nueva conversación, modelos disponibles, límites de uso, experiencia de referencia.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-4')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-4.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 2.5 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.5</span>
+<span class="text-sm text-neutral-400">~25 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">⚙️ Configuración de claude_desktop_config.json</h3>
+<p class="text-neutral-300 mb-6">Entiende la estructura del archivo de configuración y cómo registrar MCP Servers.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 Qué es el config.json</h4>
+<p class="text-sm text-neutral-400">Archivo que registra MCP Servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json es el archivo de configuración central de Claude Desktop para MCP. Contiene la lista de todos los MCP Servers registrados, sus comandos de ejecución, argumentos y variables de entorno necesarias.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este archivo es el puente entre Claude Desktop y tus MCP Servers. Si no está configurado correctamente, la aplicación no detectará ni ejecutará ningún server.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json, configuración declarativa, registro de servers, JSON, mcpServers.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📍 Dónde encontrar el archivo</h4>
+<p class="text-sm text-neutral-400">Rutas por sistema operativo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El archivo de configuración está en distintas ubicaciones según el sistema: ~/Library/Application Support/Claude/claude_desktop_config.json en Mac, %APPDATA%\Claude\claude_desktop_config.json en Windows y ~/.config/Claude/claude_desktop_config.json en Linux.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Encontrar el archivo rápidamente es esencial para la productividad. Editarás este archivo con frecuencia durante el desarrollo y la depuración de MCP Servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Rutas por sistema operativo, Application Support, AppData, .config, directorio oculto, acceso mediante terminal.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Estructura del JSON</h4>
+<p class="text-sm text-neutral-400">Campos obligatorios y opcionales</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La estructura de config.json tiene un objeto raíz con la clave "mcpServers", que contiene un objeto donde cada clave es el nombre de un server y el valor define command (obligatorio), args (opcional) y env (opcional para variables de entorno).</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender la estructura del JSON evita errores de sintaxis y garantiza que tus servers se registren correctamente. Un campo incorrecto puede impedir que el server se inicie.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">mcpServers, command, args, env, estructura JSON, claves obligatorias, formato correcto.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔌 Registrando un Server</h4>
+<p class="text-sm text-neutral-400">Agregar entradas a mcpServers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Registrar un server implica agregar una nueva entrada al objeto mcpServers con un nombre identificador, el comando para ejecutarlo (como "python" o "npx"), los argumentos necesarios (como la ruta del script) y variables de entorno opcionales.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Esta es la acción que realizarás cada vez que crees o instales un nuevo MCP Server. Dominar el registro garantiza que tus servers aparezcan y funcionen correctamente en Claude Desktop.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Registro de server, nombre identificador, command, args, env, reinicio de Claude Desktop.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚠️ Errores comunes</h4>
+<p class="text-sm text-neutral-400">JSON inválido, rutas incorrectas, permisos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los errores más comunes en config.json incluyen: comas faltantes o sobrantes (JSON inválido), rutas absolutas incorrectas, uso de barras invertidas en Windows sin escape, falta de permisos de ejecución y variables de entorno sin definir.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Conocer los errores comunes antes de encontrarlos te ahorra horas de frustración. La mayoría de los problemas con MCP Servers se debe a errores sencillos en el archivo de configuración.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">JSON inválido, coma final, rutas absolutas, escape de barras, permisos, depuración.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✅ Validando la configuración</h4>
+<p class="text-sm text-neutral-400">Cómo probar si el config es correcto</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Validar la configuración implica: verificar el JSON con un linter en línea o una herramienta local, probar las rutas de los comandos en la terminal, reiniciar Claude Desktop y comprobar si los servers aparecen en la lista de tools disponibles.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Un proceso de validación sistemático garantiza que los cambios en el config funcionen antes de empezar a usar el server. Esto crea un ciclo de retroalimentación rápido durante el desarrollo.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Linter de JSON, prueba de rutas, reinicio, lista de tools, logs de Claude Desktop, validación.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-5')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-5.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 2.6 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-2-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-blue-400">Módulo 2.6</span>
+<span class="text-sm text-neutral-400">~25 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🧪 Primera prueba: MCP Server de ejemplo</h3>
+<p class="text-neutral-300 mb-6">Clona y ejecuta un servidor de referencia para validar que todo el entorno funcione.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Cómo elegir un server de prueba</h4>
+<p class="text-sm text-neutral-400">Servers oficiales de referencia</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Anthropic y la comunidad mantienen varios MCP Servers oficiales de referencia. Para la primera prueba, se recomienda usar un server sencillo, como el filesystem server o el everything server, que muestran las funcionalidades básicas sin dependencias complejas.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Empezar con un server de referencia comprobado garantiza que cualquier problema se deba a tu entorno y no al código. Es la mejor forma de validar la instalación completa.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Servers de referencia, filesystem server, everything server, repositorios oficiales, complejidad mínima.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📥 Cómo clonar el repositorio</h4>
+<p class="text-sm text-neutral-400">git clone del server elegido</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Clonar un repositorio significa descargar todo el código fuente de un MCP Server mediante git clone. El comando copia el repositorio de GitHub a una carpeta local de tu computadora, lista para instalar y ejecutar.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">La mayoría de los MCP Servers se distribuyen a través de GitHub. Saber clonar repositorios es la forma estándar de obtener e instalar servers de la comunidad.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">git clone, GitHub, repositorio, URL del repositorio, directorio de destino, branch predeterminada.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Instalación de dependencias</h4>
+<p class="text-sm text-neutral-400">pip install ou npm install</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Después de clonar el repositorio, debes instalar las dependencias del server. Para los servers de Python, se usa uv pip install o pip install -r requirements.txt. Para los servers de Node.js, se usa npm install. Esto descarga todas las bibliotecas necesarias.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Instalar correctamente las dependencias es el paso que más errores genera para principiantes. Entender el proceso evita problemas de paquetes faltantes o incompatibles.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">pip install, npm install, uv pip install, requirements.txt, package.json, resolución de dependencias.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Configuración en Claude Desktop</h4>
+<p class="text-sm text-neutral-400">Agregar a config.json</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Configurar el server en Claude Desktop significa agregar una entrada en claude_desktop_config.json con el comando de ejecución, la ruta del script y las variables de entorno necesarias. Después de guardar, hay que reiniciar Claude Desktop.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este es el momento en que la teoría se convierte en práctica. Configurar un server real en Claude Desktop conecta todos los conceptos aprendidos hasta ahora en una experiencia funcional.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Edición de config.json, entrada del server, comando de ejecución, ruta absoluta, reinicio.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Probando la conexión</h4>
+<p class="text-sm text-neutral-400">Comprobación de las tools disponibles</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Probar la conexión implica abrir Claude Desktop después de reiniciarlo y verificar si las tools del MCP Server aparecen en la interfaz. Puedes ver los servers conectados y sus tools disponibles en el ícono de herramientas de la interfaz de chat.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Comprobar la conexión confirma que todo el pipeline funciona: config.json correcto, server ejecutable, comunicación MCP establecida. Es el checkpoint final antes de usar el server.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Tools disponibles, ícono de herramientas, lista de servers, estado de conexión, registros de errores.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-blue-500/20 text-blue-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎉 Primer uso real</h4>
+<p class="text-sm text-neutral-400">Usar el server con Claude Desktop</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-blue-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El primer uso real consiste en pedirle a Claude que use una tool del MCP Server conectado. Por ejemplo, puedes pedirle que liste los archivos de una carpeta (filesystem server) o que ejecute una operación específica. Claude identificará la tool y te pedirá aprobación antes de usarla.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este es el momento «¡ajá!» del curso: ver a Claude usando una tool que se ejecuta en tu computadora. Esto valida todo el entorno y te motiva a crear tus propios servers.</p></div>
+<div><span class="text-blue-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Invocación de tool, aprobación del usuario, resultado de la tool, flujo completo, depuración, próximos pasos.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-2-6')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-2-6.html">Ver completo</a>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex items-center justify-between mt-12 pt-8 border-t border-dark-700">
+<a class="flex items-center gap-2 text-neutral-400 hover:text-blue-400 transition-colors font-medium" href="../trilha1/index.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        ← Trilha anterior
+      </a>
+<a class="flex items-center gap-2 text-neutral-400 hover:text-purple-400 transition-colors font-medium" href="../trilha3/index.html">
+        Siguiente Ruta →
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</main>
+<!-- Modals -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-1">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.1 — Instalando Python y uv</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-1.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-2">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.2 — Instalando Node.js y npm</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-2.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-3">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.3 — Conociendo la terminal</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-3.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-4">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.4 — Instalando Claude Desktop</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-4.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-5">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.5 — Configurando claude_desktop_config.json</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-5.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-2-6">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 2.6 — Primera prueba: MCP Server de ejemplo</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-2-6.html"></iframe>
+</div>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-neutral-400 text-sm">
+<span>🔌 MCP — De cero al servidor</span>
+<span>·</span>
+<a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<p class="text-neutral-500 text-sm">Ruta 2 — Entorno de desarrollo</p>
+</div>
+</div>
+</footer>
+<script>
+    // Toggle topics
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

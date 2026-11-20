@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 2.2 — Installing Node.js and npm | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Track 2</a>
+<span>/</span>
+<span class="text-neutral-300">Module 2.2</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 2.2</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📦 Installing Node.js and npm
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Set up Node.js and npm—the alternative for creating MCP Servers in TypeScript.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">20</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Basic</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 What Is Node.js</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Node.js is a runtime that lets you run JavaScript outside the browser—directly on your computer or server. Created in 2009 by Ryan Dahl, it revolutionized web development by making it possible to use the same language on the frontend and backend. In the context of MCP, Node.js is essential for creating servers in <strong class="text-neutral-100">TypeScript</strong>, the second most popular language in the MCP ecosystem.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Node.js</strong> is a JavaScript runtime based on Chrome's V8 engine. It lets you run JavaScript and TypeScript code on the server, outside the browser. The official MCP SDK maintained by Anthropic is available in TypeScript (<code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">@modelcontextprotocol/sdk</code>), making Node.js a powerful alternative to Python for creating MCP servers — especially for teams that already work with web technologies.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Node.js is used by <strong class="text-neutral-100">more than 6.3 million websites</strong> around the world. The npm registry has more than <strong class="text-neutral-100">2.1 million packages</strong>, the world's largest open-source package ecosystem. In the MCP ecosystem, many official servers—such as the <strong class="text-neutral-100">filesystem server</strong>, <strong class="text-neutral-100">GitHub server</strong> e <strong class="text-neutral-100">Slack server</strong> — are written in TypeScript running on Node.js, demonstrating the platform's maturity for MCP.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📥 Installing Node.js</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The recommended way to install Node.js is to use <strong class="text-neutral-100">nvm</strong> (Node Version Manager), which lets you easily install and switch between multiple Node versions. This is especially useful when different projects require different versions. For MCP, we recommend <strong class="text-neutral-100">Node.js 20 LTS</strong> (Long Term Support).
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">nvm (Node Version Manager)</strong> is a tool that manages multiple Node.js installations on the same computer. Instead of installing Node directly on the system (which can cause version conflicts), nvm installs each version in an isolated directory and lets you switch between them with a simple <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">nvm use 20</code>. This is analogous to what uv does for Python—isolated, controlled environments.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Installation by Operating System</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">macOS / Linux — Step 1: Install nvm</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="bg-dark-700 px-1.5 py-0.5 rounded">curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.0/install.sh | bash</code></p>
+<p class="text-neutral-400 text-xs mt-2">Close and reopen the terminal after installation.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">macOS / Linux — Step 2: Install Node 20</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="bg-dark-700 px-1.5 py-0.5 rounded">nvm install 20</code></p>
+<p class="text-neutral-400 text-xs mt-2">nvm installs Node.js 20 LTS and sets it as the default version.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Windows</span>
+<p class="text-neutral-300 text-sm mt-1">Access <strong class="text-neutral-100">nodejs.org</strong> and download the LTS installer. Run the installer with the default options. npm is installed automatically with Node.js.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Avoid installing Node.js via apt on Ubuntu!</strong> Ubuntu’s standard repositories often contain very old versions of Node.js (such as version 12 or 14). Always use nvm or the official NodeSource repository to make sure you get a current version that’s compatible with the MCP SDK.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Understanding npm</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">npm</strong> (Node Package Manager) is the package manager included with Node.js. Just as uv manages Python packages, npm manages JavaScript and TypeScript packages. It's responsible for installing dependencies, running scripts, and managing the file <strong class="text-neutral-100">package.json</strong> — the equivalent of Python's pyproject.toml.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">npm</strong> is three things at once: a <strong class="text-neutral-100">registry</strong> (an online repository with millions of packages), a <strong class="text-neutral-100">CLI</strong> (command-line tool for installing and managing packages) and a <strong class="text-neutral-100">dependency manager</strong> (which manages versions via package.json and package-lock.json). When you install Node.js, npm is included — there is no need to install it separately.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Essential npm commands you’ll use in the course:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><code class="bg-dark-700 px-1.5 py-0.5 rounded">npm init</code> — Creates a new project (package.json)</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><code class="bg-dark-700 px-1.5 py-0.5 rounded">npm install pacote</code> — Installs a dependency</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><code class="bg-dark-700 px-1.5 py-0.5 rounded">npm run script</code> — Runs a script defined in package.json</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><code class="bg-dark-700 px-1.5 py-0.5 rounded">npm list</code> — Lists packages installed in the project</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Understanding npx</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">npx</strong> is a tool that comes with npm and lets you run packages directly without installing them globally. This is especially important in the MCP ecosystem, where many servers run via npx — such as the filesystem server and the template creation server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">npx</strong> (Node Package Execute) downloads and runs a package temporarily, without installing it permanently on the system. This is essential for MCP because it lets you run servers such as <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">npx @modelcontextprotocol/server-filesystem</code> without cluttering your global environment. npx always fetches the latest package version, so you use the up-to-date version without having to manage updates manually.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-xs">npm install -g @modelcontextprotocol/server-filesystem</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Install MCP servers globally</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use outdated pinned versions</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Run with <code class="text-xs">sudo npm install -g</code></li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><code class="text-xs">npx @modelcontextprotocol/server-filesystem</code></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Run MCP servers via npx</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Always use the latest version</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Keep the global environment clean</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✅ Verifying the Installation</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Just as we did with Python and uv, it’s essential to check that Node.js, npm, and npx are installed correctly and accessible in the terminal. Issues at this stage can cause confusing errors later, so it’s worth spending a few minutes checking.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Verification confirms three components: the <strong class="text-neutral-100">Node.js</strong> (JavaScript runtime), the <strong class="text-neutral-100">npm</strong> (package manager) and the <strong class="text-neutral-100">npx</strong> (package runner). All three should return their versions when queried via the terminal. If any of them fails, the problem is usually with the system PATH or an incomplete installation.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Verification Checklist</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 1 — Check Node.js</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">node -v</code>. It should show <strong class="text-neutral-100">v20.x.x</strong> or higher.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 2 — Check npm</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">npm -v</code>. It should show the npm version (usually <strong class="text-neutral-100">10.x.x</strong> with Node 20).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 3 — Check npx</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">npx --version</code>. It should show the same npm version.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert — Common Problems</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">"node: command not found"</strong> — If you used nvm, close and reopen the terminal. Check with <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">nvm list</code> whether Node was installed.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">Old version</strong> — If <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">node -v</code> shows v14 or v16, run <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">nvm install 20 &amp;&amp; nvm use 20</code>.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">Permission denied</strong> — Never use <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">sudo</code> with npm. If it's asking for sudo, the installation wasn't done correctly — use nvm.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 First Test</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Let's run a hands-on test using the <strong class="text-neutral-100">create-server</strong> official MCP — a template generator that creates the complete structure of an MCP Server in TypeScript. If this command works, your Node.js environment is 100% ready for the course.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The package <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">@modelcontextprotocol/create-server</code> is an official generator that creates the complete structure of an MCP Server in TypeScript. It automatically generates the <strong class="text-neutral-100">package.json</strong>, o <strong class="text-neutral-100">tsconfig.json</strong>, the initial source code with examples of tools, resources, and prompts, as well as build and run scripts. It’s the equivalent of the <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv init</code> + <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv add fastmcp</code> of the Python world.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Run the command below in the terminal to create your first MCP Server in TypeScript:</p>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 mb-3">
+<code class="text-sm text-neutral-100">npx @modelcontextprotocol/create-server meu-server</code>
+</div>
+<p class="text-sm">The generator will ask for the server's name and description. When it's done, enter the folder with <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">cd meu-server</code> and explore the generated files. If everything worked without errors, your Node.js environment is <strong class="text-neutral-100">MCP-ready</strong>!</p>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Node.js is the runtime that lets you run JavaScript/TypeScript outside the browser—essential for MCP Servers in TS.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Installation via nvm is recommended because it lets you manage multiple Node versions without conflicts.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>npm is included with Node.js and manages dependencies via package.json.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>npx runs packages without a global installation—ideal for running MCP Servers.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Checking node -v, npm -v, and npx --version confirms that the environment is set up correctly.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>The official create-server generates a complete MCP Server template in TypeScript.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 2.3 — Getting to Know the Terminal
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-2-3.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

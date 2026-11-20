@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 3.7 — Adding Prompts | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-7.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-7.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-7.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-7.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-7.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-7.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Track 3</a>
+<span>/</span>
+<span class="text-neutral-300">Module 3.7</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 3.7</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📝 Adding Prompts
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Create reusable prompts that structure how the model interacts with your server.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 What Prompts Are in Code</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        In the context of MCP, prompts are instruction templates that the server offers the model. They differ from tools (which perform actions) and resources (which provide data). Prompts structure <strong class="text-neutral-100">such as</strong> the model should think and respond in specific scenarios, using the decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> to register them on the server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">MCP prompt</strong> is a reusable template that defines instructions for the model. While tools perform concrete actions (fetching data, sending messages) and resources expose static data (files, settings), prompts define <strong class="text-neutral-100">interaction patterns</strong> — how the model should analyze code, generate reports, or format responses. The decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> registers a Python function as a prompt available on the server, which the client can list and invoke.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of prompts as <strong class="text-neutral-100">predefined recipes</strong> for the model. Instead of the user writing "analyze this code focusing on bugs, performance, and readability" every time, the server offers a ready-made "review_code" prompt. The client selects the prompt, the server returns the formatted instructions, and the model knows exactly what to do. It’s knowledge reuse in the form of instructions.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✏️ Creating Simple Prompts</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The most basic prompt is a function decorated with <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> that returns a string. This string contains the instructions that will be sent to the model. Simple, direct, and powerful — just define the function and MCP takes care of the rest.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Creating a simple prompt requires only the decorator and a function that returns a string:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-purple-400">@mcp.prompt()</div>
+<div><span class="text-blue-400">def</span> <span class="text-neutral-100">review_code</span>():</div>
+<div class="pl-4"><span class="text-neutral-500">"""Prompt for code review"""</span></div>
+<div class="pl-4"><span class="text-blue-400">return</span> <span class="text-green-400">"Review this code, focusing on bugs, performance, and readability."</span></div>
+</div>
+<p class="mt-4">The function name (<code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">revisar_codigo</code>) becomes the prompt identifier. The docstring becomes the description. The returned string becomes the prompt content sent to the model.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Vague prompts with no clear focus</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ambiguous or contradictory instructions</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Huge prompts that try to cover everything</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Functions without docstrings (empty description)</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Prompts focused on a specific task</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Clear and concise instructions</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Descriptive names for functions</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Docstring explaining the prompt’s purpose</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Prompts with Parameters</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Static prompts are useful, but their real power emerges when you add dynamic parameters. Using Python type hints, MCP automatically detects the parameters and exposes them to the client, which can fill them in before invoking the prompt.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Parameters are defined as function arguments with type hints:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-purple-400">@mcp.prompt()</div>
+<div><span class="text-blue-400">def</span> <span class="text-neutral-100">gerar_relatorio</span>(<span class="text-neutral-300">type</span>: <span class="text-yellow-400">str</span>, <span class="text-neutral-300">period</span>: <span class="text-yellow-400">str</span>):</div>
+<div class="pl-4"><span class="text-neutral-500">"""Generates a custom report"""</span></div>
+<div class="pl-4"><span class="text-blue-400">return</span> <span class="text-green-400">f"Generate a report on </span><span class="text-yellow-400">{tipo}</span><span class="text-green-400"> of the period </span><span class="text-yellow-400">{periodo}</span><span class="text-green-400">. "</span></div>
+<div class="pl-4"><span class="text-green-400">       f"Include metrics, trends, and recommendations."</span></div>
+</div>
+<p class="mt-4">MCP uses type hints to tell the client which parameters are expected. The client presents fields for the user to fill in (e.g., type="sales", period="Q1 2025") before invoking the prompt.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use <strong class="text-neutral-100">descriptive names</strong> for the parameters— <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">tipo</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">periodo</code> are better than <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">t</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">p</code>. The client displays these names to the user, so clarity matters. If a parameter is optional, use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">Optional[str] = None</code> as a type hint.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Parameterized Prompt Flow</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">The client lists the available prompts and sees "gerar_relatorio" with parameters tipo (str) and periodo (str).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">The user fills in the parameters: type="sales", period="March 2025".</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">The server runs the function, substitutes the parameters in the string, and returns the completed prompt to the model.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Listing Prompts</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The MCP client can request a list of all prompts available on the server, including their names, descriptions, and parameters. This lets user interfaces display a catalog of available prompts, making the experience intuitive and self-documenting.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The MCP protocol defines the method <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">prompts/list</code> that returns all prompts registered on the server. For each prompt, the client receives: the <strong class="text-neutral-100">name</strong> (derived from the function name), the <strong class="text-neutral-100">description</strong> (derived from the function's docstring) and the list of <strong class="text-neutral-100">parameters</strong> (derived from the type hints). This means the prompt documentation is generated automatically from the Python code — there is no need to maintain separate documentation.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">What the client receives when listing prompts:</p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-neutral-500">// Response to prompts/list</div>
+<div>{</div>
+<div class="pl-4">"prompts": [</div>
+<div class="pl-8">{</div>
+<div class="pl-12">"name": <span class="text-green-400">"review_code"</span>,</div>
+<div class="pl-12">"description": <span class="text-green-400">"Prompt for code review"</span>,</div>
+<div class="pl-12">"arguments": []</div>
+<div class="pl-8">},</div>
+<div class="pl-8">{</div>
+<div class="pl-12">"name": <span class="text-green-400">"generate_report"</span>,</div>
+<div class="pl-12">"description": <span class="text-green-400">"Generate a custom report"</span>,</div>
+<div class="pl-12">"arguments": [</div>
+<div class="pl-16">{ "name": <span class="text-green-400">"type"</span>, "required": <span class="text-blue-400">true</span> },</div>
+<div class="pl-16">{ "name": <span class="text-green-400">"period"</span>, "required": <span class="text-blue-400">true</span> }</div>
+<div class="pl-12">]</div>
+<div class="pl-8">}</div>
+<div class="pl-4">]</div>
+<div>}</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎯 Use Cases</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        MCP prompts shine when you have interaction patterns that repeat frequently. Instead of each user writing their own instructions (often inconsistently), the server offers standardized, tested prompts that ensure high-quality results.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The best MCP prompts encapsulate <strong class="text-neutral-100">domain expertise</strong> in reusable templates. A code analysis prompt can include criteria a senior developer would use. A report prompt can follow the company's official format. The idea is to turn tacit knowledge into explicit, shareable instructions, allowing any user to get expert-level results.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Five Powerful Use Cases</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Code Analysis</span>
+<p class="text-neutral-300 text-sm mt-1">A prompt that instructs the model to review code, focusing on bugs, security, performance, and readability — using the team’s standardized checklist.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Report Generation</span>
+<p class="text-neutral-300 text-sm mt-1">A parameterized prompt that generates reports in a specific format with metrics, suggested charts, and actionable recommendations.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Data Formatting</span>
+<p class="text-neutral-300 text-sm mt-1">A prompt that transforms raw data into formatted tables, structured JSON, or CSV — with built-in validation rules.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Email Templates</span>
+<p class="text-neutral-300 text-sm mt-1">A prompt that generates professional emails following the company’s tone and format, with parameters for recipient, subject, and context.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Documentation Review</span>
+<p class="text-neutral-300 text-sm mt-1">A prompt that analyzes technical documentation for clarity, completeness, examples, and consistency with project standards.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Create a single generic prompt for everything</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Duplicate logic that should be a tool</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Prompts that depend on external context that wasn't provided</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore the difference between a prompt, tool, and resource</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>A prompt for a specific task</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use prompts for instructions and tools for actions</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Parameterize what varies between invocations</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Test each prompt with different inputs</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing Prompts</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Before making prompts available for production use, it's essential to test them. The MCP Inspector lets you list all the server's prompts, view expected parameters, and invoke prompts manually to verify that the generated instructions are correct and complete.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">MCP Inspector</strong> is the ideal tool for testing prompts. In the “Prompts” tab, it lists all registered prompts along with their names, descriptions, and parameters. You can fill in the parameters and click “Get Prompt” to see exactly what will be sent to the model. This lets you validate that the instructions are complete, the parameters are substituted correctly, and the format is appropriate—all without needing to connect to Claude Desktop.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Test each prompt with <strong class="text-neutral-100">edge cases</strong>: empty strings, very long text, special characters. Check that the prompt handles edge cases well. If a parameter is optional, test with and without it. If the prompt uses f-strings, confirm that interpolation works correctly in all expected scenarios.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Prompts don't validate parameters automatically — if the client sends an empty string for a required parameter, the prompt will be generated with a blank space. <strong class="text-neutral-100">Always validate the parameters</strong> inside the function before building the return string. Use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">if not tipo: raise ValueError("tipo é obrigatório")</code> to ensure invalid data doesn't pass through silently.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>MCP prompts are instruction templates registered with <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> — different from tools and resources.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Simple prompts return a fixed string with instructions for the model.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Dynamic parameters are defined via type hints and filled in by the client before invocation.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>The client can list available prompts with names, descriptions, and parameters—automatic documentation.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Use cases include code analysis, reports, data formatting, emails, and documentation review.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>The MCP Inspector lets you test and validate prompts before putting them into production.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 3.8 — Error Handling
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-8.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

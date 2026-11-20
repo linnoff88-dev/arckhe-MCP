@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 2.5 — Configurando o claude_desktop_config.json | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-2-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha2/modulo-2-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha2/modulo-2-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Trilha 2</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 2.5</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 2.5</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          ⚙️ Configurando o claude_desktop_config.json
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Domine o arquivo de configuração que conecta o Claude Desktop aos MCP Servers.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">25</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Prático</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 O Que é o Config.json</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O arquivo <code class="text-blue-400">claude_desktop_config.json</code> é o ponto de conexão entre o Claude Desktop e o mundo dos MCP Servers. É um arquivo JSON simples que lista todos os servidores MCP que o Claude pode acessar. Sem ele, o Claude Desktop não sabe da existência de nenhuma ferramenta externa — ele funciona apenas como um chat convencional.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">claude_desktop_config.json</strong> é um arquivo de configuração em formato JSON que serve como o "catálogo" de MCP Servers disponíveis para o Claude Desktop. Cada entrada neste arquivo descreve um server: seu nome, o comando para iniciá-lo e os argumentos necessários. Quando o Claude Desktop inicia, ele lê este arquivo e <strong class="text-neutral-100">tenta conectar-se a cada server listado</strong>. Se o arquivo não existir ou estiver vazio, o Claude não terá acesso a nenhuma ferramenta MCP — funcionando apenas como assistente de chat sem ferramentas externas.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Pense no config.json como a <strong class="text-neutral-100">"lista de contatos"</strong> do Claude Desktop. Assim como seu telefone só pode ligar para números que estão na agenda, o Claude Desktop só pode usar tools de servers que estão no config.json. Adicionar um server ao arquivo é como adicionar um novo contato — a partir daquele momento, o Claude sabe que aquele server existe e pode se conectar a ele.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📍 Onde Encontrar o Arquivo</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O arquivo de configuração fica em um diretório específico para cada sistema operacional. É importante saber exatamente onde ele está, pois você editará este arquivo com frequência ao longo do curso. Se o arquivo ou o diretório não existirem ainda, você precisará criá-los manualmente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O caminho completo do arquivo varia por sistema operacional. O Claude Desktop procura o arquivo sempre no mesmo local, e não há como alterar esse caminho. Você precisa colocar o arquivo <strong class="text-neutral-100">exatamente</strong> no diretório esperado para que o Claude o encontre.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Localização por sistema operacional</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">macOS</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-neutral-100">~/Library/Application Support/Claude/claude_desktop_config.json</code></p>
+<p class="text-neutral-500 text-xs mt-1">Abrir no terminal: <code class="text-blue-400">open ~/Library/Application\ Support/Claude/</code></p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Windows</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-neutral-100">%APPDATA%\Claude\claude_desktop_config.json</code></p>
+<p class="text-neutral-500 text-xs mt-1">Abrir no Explorer: <code class="text-blue-400">explorer %APPDATA%\Claude</code></p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Linux</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-neutral-100">~/.config/Claude/claude_desktop_config.json</code></p>
+<p class="text-neutral-500 text-xs mt-1">Abrir no terminal: <code class="text-blue-400">xdg-open ~/.config/Claude/</code></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O arquivo <strong class="text-neutral-100">pode não existir inicialmente</strong>. Se o diretório Claude existir mas o arquivo não, crie-o manualmente com o conteúdo mínimo: <code class="text-neutral-100">{"mcpServers": {}}</code>. Se nem o diretório existir, crie-o também. No macOS, a pasta Library é oculta por padrão — use Cmd+Shift+. no Finder para exibir pastas ocultas, ou navegue via terminal.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Estrutura do JSON</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Entender a estrutura do arquivo de configuração é fundamental. Ele segue um formato JSON bem definido, com uma hierarquia simples e previsível. Uma vez que você compreenda o padrão, adicionar novos servers se torna uma tarefa mecânica de poucos segundos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">A estrutura do arquivo é um objeto JSON com um campo principal: <strong class="text-neutral-100">"mcpServers"</strong>. Dentro dele, cada server é representado como uma chave (o nome do server) apontando para um objeto com dois campos obrigatórios:</p>
+<ul class="space-y-2 text-sm mt-2">
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">command:</span> <span>O executável que inicia o server (ex: <code class="text-neutral-100">"python"</code>, <code class="text-neutral-100">"npx"</code>, <code class="text-neutral-100">"node"</code>)</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">args:</span> <span>Array de argumentos passados ao comando (ex: <code class="text-neutral-100">["-y", "@pacote/server"]</code>)</span></li>
+</ul>
+<p class="mt-3">Opcionalmente, um server pode ter o campo <strong class="text-neutral-100">"env"</strong> para variáveis de ambiente (como API keys).</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Aqui está um exemplo completo e comentado do formato:</p>
+<div class="bg-dark-800 rounded-lg p-4 text-sm font-mono border border-dark-700">
+<pre class="text-neutral-300 whitespace-pre-wrap">{
+  "mcpServers": {
+    "meu-server": {
+      "command": "npx",
+      "args": ["-y", "@pacote/mcp-server"]
+    },
+    "outro-server": {
+      "command": "python",
+      "args": ["-m", "meu_server"],
+      "env": {
+        "API_KEY": "sua-chave-aqui"
+      }
+    }
+  }
+}</pre>
+</div>
+<p class="mt-3 text-sm">Cada server é independente. Você pode ter quantos quiser, desde que cada nome seja único.</p>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔌 Registrando um Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Agora que você entende a estrutura do arquivo, vamos ao processo prático de registrar um novo MCP Server. Cada server precisa de um nome identificador, um comando de execução e os argumentos corretos. Seguir o processo passo a passo garante que tudo funcione na primeira tentativa.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Registrar um MCP Server significa adicionar uma nova entrada no objeto <strong class="text-neutral-100">"mcpServers"</strong> do config.json. Cada entrada precisa de: um <strong class="text-neutral-100">nome</strong> (a chave do objeto — deve ser descritivo e único), um <strong class="text-neutral-100">command</strong> (o executável: <code class="text-neutral-100">python</code>, <code class="text-neutral-100">npx</code>, <code class="text-neutral-100">node</code>, <code class="text-neutral-100">uvx</code>, etc.), e <strong class="text-neutral-100">args</strong> (um array com o caminho ou pacote do server e seus argumentos). O Claude Desktop usará essas informações para iniciar o server automaticamente quando precisar.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Passo a passo para registrar um server</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 1 — Escolher o nome</span>
+<p class="text-neutral-300 text-sm mt-1">Defina um nome descritivo para o server. Use kebab-case (ex: <code class="text-blue-400">meu-filesystem</code>, <code class="text-blue-400">github-tools</code>). O nome deve indicar claramente o que o server faz.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 2 — Definir o command</span>
+<p class="text-neutral-300 text-sm mt-1">Identifique o executável correto: <code class="text-blue-400">npx</code> para pacotes npm, <code class="text-blue-400">python</code> ou <code class="text-blue-400">uvx</code> para servers Python, <code class="text-blue-400">node</code> para scripts JS diretos.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 3 — Configurar os args</span>
+<p class="text-neutral-300 text-sm mt-1">Monte o array de argumentos: para npx, inclua <code class="text-blue-400">"-y"</code> seguido do nome do pacote e quaisquer argumentos do server. Para Python, use <code class="text-blue-400">"-m"</code> seguido do módulo.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 4 — Salvar e reiniciar</span>
+<p class="text-neutral-300 text-sm mt-1">Salve o arquivo config.json, feche o Claude Desktop completamente e reabra-o. O novo server deve aparecer nas tools disponíveis (ícone de martelo).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes genéricos como "server1", "teste", "mcp"</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes duplicados (sobrescreve o anterior silenciosamente)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Espaços ou caracteres especiais nos nomes</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Caminhos relativos em args (use caminhos absolutos)</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Nomes descritivos: "filesystem", "github", "postgres"</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Sempre usar caminhos absolutos para arquivos locais</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Testar o command no terminal antes de adicionar ao config</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Validar o JSON com um linter antes de salvar</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚠️ Erros Comuns</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Configurar o arquivo JSON pela primeira vez é simples, mas alguns erros sutis podem impedir que os MCP Servers sejam carregados. Conhecer os problemas mais comuns e saber diagnosticá-los economiza horas de frustração. A maioria dos problemas se resume a JSON mal formatado ou caminhos incorretos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Os erros mais frequentes na configuração do config.json são:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">JSON inválido:</span> <span>Vírgula extra após o último item, aspas faltando, chaves/colchetes não fechados. O Claude Desktop silenciosamente ignora um arquivo JSON inválido.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Caminhos errados:</span> <span>Caminho para o executável ou script do server incorreto. No Windows, barras invertidas precisam ser escapadas (<code class="text-neutral-100">\\</code>) ou usar barras normais (<code class="text-neutral-100">/</code>).</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Executável não encontrado:</span> <span>O <code class="text-neutral-100">command</code> especificado não está no PATH do sistema. O npx ou python não são encontrados pelo Claude Desktop.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Permissões:</span> <span>O arquivo config ou o executável do server não tem permissões de leitura/execução adequadas.</span></li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O Claude Desktop <strong class="text-neutral-100">não exibe mensagens de erro claras</strong> quando o config.json tem problemas. Se os servers não aparecerem após reiniciar, o primeiro passo é sempre validar o JSON. Cole o conteúdo do arquivo em <strong class="text-neutral-100">jsonlint.com</strong> ou use a validação do VS Code (que sublinha erros de sintaxe automaticamente). Uma única vírgula a mais pode invalidar todo o arquivo.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Erros comuns de JSON</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Vírgula após o último elemento do objeto</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Aspas simples em vez de aspas duplas</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Comentários no JSON (não são permitidos)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Chaves ou colchetes não balanceados</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Boas práticas de diagnóstico</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Validar JSON antes de salvar (JSONLint/VS Code)</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Testar o command + args no terminal primeiro</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Verificar logs do Claude Desktop para erros</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Começar com um server simples antes de adicionar vários</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✅ Validando a Configuração</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Depois de criar ou editar o config.json, é essencial validar que tudo está funcionando. A validação envolve reiniciar o Claude Desktop, verificar que os servers aparecem na interface e confirmar que as tools estão disponíveis. Um processo simples, mas que precisa ser feito corretamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A validação da configuração segue um fluxo preciso: <strong class="text-neutral-100">salvar o arquivo</strong> config.json, <strong class="text-neutral-100">fechar completamente</strong> o Claude Desktop (não apenas minimizar — fechar de verdade, incluindo a bandeja do sistema), <strong class="text-neutral-100">reabrir</strong> o aplicativo, e <strong class="text-neutral-100">verificar o ícone de martelo</strong> (🔨) na área de input do chat. Se o ícone aparecer, clique nele para ver a lista de tools disponíveis. Se os servers estiverem conectados, você verá os nomes das tools de cada server. Se o ícone não aparecer, há um problema na configuração que precisa ser investigado.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Checklist de validação</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 1 — Salvar e fechar</span>
+<p class="text-neutral-300 text-sm mt-1">Salve o config.json e feche completamente o Claude Desktop. No Windows, verifique a bandeja do sistema (system tray). No macOS, use Cmd+Q.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 2 — Reabrir e verificar</span>
+<p class="text-neutral-300 text-sm mt-1">Abra o Claude Desktop novamente. Aguarde alguns segundos para que os servers sejam iniciados. Procure o ícone de martelo (🔨) próximo ao campo de input.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 3 — Inspecionar tools</span>
+<p class="text-neutral-300 text-sm mt-1">Clique no ícone de martelo para ver a lista de tools. Cada server contribui com suas próprias tools. Verifique que todas as esperadas estão listadas.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Passo 4 — Checar logs (se necessário)</span>
+<p class="text-neutral-300 text-sm mt-1">Se o ícone não aparecer, verifique os logs do Claude Desktop para mensagens de erro relacionadas à inicialização dos servers MCP.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Se tudo der certo, o ícone de martelo mostrará um número ao lado — indicando <strong class="text-neutral-100">quantas tools estão disponíveis</strong>. Clicando nele, você verá cada tool com seu nome e descrição. Essa é a confirmação definitiva de que o MCP está funcionando. No próximo módulo, vamos fazer exatamente isso com um server real de exemplo.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>O claude_desktop_config.json é o arquivo que lista todos os MCP Servers disponíveis para o Claude Desktop.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>O arquivo fica em diretórios específicos por OS e pode precisar ser criado manualmente.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>A estrutura é um objeto JSON com "mcpServers" contendo servers com "command" e "args".</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Registrar um server envolve escolher nome descritivo, definir command e args, salvar e reiniciar.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Erros comuns incluem JSON inválido, caminhos incorretos, executáveis não encontrados e problemas de permissão.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>A validação é feita reiniciando o Claude Desktop e verificando o ícone de martelo com as tools listadas.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 2.6 — Primeiro Teste: MCP Server de Exemplo
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-2-6.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

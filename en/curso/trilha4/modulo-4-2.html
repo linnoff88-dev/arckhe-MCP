@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 4.2 — Database Consultant | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .bg-amber-900\/40 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-900\/30 { background-color: rgba(217, 119, 6, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/modulo-4-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/modulo-4-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/modulo-4-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded bg-amber-500/20 text-amber-400" href="index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-amber-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-amber-400 transition-colors" href="index.html">Track 4</a>
+<span>/</span>
+<span class="text-neutral-300">Module 4.2</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 4.2</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🗄️ Database Consultant
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Create an MCP Server that connects to SQLite—the model queries and manipulates data using natural language.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">45</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🗄️ SQLite and Python</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">SQLite</strong> is an embedded relational database—it doesn’t need a separate server running, nor does it require installation or configuration. The entire database lives in a single file <code class="text-amber-400">.db</code>. Python already includes the <code class="text-amber-400">sqlite3</code> in the standard library, which means zero external dependencies. It's the perfect choice for learning and local projects.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          SQLite is a database <strong class="text-neutral-100">serverless</strong> — unlike PostgreSQL or MySQL, it doesn't run as a separate service. Just run <code class="text-amber-400">import sqlite3</code> and use <code class="text-amber-400">sqlite3.connect("meu_banco.db")</code> to create or open a database. All SQL operations work as usual: CREATE TABLE, INSERT, SELECT, UPDATE, DELETE. The file <code class="text-amber-400">.db</code> is portable—you can copy, version, and share it. For our MCP Server, this means we don’t need to configure any extra infrastructure.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          SQLite is the <strong class="text-neutral-100">the most widely deployed database in the world</strong> — is present in every smartphone (Android and iOS use it internally), every browser (Chrome, Firefox, Safari), and billions of IoT devices. Although it's "lite," it supports databases up to <strong class="text-neutral-100">281 terabytes</strong> and processes millions of lines without issues. For local projects and prototypes, it’s more than enough.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          To check that everything is working, open the Python terminal and test: <code class="text-amber-400">import sqlite3; conn = sqlite3.connect(":memory:"); print("SQLite OK!")</code>. O <code class="text-amber-400">:memory:</code> creates a temporary database in memory—perfect for quick tests. If it runs without errors, you have everything you need for this module.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📊 Creating the Sample Database</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Before building the MCP tools, we need a database with sample data to query. Let's create a Python script that initializes a table of <strong class="text-neutral-100">products</strong> with practical fields and inserts realistic data. This database will be the "playground" Claude explores using natural language.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The table <strong class="text-neutral-100">products</strong> will have 5 columns: <code class="text-amber-400">id</code> (INTEGER PRIMARY KEY AUTOINCREMENT), <code class="text-amber-400">nome</code> (TEXT NOT NULL), <code class="text-amber-400">preco</code> (REAL NOT NULL), <code class="text-amber-400">categoria</code> (TEXT NOT NULL) and <code class="text-amber-400">estoque</code> (INTEGER DEFAULT 0). The creation SQL: <code class="text-amber-400">CREATE TABLE IF NOT EXISTS produtos (...)</code>. Use <code class="text-amber-400">IF NOT EXISTS</code> so the script can run multiple times without errors. Insert at least 10 sample products with varied categories (Electronics, Books, Clothing, etc.) so the queries are interesting.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Steps to Create the Database</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 1: Create the script</span>
+<p class="text-neutral-300 text-sm mt-1">Create a criar_banco.py file that imports sqlite3 and defines the database initialization function with the produtos table.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 2: Insert sample data</span>
+<p class="text-neutral-300 text-sm mt-1">Use INSERT INTO with executemany() to insert multiple products at once. Include a range of prices, categories, and stock quantities.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 3: Run and verify</span>
+<p class="text-neutral-300 text-sm mt-1">Run the script (python criar_banco.py), verify that the .db file was created, and run a test SELECT to confirm the data.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always use <code class="text-amber-400">conn.commit()</code> after write operations (INSERT, UPDATE, DELETE) and <code class="text-amber-400">conn.close()</code> when finished. Use the context manager <code class="text-amber-400">with sqlite3.connect("banco.db") as conn:</code> to ensure the connection is closed automatically even if an error occurs. This prevents data corruption.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Tool: Query Data</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The query tool is the heart of our Database Consultant. The user describes what they want to know in natural language—"which products cost more than R$50?"—and Claude translates that into a tool call. The tool receives a description of the query, builds the appropriate SQL SELECT, and returns formatted results.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The tool <code class="text-amber-400">consultar(query_descricao: str)</code> receives a natural-language description of what the user wants to query. A safe approach is to offer <strong class="text-neutral-100">predefined queries</strong>: list all products, filter by category, search by price range, check inventory. For each type of query, the tool builds a safe SQL SELECT with parameters. The results are formatted as a readable table with the name, price, category, and inventory of each product found.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ NEVER do this</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Concatenate user input directly into SQL</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">f"SELECT * WHERE nome = '{input}'"</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Run arbitrary SQL without validation</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Trust that the model always generates safe SQL</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Always do this</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Use parameterized queries with placeholders (?)</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span><code class="text-amber-400">cursor.execute("SELECT * WHERE nome = ?", (input,))</code></li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Validate and sanitize any input before using it</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Limit operations to SELECT (read-only)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Tool: Insert and Update</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        In addition to querying, our server will also let Claude <strong class="text-neutral-100">add new products</strong> e <strong class="text-neutral-100">update existing data</strong>. These write tools need rigorous data validation before performing any database operation, and should always confirm the operation’s result.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The tool <code class="text-amber-400">inserir_produto(nome: str, preco: float, categoria: str, estoque: int = 0)</code> validates that the price is positive and the name isn't empty, then executes a parameterized INSERT. The tool <code class="text-amber-400">atualizar_produto(id: int, nome: str = None, preco: float = None, categoria: str = None, estoque: int = None)</code> looks up the product by ID, updates only the fields provided, and confirms the operation. Both use <code class="text-amber-400">conn.commit()</code> to persist the changes and return a clear success or error message.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always validate the data <strong class="text-neutral-100">before</strong> before executing the SQL. Check: Is the price greater than zero? Is the name nonempty? Does the ID exist in the database? Is the stock level nonnegative? These simple validations prevent inconsistent data and return helpful error messages for Claude to show the user, instead of cryptic database exceptions.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Write operations <strong class="text-neutral-100">database write</strong> (INSERT, UPDATE, DELETE) are irreversible after commit. Unlike JSON, where you can easily restore a previous version, changes to SQLite are permanent. Consider implementing a confirmation mechanism: the tool first shows what it will do and only executes after the user confirms. This isn't critical for learning projects, but it's a good practice.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🛡️ Security: SQL Injection</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        SQL injection is one of the most dangerous vulnerabilities in applications that use databases—and in MCP servers, the risk is <strong class="text-neutral-100">even greater</strong> because the AI model may inadvertently generate inputs that exploit this vulnerability. This topic is absolutely critical: understanding and preventing SQL Injection is mandatory for any developer who works with databases.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">SQL Injection</strong> occurs when data provided by the user (or the model) is inserted directly into an SQL string, allowing malicious SQL commands to be executed. In an MCP Server, the AI model receives user input and passes it to the tools — if the model sends something like <code class="text-amber-400">"; DROP TABLE produtos; --</code> as a product name, and the tool concatenates it directly into the SQL, the result is the destruction of the entire table. The defense is simple and absolute: <strong class="text-neutral-100">ALWAYS use parameterized queries</strong> with placeholders <code class="text-amber-400">?</code>.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 CRITICAL — Read Carefully</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">NEVER</strong>, under no circumstances concatenate strings directly into SQL queries. It doesn’t matter if it "seems safe" or "the model wouldn’t send that" — AI models are unpredictable and can generate any text, including SQL injection payloads. An MCP Server with SQL injection is a <strong class="text-neutral-100">open port</strong> for data destruction. Always use <code class="text-amber-400">cursor.execute("SELECT * FROM produtos WHERE nome = ?", (nome,))</code> — the placeholder <code class="text-amber-400">?</code> ensures the value is treated as data, never as SQL code.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ VULNERABLE — Never do this</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">f"SELECT * FROM produtos WHERE nome = '{nome}'"</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">"INSERT INTO produtos VALUES ('" + nome + "')"</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">query = "DELETE WHERE id = " + str(id)</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Any form of string concatenation with SQL</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ SAFE — Always do this</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span><code class="text-amber-400">cursor.execute("SELECT * WHERE nome = ?", (nome,))</code></li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span><code class="text-amber-400">cursor.execute("INSERT INTO ... VALUES (?, ?)", (n, p))</code></li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span><code class="text-amber-400">cursor.execute("DELETE WHERE id = ?", (id,))</code></li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Always use placeholders (?) + a tuple of values</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Queries via Claude</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Now comes the most satisfying part: testing the Database Consultant with natural-language questions. Claude will automatically translate user requests into calls to the right tools and present the results clearly and helpfully. This is where the magic of MCP really shines.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Configure the server in Claude Desktop and start chatting naturally. Claude will analyze each request, decide which tool to call and with which parameters, run the database query, and present the results in natural language. You don't need to know SQL—the model translates it for you. It's all thanks to MCP, which connects the model's language capabilities to the power of the database.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Suggested Test Scenarios</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Simple query</span>
+<p class="text-neutral-300 text-sm mt-1">"Which products cost more than R$50?" — Claude should call the query tool and format the list of products priced above 50.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Product entry</span>
+<p class="text-neutral-300 text-sm mt-1">"Add a product called 'Mechanical Keyboard' in the Electronics category, costing R$299,90 with 15 units in stock." — Should call inserir_produto.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Aggregate query</span>
+<p class="text-neutral-300 text-sm mt-1">"What's the total inventory by category?" — Claude should query the data and present an aggregate summary by category.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Update</span>
+<p class="text-neutral-300 text-sm mt-1">"Update the price of product ID 3 to R$89,90." — Should call atualizar_produto with the correct parameters.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Try increasingly complex questions to test your server’s limits: "What is the average price of products in the Electronics category?", "Which products have fewer than 5 units in stock?", "Compare the average price across categories". Each question will reveal whether your tools are expressive enough or need more features. This is <strong class="text-neutral-100">iterative development</strong> in practice.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-amber-900/40 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>SQLite is an embedded, serverless database included with Python—perfect for local MCP projects.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>We created a sample database with a products table containing varied data for interesting queries.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>We implemented query tools that translate natural language into safe SQL queries.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>We added tools for inserting and updating data, with validation before writing.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>We learned about SQL injection and the absolute importance of using parameterized queries with placeholders (?).</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>We tested the complete server with natural language queries via Claude Desktop.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 4.3 — File Assistant
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-4-3.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

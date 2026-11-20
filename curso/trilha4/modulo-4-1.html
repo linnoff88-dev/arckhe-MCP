@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 4.1 — Gerenciador de Tarefas | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .bg-amber-900\/40 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-900\/30 { background-color: rgba(217, 119, 6, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/modulo-4-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/modulo-4-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/modulo-4-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-4-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha4/modulo-4-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha4/modulo-4-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded bg-amber-500/20 text-amber-400" href="index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-amber-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-amber-400 transition-colors" href="index.html">Trilha 4</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 4.1</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 4.1</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📋 Gerenciador de Tarefas
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Construa um MCP Server completo que gerencia tarefas com persistência em JSON — criar, listar, atualizar e remover.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">40</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Intermediário</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Prático</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Planejando o Projeto</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Antes de escrever qualquer código, é essencial planejar a estrutura do nosso Gerenciador de Tarefas. Vamos definir quais <strong class="text-neutral-100">tools</strong> o servidor MCP vai expor, qual será a estrutura de dados de cada tarefa e como vamos organizar o projeto. Um bom planejamento agora evita retrabalho depois e garante que o servidor seja coerente e fácil de manter.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O nosso MCP Server vai expor <strong class="text-neutral-100">4 tools</strong> para o modelo: <strong class="text-neutral-100">criar_tarefa</strong> (adiciona uma nova tarefa), <strong class="text-neutral-100">listar_tarefas</strong> (mostra tarefas existentes com filtro por status), <strong class="text-neutral-100">atualizar_tarefa</strong> (modifica título, descrição ou status) e <strong class="text-neutral-100">remover_tarefa</strong> (exclui uma tarefa pelo ID). Cada tarefa terá os campos: <strong class="text-neutral-100">id</strong> (UUID único), <strong class="text-neutral-100">titulo</strong>, <strong class="text-neutral-100">descricao</strong>, <strong class="text-neutral-100">status</strong> ("pendente" ou "feita") e <strong class="text-neutral-100">data_criacao</strong>. Todas as tarefas serão persistidas em um arquivo JSON local.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Sempre comece definindo as <strong class="text-neutral-100">tools e seus parâmetros</strong> antes de codificar. Pense do ponto de vista do usuário: "O que eu pediria ao Claude para fazer com minhas tarefas?". Cada pedido natural se transforma em uma tool. "Crie uma tarefa" → <code class="text-amber-400">criar_tarefa</code>. "Me mostre as pendentes" → <code class="text-amber-400">listar_tarefas(status="pendente")</code>. Essa abordagem top-down garante que o servidor seja intuitivo.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Estrutura do projeto</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Arquivo 1: server.py</span>
+<p class="text-neutral-300 text-sm mt-1">O servidor MCP principal — importa FastMCP, define as 4 tools e inicia o servidor. Toda a lógica fica aqui.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Arquivo 2: tarefas.json</span>
+<p class="text-neutral-300 text-sm mt-1">Arquivo de persistência — criado automaticamente pelo servidor. Contém a lista de tarefas em formato JSON.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Configuração: Claude Desktop</span>
+<p class="text-neutral-300 text-sm mt-1">Registrar o servidor no claude_desktop_config.json para que o Claude possa usar as tools automaticamente.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 Estrutura de Dados JSON</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Para persistir as tarefas entre sessões, usaremos um arquivo <strong class="text-neutral-100">tarefas.json</strong>. É simples, legível, não requer dependências externas e funciona perfeitamente para projetos locais. Vamos criar funções auxiliares para ler e salvar dados nesse arquivo, usando o módulo <code class="text-amber-400">pathlib</code> para gerenciar caminhos de forma segura e multiplataforma.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A estrutura JSON será uma <strong class="text-neutral-100">lista de dicionários</strong>, onde cada dicionário representa uma tarefa. Exemplo: <code class="text-amber-400">[{"id": "abc-123", "titulo": "Estudar MCP", "descricao": "Completar trilha 4", "status": "pendente", "data_criacao": "2025-01-15T10:30:00"}]</code>. Duas funções auxiliares centralizam o acesso ao arquivo: <strong class="text-neutral-100">carregar_tarefas()</strong> lê o JSON e retorna a lista (ou lista vazia se o arquivo não existir) e <strong class="text-neutral-100">salvar_tarefas(tarefas)</strong> escreve a lista atualizada no arquivo. Usar <code class="text-amber-400">pathlib.Path</code> garante que os caminhos funcionem em qualquer sistema operacional.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar banco de dados complexo para este caso simples</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Hardcodar caminhos com barras específicas do SO</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ler/salvar JSON em cada tool individualmente</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar o caso do arquivo não existir ainda</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>JSON para persistência leve e local — perfeito aqui</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Usar pathlib para caminhos multiplataforma</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Centralizar leitura/escrita em funções auxiliares</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Retornar lista vazia se o arquivo não existir</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">➕ Tool: Criar Tarefa</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A primeira tool que vamos implementar é a <strong class="text-neutral-100">criar_tarefa</strong>. Ela recebe um título obrigatório e uma descrição opcional, gera um ID único usando o módulo <code class="text-amber-400">uuid</code>, define o status inicial como "pendente", registra a data de criação e salva tudo no arquivo JSON. É a operação mais fundamental do nosso gerenciador.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A tool é decorada com <code class="text-amber-400">@mcp.tool()</code> e definida como <code class="text-amber-400">def criar_tarefa(titulo: str, descricao: str = "")</code>. Internamente, ela: <strong class="text-neutral-100">1)</strong> carrega as tarefas existentes do JSON, <strong class="text-neutral-100">2)</strong> cria um novo dicionário com <code class="text-amber-400">uuid.uuid4()</code> para o ID, status "pendente" e <code class="text-amber-400">datetime.now().isoformat()</code> para a data, <strong class="text-neutral-100">3)</strong> adiciona à lista e salva, <strong class="text-neutral-100">4)</strong> retorna uma mensagem de confirmação com o ID gerado. O Claude recebe essa confirmação e pode informar o usuário naturalmente.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use <strong class="text-neutral-100">type hints</strong> nos parâmetros da tool — o MCP usa essas anotações para gerar automaticamente a documentação que o modelo recebe. <code class="text-amber-400">titulo: str</code> diz ao Claude que precisa fornecer um texto. <code class="text-amber-400">descricao: str = ""</code> indica que é opcional. Quanto mais claros os tipos, melhor o modelo entende como usar a tool.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Sempre use <code class="text-amber-400">str(uuid.uuid4())</code> para converter o UUID em string antes de salvar no JSON. O tipo UUID do Python <strong class="text-neutral-100">não é serializável</strong> por padrão pelo módulo <code class="text-amber-400">json</code> — se você tentar salvar um objeto UUID diretamente, vai receber um <code class="text-amber-400">TypeError</code>. Converter para string resolve o problema e mantém a unicidade do identificador.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Tool: Listar Tarefas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A tool <strong class="text-neutral-100">listar_tarefas</strong> permite ao Claude consultar as tarefas existentes, opcionalmente filtrando por status. Ela retorna uma lista formatada que o modelo pode apresentar de forma legível ao usuário, incluindo a contagem total de resultados. É a tool mais usada — toda interação com o gerenciador provavelmente começa ou termina com uma listagem.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Definida como <code class="text-amber-400">def listar_tarefas(status: str = "todas")</code>, a tool carrega todas as tarefas do JSON e, se o parâmetro <code class="text-amber-400">status</code> for diferente de "todas", filtra apenas as que correspondem ("pendente" ou "feita"). O retorno deve ser uma string formatada com cada tarefa mostrando: título, status, descrição (se houver) e data de criação. Inclua sempre a <strong class="text-neutral-100">contagem total</strong> no início: "Encontradas X tarefas". Se não houver tarefas, retorne uma mensagem clara como "Nenhuma tarefa encontrada."
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar o JSON bruto para o modelo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não tratar o caso de lista vazia</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar filtro inválido (ex: status="xyz")</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar dados sem contagem de resultados</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Formatar saída de forma legível e organizada</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Incluir contagem: "Encontradas X tarefas"</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Mensagem clara quando não há resultados</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Incluir o ID para o usuário poder referenciar</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Tools de <strong class="text-neutral-100">consulta</strong> como listar_tarefas são tipicamente as mais chamadas em qualquer MCP Server — representam cerca de <strong class="text-neutral-100">60-70% das interações</strong>. Por isso, invista tempo formatando bem o retorno. O modelo usa esse texto para compor a resposta ao usuário. Quanto mais claro e estruturado o retorno da tool, melhor será a resposta final que o Claude gera para o usuário.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✏️ Tools: Atualizar e Remover</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        As tools de <strong class="text-neutral-100">atualizar_tarefa</strong> e <strong class="text-neutral-100">remover_tarefa</strong> completam o CRUD do nosso gerenciador. Ambas recebem o ID da tarefa como parâmetro obrigatório e precisam validar que esse ID realmente existe antes de executar qualquer operação. A atualização permite mudar título, descrição e/ou status. A remoção exclui permanentemente a tarefa.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A tool <code class="text-amber-400">atualizar_tarefa(id: str, titulo: str = None, descricao: str = None, status: str = None)</code> busca a tarefa pelo ID, atualiza apenas os campos fornecidos (os que não forem None) e salva. A tool <code class="text-amber-400">remover_tarefa(id: str)</code> localiza a tarefa pelo ID e a remove da lista. Ambas devem <strong class="text-neutral-100">validar que o ID existe</strong> — se não existir, retornam uma mensagem de erro clara como "Tarefa com ID 'xyz' não encontrada." Isso evita que o modelo fique confuso tentando operar sobre tarefas inexistentes.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use parâmetros <strong class="text-neutral-100">opcionais com None</strong> como padrão na tool de atualização. Assim, o Claude pode atualizar apenas o campo necessário sem precisar reenviar todos os dados. Se o usuário diz "marque como feita", o modelo chama <code class="text-amber-400">atualizar_tarefa(id="abc", status="feita")</code> — título e descrição ficam inalterados porque são None.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Sempre valide o ID!</strong> Se o modelo tentar atualizar ou remover uma tarefa com um ID que não existe, nunca retorne silêncio ou uma exceção não tratada. Retorne uma mensagem de erro clara e descritiva. Sem essa validação, o Claude pode achar que a operação foi bem-sucedida e informar o usuário incorretamente — gerando uma experiência confusa e dados inconsistentes.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testando o Projeto</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Com as 4 tools implementadas, é hora de testar o Gerenciador de Tarefas de ponta a ponta. Vamos configurar o servidor no Claude Desktop e percorrer um cenário completo: criar tarefas, listar, atualizar status e remover. Esse teste valida não apenas o código, mas a experiência de uso via linguagem natural.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Configure o servidor no <code class="text-amber-400">claude_desktop_config.json</code> adicionando a entrada com o comando para executar o <code class="text-amber-400">server.py</code>. Reinicie o Claude Desktop e verifique se as 4 tools aparecem no ícone de ferramentas. A partir daí, todas as interações são em <strong class="text-neutral-100">linguagem natural</strong> — o Claude decide sozinho qual tool chamar com base no que o usuário pede.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Cenário de teste completo</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Teste 1: Criar</span>
+<p class="text-neutral-300 text-sm mt-1">"Crie uma tarefa para estudar MCP com a descrição: Completar a trilha 4 do curso". O Claude deve chamar criar_tarefa e confirmar com o ID gerado.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Teste 2: Listar</span>
+<p class="text-neutral-300 text-sm mt-1">"Liste todas as minhas tarefas" e depois "Mostre apenas as pendentes". O Claude deve chamar listar_tarefas com e sem filtro de status.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Teste 3: Atualizar</span>
+<p class="text-neutral-300 text-sm mt-1">"Marque a tarefa de estudar MCP como feita". O Claude deve usar o ID da tarefa e chamar atualizar_tarefa com status="feita".</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Teste 4: Remover</span>
+<p class="text-neutral-300 text-sm mt-1">"Remova a tarefa que acabei de completar". O Claude deve chamar remover_tarefa com o ID correto e confirmar a exclusão.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Se algo não funcionar, verifique o <strong class="text-neutral-100">terminal onde o servidor está rodando</strong> — erros de Python aparecerão lá. Problemas comuns: caminho errado no config, import faltando, ou erro de serialização JSON. Use <code class="text-amber-400">print()</code> para debug temporário e verifique se o arquivo <code class="text-amber-400">tarefas.json</code> está sendo criado e atualizado corretamente no diretório do projeto.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-amber-900/40 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Planejamos o projeto definindo 4 tools (criar, listar, atualizar, remover) e a estrutura de dados de cada tarefa.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Implementamos persistência com arquivo JSON e funções auxiliares centralizadas para leitura e escrita.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Criamos a tool criar_tarefa com geração de UUID, status padrão "pendente" e data de criação automática.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Implementamos listar_tarefas com filtro por status e formatação legível dos resultados.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Completamos o CRUD com atualizar_tarefa e remover_tarefa, incluindo validação de ID obrigatória.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Testamos o projeto completo via Claude Desktop com cenários de linguagem natural.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 4.2 — Consultor de Banco de Dados
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-4-2.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

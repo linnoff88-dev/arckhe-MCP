@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 2.6 — First Test: Example MCP Server | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Track 2</a>
+<span>/</span>
+<span class="text-neutral-300">Module 2.6</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 2.6</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🧪 First Test: Example MCP Server
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Connect a reference server to Claude Desktop and verify that your entire environment is working.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Basic</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Choosing a Test Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        To verify that the entire environment is working, we need a reliable, well-tested MCP Server. Anthropic and the community maintain several official servers that are perfect for this first test. Let's choose the best one for beginners and understand why it's the best option.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          There are several official MCP Servers maintained by the community and Anthropic. For a first test, these are the best choices: <strong class="text-neutral-100">filesystem</strong> (controlled access to local files and directories), <strong class="text-neutral-100">fetch</strong> (fetch content from URLs on the internet) and <strong class="text-neutral-100">memory</strong> (store and retrieve persistent notes). The <strong class="text-neutral-100">filesystem is the best place to start</strong> because it’s visual (you can see files being read and created), doesn’t depend on external APIs or access keys, and clearly demonstrates the concept of MCP tools in action.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Official Reference Servers</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-blue-400 font-bold mb-1">📁 filesystem</div>
+<p class="text-neutral-400 text-xs">Reads, writes, and lists files in permitted directories. Ideal for a first test.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-blue-400 font-bold mb-1">🌐 fetch</div>
+<p class="text-neutral-400 text-xs">Fetches content from URLs. Useful for giving Claude web access.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-blue-400 font-bold mb-1">🧠 memory</div>
+<p class="text-neutral-400 text-xs">Stores and retrieves notes between conversations. Demonstrates persistence.</p>
+</div>
+</div>
+<p class="mt-4 text-sm">All are available as npm packages in the scope <strong class="text-neutral-100">@modelcontextprotocol</strong> and can be run via npx without prior installation.</p>
+</div>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📥 Installing the Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The beauty of npm-based MCP Servers is that they can be run directly via npx, without requiring a prior global installation. However, if you prefer, you can also install them globally for more direct control. Let’s look at both approaches.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The filesystem server can be used in two ways: via <strong class="text-neutral-100">direct npx</strong> (recommended, you don't need to install anything) or via <strong class="text-neutral-100">global installation</strong> with npm. When we use npx in Claude Desktop's config.json, npx automatically downloads and runs the package at the latest version. There's no need to clone repositories, compile code, or do any manual setup. Just make sure Node.js and npm are installed (which we already configured in previous modules).
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">If you want to install globally (optional), run this in the terminal:</p>
+<div class="bg-dark-800 rounded-lg p-3 text-sm font-mono border border-dark-700">
+<code class="text-neutral-100">npm install -g @modelcontextprotocol/server-filesystem</code>
+</div>
+<p class="mt-3">But the <strong class="text-neutral-100">recommended approach</strong> is to use npx directly in config.json — that way, Claude Desktop always uses the latest version automatically, with no manual updates needed.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Clone the server repository manually</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Try to compile the server from source code</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use very old versions of Node.js (&lt; 18)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Install packages from untrusted sources</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use npx with the -y flag for direct execution</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Check that node and npx are in the PATH</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use packages in the official @modelcontextprotocol scope</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Test the command in the terminal before adding it to the config</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Configuring in Claude Desktop</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Now let’s put it all together: add the filesystem server to the Claude Desktop configuration file. This is where theory becomes practice—you’ll edit config.json with the correct details and get Claude ready to connect to your first MCP Server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Open the file <code class="text-blue-400">claude_desktop_config.json</code> and add the following content:</p>
+<div class="bg-dark-800 rounded-lg p-4 text-sm font-mono border border-dark-700">
+<pre class="text-neutral-300 whitespace-pre-wrap">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/caminho/permitido"
+      ]
+    }
+  }
+}</pre>
+</div>
+<p class="mt-3">Replace <code class="text-neutral-100">/caminho/permitido</code> using the actual directory you want Claude to access. For example: <code class="text-neutral-100">/home/usuario/projetos</code> on Linux, <code class="text-neutral-100">/Users/usuario/Documents</code> on macOS, or <code class="text-neutral-100">C:/Users/usuario/Documents</code> on Windows.</p>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Set a restricted directory!</strong> The filesystem server will give Claude read and write access to all files inside the specified directory. Never use the system root (<code class="text-neutral-100">/</code> or <code class="text-neutral-100">C:\</code>) as an allowed path. Create a dedicated folder for testing, such as <code class="text-neutral-100">~/mcp-teste</code>, and use it as an argument. This ensures Claude can only access files in that specific directory, following the principle of least privilege.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 Restarting and Verifying</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        With config.json saved, it’s time to restart Claude Desktop and verify that the server loaded successfully. This is the moment of truth—when you open the app and see the filesystem tools appear, you’ll know the MCP is working.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          After saving config.json, you need to <strong class="text-neutral-100">restart completely</strong> Claude Desktop. Close the app (don't just minimize it), make sure it's not running in the system tray, and open it again. When reopened, Claude Desktop will read config.json, find the "filesystem" entry, and try to start the server via npx. If everything goes well, the <strong class="text-neutral-100">hammer icon</strong> (🔨) will appear next to the input field. Click it to see the available tools: <code class="text-neutral-100">read_file</code>, <code class="text-neutral-100">write_file</code>, <code class="text-neutral-100">list_directory</code>, among others.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Verification Steps</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 1 — Close completely</span>
+<p class="text-neutral-300 text-sm mt-1">Close Claude Desktop. On macOS: Cmd+Q. On Windows: right-click the tray icon and select "Quit". On Linux: close the window and check that the process has ended.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 2 — Reopen the application</span>
+<p class="text-neutral-300 text-sm mt-1">Open Claude Desktop again. Wait 5-10 seconds for the filesystem server to start via npx (the first load may take longer because of the download).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 3 — Check the hammer icon</span>
+<p class="text-neutral-300 text-sm mt-1">Look for the hammer icon (🔨) in the chat input bar. If it appears, click it to see the tools: read_file, write_file, list_directory, create_directory, move_file, etc.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 4 — Troubleshoot (if needed)</span>
+<p class="text-neutral-300 text-sm mt-1">If the icon doesn’t appear: check the JSON (jsonlint.com), confirm that npx works in the terminal, and check the Claude Desktop logs for errors.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing in Practice</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        With the filesystem server connected, it’s time to put it to the test. We’ll send commands to Claude that exercise the filesystem tools and observe how the interaction between Claude, the MCP Client, and the Server works. Pay special attention to the permission flow—Claude always asks for your authorization before using a tool.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          When you send a prompt that requires access to files, Claude <strong class="text-neutral-100">automatically identifies</strong> which tool to use and <strong class="text-neutral-100">asks for your permission</strong> before executing it. This approval flow is a fundamental MCP security layer — the Human-in-the-Loop. Claude never executes a tool without your authorization. In the interface, you’ll see a card with the tool name, the parameters to be used, and buttons to “Allow” or “Deny.”
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Try these three test prompts, one at a time:</p>
+<ol class="space-y-3 text-sm">
+<li class="flex items-start gap-3">
+<span class="text-primary font-bold shrink-0">1.</span>
+<span><strong class="text-neutral-100">"List the files in [your directory]"</strong> — Claude will use list_directory to show the directory contents.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-primary font-bold shrink-0">2.</span>
+<span><strong class="text-neutral-100">"Read the contents of [an existing file]"</strong> — Claude will use read_file to display the file contents.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-primary font-bold shrink-0">3.</span>
+<span><strong class="text-neutral-100">"Create a file named teste-mcp.txt with the content 'MCP is working!'"</strong> — Claude will use write_file to create the file.</span>
+</li>
+</ol>
+<p class="mt-3 text-sm">In each case, look at the permission card and click "Allow" to see the tool in action.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Allow access to sensitive system directories</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Approving actions without reading the tool parameters</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Asking to delete important files during the test</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore Claude error messages</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use a dedicated test folder</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Read the tool parameters before approving</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Check in the file explorer that the actions worked</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Observe the pattern: prompt → tool → permission → result</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎉 Complete Environment</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        If you’ve made it this far and the filesystem server is working in Claude Desktop, congratulations! Your MCP development environment is 100% configured. Let’s recap everything you’ve set up throughout this track and prepare for the next big step: creating your own MCP Server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Your complete MCP development environment includes:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Python + uv:</span> <span>Language and package manager for creating MCP Servers in Python.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Node.js + npm:</span> <span>Runtime and package manager for TypeScript/JavaScript servers and for using npx.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Claude Desktop:</span> <span>The MCP Host with a Claude model and an integrated MCP Client.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">config.json:</span> <span>Configuration file that connects Claude Desktop to the servers.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Filesystem server:</span> <span>Get your first MCP Server working and validate the entire chain.</span></li>
+</ul>
+<p class="mt-3">With all this in hand, you’re ready for Track 3: creating your own MCP Server from scratch.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Before moving on to Track 3, try <strong class="text-neutral-100">explore the filesystem server further</strong>. Ask Claude to organize files, create folder structures, and search for content in text files. The more you use it, the more natural interacting with MCP tools will feel. You can also try adding a second server (such as the <code class="text-primary">fetch</code>) to config.json to practice configuring multiple servers at the same time.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The MCP ecosystem is growing rapidly. Today, there are <strong class="text-neutral-100">hundreds of MCP Servers</strong> available publicly, covering everything from databases (PostgreSQL, MongoDB) to cloud services (AWS, GCP), development tools (GitHub, GitLab), and productivity apps (Slack, Google Drive, Notion). In Track 3, you’ll learn to create your own servers and join this community of developers shaping the future of AI integrations.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>The filesystem server is the best choice for your first MCP test — visual, with no external dependencies, and easy to configure.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>It can be installed directly via npx (recommended) or with npm install global.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Configuration in config.json requires command (npx), args (package + permitted directory), and a restricted directory.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>After restarting Claude Desktop, the hammer icon confirms that the server is connected and the tools are available.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Claude always asks permission before using a tool — Human-in-the-Loop is a fundamental security layer.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>With Python, Node.js, Claude Desktop, and a working server, your MCP development environment is complete.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Track:</strong> Track 3 — Creating Your First MCP Server
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="../trilha3/index.html">
+            Next Track →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

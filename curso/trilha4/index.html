@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Trilha 4: Projetos Reais | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="./" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha4/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha4/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors" href="../../index.html">🔌 MCP — Do Zero ao Servidor</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-2">
+<a class="text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha1/index.html">T1</a>
+<a class="text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha2/index.html">T2</a>
+<a class="text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha3/index.html">T3</a>
+<a class="text-amber-400 bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm font-medium" href="../trilha4/index.html">T4</a>
+<a class="text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha5/index.html">T5</a>
+<button class="ml-4 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 text-neutral-400 hidden" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Header -->
+<header class="bg-gradient-to-r from-amber-900/30 via-dark-800 to-dark-800 border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="text-center">
+<span class="inline-block px-4 py-1.5 bg-amber-500/20 text-amber-400 text-sm font-bold rounded-full mb-6 tracking-wider">TRILHA 4</span>
+<h1 class="text-4xl md:text-5xl font-extrabold text-neutral-100 mb-6">🌍 Projetos do Mundo Real</h1>
+<p class="text-xl text-neutral-300 max-w-3xl mx-auto mb-10">Aplique tudo que aprendeu em projetos práticos — banco de dados, APIs, automação e assistentes multi-server.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-amber-400">6</div>
+<div class="text-sm text-neutral-400">Módulos</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-amber-400">36</div>
+<div class="text-sm text-neutral-400">Tópicos</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-amber-400">~5h</div>
+<div class="text-sm text-neutral-400">Duração</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-amber-400">Intermediário</div>
+<div class="text-sm text-neutral-400">Nível</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Navegação Rápida -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">Navegação Rápida</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-1">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.1</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">📋 Gerenciador de Tarefas</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-2">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.2</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">🗄️ Consultor de Banco de Dados</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-3">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.3</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">📁 Assistente de Arquivos</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-4">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.4</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">🌐 Integração com API REST</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-5">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.5</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">🔗 Combinando Múltiplos Servers</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-amber-500/30 transition-colors group" href="#modulo-4-6">
+<span class="text-sm text-amber-400 font-bold">Módulo 4.6</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-amber-400 transition-colors mt-1">🛡️ Boas Práticas de Segurança</h3>
+</a>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center mb-12">
+<div class="flex-1 border-t border-dark-700"></div>
+<span class="px-4 text-neutral-400 text-sm font-medium">Conteúdo Detalhado</span>
+<div class="flex-1 border-t border-dark-700"></div>
+</div>
+<!-- Module 4.1 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.1</span>
+<span class="text-sm text-neutral-400">~40 min · Prático</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📋 Gerenciador de Tarefas</h3>
+<p class="text-neutral-300 mb-6">MCP Server que cria, lista, atualiza e remove tarefas salvas em arquivo JSON.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Planejando o projeto</h4>
+<p class="text-sm text-neutral-400">Requisitos, escopo e arquitetura inicial</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">O planejamento do projeto envolve definir quais funcionalidades o gerenciador de tarefas terá, como os dados serão armazenados, e quais tools serão expostas via MCP. É o momento de pensar antes de codar.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Planejar antes de implementar evita retrabalho e garante que você construa um server coeso. Essa disciplina é essencial em qualquer projeto profissional.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Levantamento de requisitos, definição de escopo, design de tools, arquitetura de dados, MVP.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 Estrutura de dados JSON</h4>
+<p class="text-sm text-neutral-400">Modelando tarefas em arquivo local</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A estrutura de dados define como cada tarefa será representada em JSON — com campos como id, título, descrição, status, data de criação e prioridade. O arquivo JSON serve como banco de dados simples e portátil.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Modelar dados corretamente é a base de qualquer aplicação. Um schema bem definido facilita a implementação das tools e evita bugs de inconsistência.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Schema JSON, modelagem de dados, campos obrigatórios vs opcionais, tipos de dados, persistência em arquivo.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">➕ Tool: criar tarefa</h4>
+<p class="text-sm text-neutral-400">Implementando a criação via MCP</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de criação recebe título, descrição e prioridade como parâmetros, gera um ID único, registra a data de criação e salva a nova tarefa no arquivo JSON. É a primeira operação CRUD do servidor.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Criar é a operação mais fundamental. Implementá-la como tool MCP ensina o fluxo completo: receber parâmetros, validar, processar e retornar resultado.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">CRUD, geração de ID, validação de entrada, escrita em arquivo, resposta estruturada, inputSchema.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Tool: listar tarefas</h4>
+<p class="text-sm text-neutral-400">Filtragem e exibição de tarefas</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de listagem lê o arquivo JSON e retorna as tarefas, com opções de filtro por status (pendente, em andamento, concluída) e prioridade. Permite ao Claude apresentar as tarefas de forma organizada ao usuário.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Listagem com filtros é uma operação essencial em qualquer sistema. Você aprende a implementar parâmetros opcionais e formatação de saída para o modelo.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Leitura de arquivo, filtragem de dados, parâmetros opcionais, formatação de saída, paginação.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✏️ Tool: atualizar e remover</h4>
+<p class="text-sm text-neutral-400">Completando o CRUD de tarefas</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">As tools de atualização e remoção completam o CRUD. Atualizar permite mudar status, título ou prioridade de uma tarefa existente. Remover exclui uma tarefa pelo ID. Ambas incluem validação para garantir que a tarefa existe.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Operações de escrita exigem cuidado extra: validação de existência, tratamento de erros e atomicidade. Essas práticas são fundamentais em qualquer projeto real.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Update, delete, validação de ID, tratamento de erros, atomicidade, feedback ao modelo.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testando o projeto completo</h4>
+<p class="text-sm text-neutral-400">Validação end-to-end com Claude</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Teste end-to-end do gerenciador de tarefas: configurar no Claude Desktop, criar tarefas via conversa natural, listar com filtros, atualizar status e remover tarefas. Verificar que o arquivo JSON persiste corretamente entre sessões.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Testar o fluxo completo revela bugs que testes unitários não capturam. É o momento de validar que tudo funciona como um sistema integrado.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Teste end-to-end, cenários de uso, edge cases, persistência, debugging de servidor MCP.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-1')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-1.html">Ver Completo</a>
+</div>
+</div>
+<!-- Module 4.2 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.2</span>
+<span class="text-sm text-neutral-400">~45 min · Prático</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🗄️ Consultor de Banco de Dados</h3>
+<p class="text-neutral-300 mb-6">MCP Server que conecta ao SQLite e permite consultas em linguagem natural.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🗄️ SQLite e Python</h4>
+<p class="text-sm text-neutral-400">Configurando o ambiente de banco de dados</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">SQLite é um banco de dados relacional embutido que não precisa de servidor separado. Com Python, usamos o módulo sqlite3 nativo para criar, consultar e manipular dados. É perfeito para projetos MCP por sua simplicidade e portabilidade.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">SQLite é o banco de dados mais usado do mundo. Dominá-lo com Python te dá a base para conectar qualquer banco de dados a um MCP Server.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">SQLite, módulo sqlite3, conexão, cursor, banco embutido, zero configuração.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📊 Criando o banco de exemplo</h4>
+<p class="text-sm text-neutral-400">Tabelas, dados e schema inicial</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Criação de um banco de exemplo com tabelas como clientes, produtos e pedidos, preenchido com dados realistas. Este banco servirá como base para as consultas do MCP Server, simulando um cenário de negócio real.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Ter dados realistas para testar é fundamental. Você aprende a criar schemas relacionais e popular tabelas, habilidades essenciais para qualquer desenvolvedor.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">CREATE TABLE, INSERT, tipos de dados SQL, chaves primárias, chaves estrangeiras, dados seed.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Tool: consultar dados</h4>
+<p class="text-sm text-neutral-400">SELECT via linguagem natural</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de consulta recebe uma query SQL ou descrição em linguagem natural, executa o SELECT no banco e retorna os resultados formatados. O Claude traduz perguntas naturais em SQL e apresenta os resultados de forma legível.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Consultas em linguagem natural sobre bancos de dados é um dos casos de uso mais poderosos do MCP. Você transforma dados brutos em informações acessíveis a qualquer pessoa.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">SELECT, formatação de resultados, tradução linguagem natural para SQL, limite de linhas, metadados de colunas.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Tool: inserir e atualizar</h4>
+<p class="text-sm text-neutral-400">Operações de escrita no banco</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Tools para INSERT e UPDATE permitem que o Claude adicione novos registros e atualize dados existentes no banco. Inclui validação de campos, confirmação antes de executar e feedback sobre linhas afetadas.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Operações de escrita são mais delicadas que leitura. Você aprende a implementar confirmações, rollback e feedback, padrões essenciais para servers que modificam dados.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">INSERT, UPDATE, validação, confirmação, linhas afetadas, commit, rollback.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🛡️ Segurança contra SQL injection</h4>
+<p class="text-sm text-neutral-400">Protegendo o banco de ataques</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">SQL injection é um ataque onde código malicioso é inserido em consultas SQL. Proteger-se envolve usar queries parametrizadas, sanitizar entradas, limitar permissões do banco e restringir quais operações o MCP Server pode executar.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Segurança não é opcional. Um MCP Server que acessa banco de dados sem proteção contra injection é uma vulnerabilidade grave. Este conhecimento protege seus dados e seus usuários.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">SQL injection, queries parametrizadas, sanitização, princípio do menor privilégio, whitelist de operações.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Consultas via Claude</h4>
+<p class="text-sm text-neutral-400">Testando perguntas em linguagem natural</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Teste prático onde você faz perguntas ao Claude como "quais foram os pedidos do mês passado?" ou "qual cliente mais comprou?" e ele traduz para SQL, executa via MCP Server e apresenta os resultados de forma amigável.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Ver o fluxo completo em ação — da pergunta natural ao resultado formatado — consolida todo o aprendizado e mostra o poder real de um MCP Server de banco de dados.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Linguagem natural para SQL, teste interativo, cenários complexos, joins, agregações, apresentação de dados.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-2')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-2.html">Ver Completo</a>
+</div>
+</div>
+<!-- Module 4.3 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.3</span>
+<span class="text-sm text-neutral-400">~40 min · Prático</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📁 Assistente de Arquivos</h3>
+<p class="text-neutral-300 mb-6">MCP Server que lê, resume e organiza arquivos de uma pasta local.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📁 Planejando as tools</h4>
+<p class="text-sm text-neutral-400">Definindo funcionalidades do assistente</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">O planejamento define quais operações de arquivo o MCP Server oferecerá: leitura, resumo, busca por conteúdo, estatísticas e organização automática. Cada funcionalidade se torna uma tool com parâmetros e retorno bem definidos.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Planejar as tools antes de implementar garante coerência e evita sobreposição de funcionalidades. Um bom design de API é a base de um server usável.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Design de API, operações de arquivo, escopo de permissões, separação de responsabilidades, naming conventions.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📖 Tool: ler e resumir arquivo</h4>
+<p class="text-sm text-neutral-400">Leitura inteligente com contexto</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de leitura abre um arquivo pelo caminho, retorna seu conteúdo ao Claude que então pode resumi-lo, explicá-lo ou responder perguntas sobre ele. Suporta diferentes formatos como texto, markdown, código e CSV.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Ler e interpretar arquivos é um dos usos mais práticos do MCP. Você transforma o Claude em um assistente que entende seus documentos locais.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Leitura de arquivo, detecção de encoding, limite de tamanho, formatos suportados, tratamento de erros de IO.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Tool: buscar em arquivos</h4>
+<p class="text-sm text-neutral-400">Pesquisa por conteúdo em múltiplos arquivos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de busca percorre arquivos em uma pasta procurando por um termo ou padrão. Retorna os arquivos que contêm o termo, com trechos de contexto ao redor de cada ocorrência, similar a um grep inteligente.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Busca em arquivos é extremamente útil para encontrar informações em projetos, documentações ou notas. O Claude se torna um assistente de pesquisa sobre seus arquivos locais.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Busca recursiva, regex, contexto de ocorrência, filtro por extensão, performance em diretórios grandes.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📊 Tool: estatísticas da pasta</h4>
+<p class="text-sm text-neutral-400">Métricas e visão geral dos arquivos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de estatísticas analisa uma pasta e retorna métricas como número total de arquivos, tamanho total, distribuição por tipo de arquivo, arquivos maiores, arquivos mais recentes e estrutura de subdiretórios.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Ter uma visão geral rápida de uma pasta é útil para entender projetos, identificar problemas de organização e encontrar arquivos que precisam de atenção.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Análise de diretório, métricas de arquivo, agrupamento por extensão, tamanho formatado, árvore de diretórios.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📂 Tool: organizar por tipo</h4>
+<p class="text-sm text-neutral-400">Organização automática de arquivos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de organização move arquivos para subpastas baseadas em seu tipo: imagens para /imagens, documentos para /documentos, código para /codigo. Inclui preview antes de executar e opção de desfazer.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Automação de organização é um caso de uso poderoso e prático. Você aprende a implementar operações destrutivas com segurança — preview, confirmação e rollback.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Movimentação de arquivos, categorização por extensão, preview de operações, dry-run, rollback.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testando com Claude</h4>
+<p class="text-sm text-neutral-400">Cenários práticos de uso</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Teste prático do assistente de arquivos: pedir ao Claude para resumir um documento, buscar informações em múltiplos arquivos, mostrar estatísticas de um projeto e organizar uma pasta bagunçada. Validação completa de todas as tools.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Testar com cenários reais garante que o server funciona em condições práticas. Você descobre edge cases e melhora a experiência do usuário.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Teste funcional, cenários de uso real, edge cases de arquivo, permissões, encoding, arquivos grandes.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-3')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-3.html">Ver Completo</a>
+</div>
+</div>
+<!-- Module 4.4 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.4</span>
+<span class="text-sm text-neutral-400">~45 min · Prático</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🌐 Integração com API REST</h3>
+<p class="text-neutral-300 mb-6">MCP Server que consome a API do GitHub e expõe ações como tools.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Entendendo a API do GitHub</h4>
+<p class="text-sm text-neutral-400">Endpoints, autenticação e rate limits</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A API REST do GitHub permite acessar repositórios, issues, pull requests e mais via HTTP. Entender seus endpoints, formato de resposta JSON, paginação e rate limits é essencial para criar um MCP Server que a consuma.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">A API do GitHub é uma das APIs REST mais bem documentadas do mundo. Aprender a consumi-la via MCP te prepara para integrar qualquer API REST ao protocolo.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">API REST, endpoints, métodos HTTP, JSON, paginação, rate limiting, documentação de API.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔑 Autenticação com token</h4>
+<p class="text-sm text-neutral-400">Personal access tokens e segurança</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A autenticação com a API do GitHub usa Personal Access Tokens (PAT). Você aprende a criar tokens com escopos mínimos, armazená-los de forma segura via variáveis de ambiente e usá-los no MCP Server sem expô-los no código.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Gerenciar credenciais de forma segura é crítico em qualquer integração. Os padrões aprendidos aqui se aplicam a qualquer API que requer autenticação.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Personal Access Token, escopos, variáveis de ambiente, .env, segurança de credenciais, Bearer token.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Tool: listar repositórios</h4>
+<p class="text-sm text-neutral-400">Consultando repos do usuário</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de listagem de repositórios consulta a API do GitHub e retorna os repos do usuário autenticado, com informações como nome, descrição, linguagem, estrelas e data de atualização. Suporta filtros por visibilidade e ordenação.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">É a primeira tool que consome uma API externa real. Você aprende o padrão completo: fazer requisição HTTP, tratar resposta, formatar para o modelo e lidar com erros de rede.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">GET request, parsing de JSON, formatação de dados, filtros, ordenação, tratamento de erros HTTP.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Tool: buscar issues</h4>
+<p class="text-sm text-neutral-400">Pesquisando issues em repositórios</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de busca de issues permite consultar issues de um repositório específico, filtrando por estado (open, closed), labels e termos de busca. Retorna título, descrição, autor, labels e comentários de cada issue.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Issues são o coração do gerenciamento de projetos no GitHub. Com esta tool, o Claude pode ajudar a analisar, priorizar e responder issues de forma inteligente.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Issues API, filtros de estado, labels, busca textual, paginação de resultados, dados aninhados.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">➕ Tool: criar issue</h4>
+<p class="text-sm text-neutral-400">Criando issues via conversa natural</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A tool de criação de issues envia um POST para a API do GitHub com título, corpo, labels e assignees. O Claude pode criar issues bem formatadas a partir de descrições em linguagem natural do usuário.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Criar recursos via API é uma operação de escrita que requer cuidado. Você aprende a implementar confirmação antes de executar e a formatar dados para envio via POST.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">POST request, corpo da requisição, validação de entrada, confirmação de ação, resposta de criação, status 201.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testando a integração</h4>
+<p class="text-sm text-neutral-400">Validação completa do fluxo GitHub</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Teste end-to-end da integração com GitHub: listar repos, buscar issues de um projeto, criar uma nova issue e verificar que ela aparece no GitHub. Inclui testes de erro como token inválido e repositório inexistente.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Testar integrações com APIs externas exige considerar cenários que não existem em projetos locais: latência, erros de rede, rate limits e respostas inesperadas.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Teste de integração, mocking, cenários de erro, timeout, retry, rate limiting, validação de dados.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-4')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-4.html">Ver Completo</a>
+</div>
+</div>
+<!-- Module 4.5 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.5</span>
+<span class="text-sm text-neutral-400">~35 min · Prático</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🔗 Combinando Múltiplos Servers</h3>
+<p class="text-neutral-300 mb-6">Configure o Claude Desktop com 2+ servers simultâneos para criar um assistente poderoso.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔗 O poder da combinação</h4>
+<p class="text-sm text-neutral-400">Por que múltiplos servers superam um só</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A arquitetura MCP permite que um Host conecte múltiplos Servers simultaneamente. Cada server é especializado em uma tarefa, e o Claude orquestra entre eles automaticamente, criando um assistente que combina diversas capacidades.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Combinar servers é o que torna o MCP verdadeiramente poderoso. Em vez de um server monolítico, você compõe capacidades modulares que podem ser reutilizadas em diferentes contextos.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Composição de servers, modularidade, especialização, orquestração pelo modelo, reutilização.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Configurando múltiplos servers</h4>
+<p class="text-sm text-neutral-400">claude_desktop_config.json avançado</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">A configuração de múltiplos servers no Claude Desktop envolve adicionar várias entradas no arquivo claude_desktop_config.json, cada uma com seu comando, argumentos e variáveis de ambiente. O Claude conecta a todos simultaneamente na inicialização.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Saber configurar múltiplos servers é a habilidade prática que transforma o Claude Desktop em um assistente personalizado com todas as suas ferramentas favoritas.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json, múltiplas entradas, variáveis de ambiente por server, inicialização simultânea, naming.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🤖 Como o Claude escolhe o server</h4>
+<p class="text-sm text-neutral-400">Roteamento inteligente de tools</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Quando múltiplos servers estão conectados, o Claude recebe a lista completa de tools disponíveis e escolhe automaticamente qual usar baseado na intenção do usuário. O nome e a descrição de cada tool são fundamentais para esse roteamento inteligente.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender como o Claude roteia entre servers te ajuda a criar tools com nomes e descrições que facilitam a escolha correta, evitando ambiguidades e conflitos.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Roteamento de tools, nomes descritivos, resolução de ambiguidade, tool discovery, contexto de decisão.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Exemplo: tarefas + banco de dados</h4>
+<p class="text-sm text-neutral-400">Combinando dois servers da trilha</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Exemplo prático combinando o gerenciador de tarefas (Módulo 4.1) com o consultor de banco de dados (Módulo 4.2). O Claude pode criar tarefas baseadas em dados do banco, ou consultar o banco para priorizar tarefas existentes.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Este exemplo concreto mostra como dois servers independentes se complementam. É a prova prática de que modularidade funciona e gera capacidades emergentes.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Composição prática, fluxo multi-server, capacidades emergentes, cenário de negócio, dados cruzados.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Exemplo: arquivos + GitHub</h4>
+<p class="text-sm text-neutral-400">Assistente de desenvolvimento integrado</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Exemplo prático combinando o assistente de arquivos (Módulo 4.3) com a integração GitHub (Módulo 4.4). O Claude pode ler código local, analisar bugs e criar issues no GitHub automaticamente com contexto relevante.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Este cenário simula um fluxo de trabalho real de desenvolvimento. Combinar leitura de código local com gestão de issues cria um assistente de desenvolvimento verdadeiramente útil.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Workflow de desenvolvimento, análise de código, criação automática de issues, contexto cruzado, automação.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testando o assistente multi-server</h4>
+<p class="text-sm text-neutral-400">Validação do sistema completo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Teste completo do assistente multi-server: conversar com o Claude usando 3-4 servers simultâneos, verificar que ele escolhe o server certo para cada tarefa, testar cenários que envolvem múltiplos servers em sequência e avaliar a experiência geral.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">O teste multi-server revela problemas de naming, conflitos de tools e limites de contexto. É o teste definitivo da sua arquitetura MCP.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Teste multi-server, conflito de nomes, limite de contexto, performance, experiência do usuário, debugging.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-5')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-5.html">Ver Completo</a>
+</div>
+</div>
+<!-- Module 4.6 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-4-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-amber-400">Módulo 4.6</span>
+<span class="text-sm text-neutral-400">~30 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🛡️ Boas Práticas de Segurança</h3>
+<p class="text-neutral-300 mb-6">Controle de permissões, autenticação, princípio do menor privilégio e riscos comuns.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🛡️ Por que segurança importa</h4>
+<p class="text-sm text-neutral-400">Riscos reais de servers MCP inseguros</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">MCP Servers têm acesso a recursos reais: arquivos, bancos de dados, APIs e sistemas. Um server inseguro pode expor dados sensíveis, executar ações destrutivas ou ser explorado por prompt injection. A segurança não é um extra, é uma necessidade.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender os riscos reais motiva a implementação de práticas de segurança. Sem essa consciência, desenvolvedores criam servers que funcionam mas são perigosos em produção.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Superfície de ataque, prompt injection, exposição de dados, ações destrutivas, responsabilidade do desenvolvedor.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔒 Princípio do menor privilégio</h4>
+<p class="text-sm text-neutral-400">Conceda apenas o necessário</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">O princípio do menor privilégio determina que um server deve ter acesso apenas aos recursos estritamente necessários para sua função. Um server de leitura de arquivos não precisa de permissão de escrita. Um server de consulta SQL não precisa de permissão de DELETE.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Este princípio é a defesa mais eficaz contra erros e ataques. Limitar permissões reduz drasticamente o impacto de qualquer falha de segurança.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Menor privilégio, permissões granulares, escopo mínimo, sandboxing, isolamento de recursos.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔑 Autenticação e tokens</h4>
+<p class="text-sm text-neutral-400">Gerenciamento seguro de credenciais</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Gerenciamento seguro de credenciais envolve nunca hardcodar tokens no código, usar variáveis de ambiente ou secret managers, rotacionar tokens periodicamente e usar escopos mínimos. Cada server deve ter suas próprias credenciais isoladas.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Vazamento de credenciais é uma das vulnerabilidades mais comuns e mais graves. Boas práticas de gerenciamento de tokens protegem seus serviços e seus usuários.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Variáveis de ambiente, secret managers, rotação de tokens, escopos mínimos, .gitignore, credenciais por ambiente.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚠️ Riscos comuns</h4>
+<p class="text-sm text-neutral-400">Armadilhas que desenvolvedores caem</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Riscos comuns incluem: expor o sistema de arquivos inteiro, permitir execução arbitrária de comandos, não validar entradas, confiar cegamente no que o modelo envia, não limitar taxa de requisições e não logar operações sensíveis.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Conhecer os riscos mais frequentes permite evitá-los proativamente. É muito mais fácil prevenir uma vulnerabilidade do que corrigir após um incidente.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Path traversal, command injection, validação de entrada, rate limiting, logging, confiança zero.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Checklist de segurança</h4>
+<p class="text-sm text-neutral-400">Lista prática antes de publicar</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Um checklist prático para revisar antes de publicar qualquer MCP Server: validação de entradas, permissões mínimas, credenciais seguras, rate limiting, logging, tratamento de erros sem exposição de dados, documentação de segurança e testes de abuso.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Ter um checklist elimina o risco de esquecer itens de segurança na pressa de publicar. É uma ferramenta prática que você usará em todo projeto MCP.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Checklist de segurança, revisão pré-publicação, validação, permissões, logging, documentação, testes de abuso.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-amber-500/20 text-amber-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Auditoria e monitoramento</h4>
+<p class="text-sm text-neutral-400">Observabilidade de servers em produção</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-amber-400 font-semibold text-sm">O que é:</span><p class="text-neutral-300 text-sm mt-1">Auditoria e monitoramento envolvem registrar todas as operações do server (quem pediu, o quê, quando), monitorar uso anômalo, alertar sobre tentativas suspeitas e manter logs para investigação. É a visibilidade sobre o que seu server está fazendo.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Por que aprender:</span><p class="text-neutral-300 text-sm mt-1">Sem monitoramento, você não sabe se seu server está sendo usado de forma maliciosa. Logs e alertas são a diferença entre descobrir um problema em minutos ou em meses.</p></div>
+<div><span class="text-amber-400 font-semibold text-sm">Conceitos-chave:</span><p class="text-neutral-300 text-sm mt-1">Logging estruturado, audit trail, monitoramento, alertas, métricas, detecção de anomalias, retenção de logs.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-amber-500/20 text-amber-400 rounded-lg hover:bg-amber-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-4-6')">Ver em Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-4-6.html">Ver Completo</a>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex items-center justify-between mt-12 pt-8 border-t border-dark-700">
+<a class="flex items-center gap-2 text-neutral-400 hover:text-amber-400 transition-colors font-medium" href="../trilha3/index.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        ← Trilha Anterior
+      </a>
+<a class="flex items-center gap-2 text-neutral-400 hover:text-amber-400 transition-colors font-medium" href="../trilha5/index.html">
+        Próxima Trilha →
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</main>
+<!-- Modals -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-1">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.1 — Gerenciador de Tarefas</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-1.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-2">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.2 — Consultor de Banco de Dados</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-2.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-3">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.3 — Assistente de Arquivos</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-3.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-4">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.4 — Integração com API REST</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-4.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-5">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.5 — Combinando Múltiplos Servers</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-5.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-4-6">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 4.6 — Boas Práticas de Segurança</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-4-6.html"></iframe>
+</div>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-neutral-400 text-sm">
+<span>🔌 MCP — Do Zero ao Servidor</span>
+<span>·</span>
+<a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<p class="text-neutral-500 text-sm">Trilha 4 — Projetos do Mundo Real</p>
+</div>
+</div>
+</footer>
+<script>
+    // Toggle topics
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

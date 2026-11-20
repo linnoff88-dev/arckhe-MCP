@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 3.1 — Structure of an MCP Server | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Track 3</a>
+<span>/</span>
+<span class="text-neutral-300">Module 3.1</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 3.1</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🏗️ MCP Server Structure
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Understand the complete anatomy of an MCP Server—from imports to tool registration and the lifecycle of a request.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Theoretical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Anatomy of a Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        An MCP Server in Python with FastMCP is surprisingly simple. In just ~10 lines of code, you have a complete, functional server, ready to receive requests from any compatible MCP client. The structure follows a clear pattern: imports, creating the server instance, functions decorated with <code class="text-purple-400">@mcp.tool()</code> and the entry point. Each part has a specific and essential role in how the server works.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          An MCP Server built with FastMCP has four fundamental components: <strong class="text-neutral-100">Import</strong> — brings the FastMCP framework into your code; <strong class="text-neutral-100">Instance</strong> — creates the server object with an identifying name; <strong class="text-neutral-100">Tools</strong> — Python functions decorated with <code class="text-purple-400">@mcp.tool()</code> that the model can call; and <strong class="text-neutral-100">Entry point</strong> — the block <code class="text-purple-400">if __name__ == "__main__"</code> that starts the server. With just these four pieces, you have a functional MCP server in ~10 lines of code.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The minimum structure of an MCP Server is: <strong class="text-neutral-100">(1)</strong> <code class="text-purple-400">from fastmcp import FastMCP</code> — <strong class="text-neutral-100">(2)</strong> <code class="text-purple-400">mcp = FastMCP("meu-server")</code> — <strong class="text-neutral-100">(3)</strong> a function decorated with <code class="text-purple-400">@mcp.tool()</code> — <strong class="text-neutral-100">(4)</strong> <code class="text-purple-400">mcp.run()</code> in the main block. Memorize this sequence: <strong class="text-neutral-100">import → instantiate → decorate → run</strong>. Every MCP Server follows this pattern, from the simplest to the most complex.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Initialization and Setup</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        It all starts with two lines of code: the FastMCP import and the creation of the server instance. These two lines establish the foundation on which everything else is built. The name you give the server matters—it’s how the MCP client identifies and displays the server to the user. Choose descriptive, consistent names.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Starting an MCP Server takes two steps: <strong class="text-neutral-100"><code class="text-purple-400">from fastmcp import FastMCP</code></strong> — imports the framework's main class — and <strong class="text-neutral-100"><code class="text-purple-400">mcp = FastMCP("nome-do-server")</code></strong> — creates the server instance with an identifying name. The name passed as an argument is what appears in the client (such as Claude Desktop) so the user knows which server is available. This name should be unique and descriptive of the server's purpose.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          FastMCP is the official framework recommended by Anthropic for creating MCP Servers in Python. It abstracts away all the complexity of the MCP protocol (JSON-RPC, stdio/SSE transport, capability negotiation) behind a simple decorator-based API. With FastMCP, what once required hundreds of lines of low-level code now takes fewer than <strong class="text-neutral-100">10 lines</strong>. It’s the fastest and recommended way to create an MCP Server.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Generic names: “server,” “mcp,” “test”</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Names with spaces or special characters</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Names that don’t describe the server’s function</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Reuse the same name across different servers</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Descriptive names: “weather-server,” “db-query”</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use kebab-case for consistency</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Include the domain: "github-issues", "slack-bot"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Unique names that prevent conflicts</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Registering Tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The heart of an MCP Server is its tools—Python functions the AI model can call. FastMCP uses the decorator <code class="text-purple-400">@mcp.tool()</code> to turn any regular Python function into an MCP tool the client can access. The function’s parameters become the tool’s parameters, the type hints define the schema, and the docstring becomes the description the model reads to decide when to use the tool.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The decorator <strong class="text-neutral-100"><code class="text-purple-400">@mcp.tool()</code></strong> is the bridge between Python and the MCP protocol. When you decorate a function with it, three things happen automatically: <strong class="text-neutral-100">(1)</strong> The function name becomes the tool name; <strong class="text-neutral-100">(2)</strong> Parameter type hints are converted into JSON Schema for validation; <strong class="text-neutral-100">(3)</strong> The function’s docstring becomes the description the model uses to understand the tool’s purpose. No need to write a single line of configuration.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of the decorator <code class="text-purple-400">@mcp.tool()</code> as a <strong class="text-neutral-100">publication badge</strong>: when you add the decorator to a function, you're saying "this function is available for the AI to use." Without the decorator, the function is just internal Python code. With it, the function becomes a server capability visible to any connected MCP client. Each decorated function is automatically registered in the server's tool list.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 How Tool Registration Works</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">You write a regular Python function with type hints and a docstring—as you would in any Python project.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">Add the decorator <code class="text-purple-400">@mcp.tool()</code> above the function—FastMCP detects and registers the tool automatically.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">FastMCP extracts the name, parameters (via type hints), and description (via docstring), then generates the JSON Schema automatically.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Step 4</span>
+<p class="text-neutral-300 text-sm mt-1">When the client connects, the server sends the list of available tools — and the model knows exactly how to call them.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 Lifecycle</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        An MCP Server isn’t a program that runs and exits — it’s a process that stays active, waiting for connections and continuously processing requests. Understanding the server’s full lifecycle is essential for debugging issues, optimizing performance, and building robust servers that work reliably in production.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The lifecycle of an MCP Server follows a well-defined sequence: the server <strong class="text-neutral-100">starts</strong> when the client executes it; <strong class="text-neutral-100">registers its capabilities</strong> (tools, resources, prompts); <strong class="text-neutral-100">waits for connections</strong> via stdio or SSE; <strong class="text-neutral-100">receives requests</strong> from the client (tool calls); <strong class="text-neutral-100">executes the logic</strong> of the tool call; <strong class="text-neutral-100">returns the result</strong> to the client; and returns to <strong class="text-neutral-100">wait</strong> the next request. This cycle repeats until the client closes the connection.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Complete Server Lifecycle</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">1. Initialization</span>
+<p class="text-neutral-300 text-sm mt-1">The client (e.g., Claude Desktop) runs the configured command. The Python process starts, and FastMCP loads all decorated tools.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">2. Capability Registration</span>
+<p class="text-neutral-300 text-sm mt-1">The server sends the client a list of all available tools, resources, and prompts, along with their schemas and descriptions.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">3. Wait for Connections</span>
+<p class="text-neutral-300 text-sm mt-1">The server loops, waiting for messages from the client over the configured transport (stdio for local processes, SSE for remote ones).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">4. Receives Request</span>
+<p class="text-neutral-300 text-sm mt-1">When the model decides to use a tool, the client sends a JSON-RPC message with the tool name and arguments.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">5. Execute the Tool</span>
+<p class="text-neutral-300 text-sm mt-1">FastMCP locates the corresponding function, validates the parameters against the schema, and runs the Python function.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">6. Returns and Waits</span>
+<p class="text-neutral-300 text-sm mt-1">The result is serialized and sent back to the client. The server returns to a waiting state, ready for the next request.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📁 File Structure</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        An MCP Server can be as simple as a single Python file or as organized as a complete project with tests, documentation, and separate modules. The choice depends on the complexity of what you’re building. A minimal project is enough for learning and prototyping. For production, an organized structure makes all the difference in maintainability.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Minimal project</strong> — two files are enough: <code class="text-purple-400">pyproject.toml</code> (metadata and dependencies) and <code class="text-purple-400">server.py</code> (server code). That's all you need for a functional MCP Server. <strong class="text-neutral-100">Complete project</strong> — for more robust servers, organize with: directory <code class="text-purple-400">src/</code> for source code, <code class="text-purple-400">tests/</code> for tests, <code class="text-purple-400">README.md</code> for documentation, and potentially multiple modules to separate responsibilities.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Put everything in one giant file</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't use pyproject.toml to manage dependencies</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing business logic with server setup</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore tests from the start of the project</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Start small (2 files) and grow as needed</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use uv + pyproject.toml for dependency management</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Separate tools into modules as the server grows</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Keep a README with setup instructions</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Essential Settings</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The file <code class="text-purple-400">pyproject.toml</code> is the configuration hub for your Python project. It defines dependencies (such as FastMCP), project metadata, and optionally entry points that make execution easier. The <code class="text-purple-400">uv</code> is the recommended project manager—it handles the virtual environment, dependencies, and execution quickly and reliably.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100"><code class="text-purple-400">pyproject.toml</code></strong> defines: the project name, the required Python version, the dependencies (including <code class="text-purple-400">fastmcp</code>), and optionally entry points with <code class="text-purple-400">[project.scripts]</code>. O <strong class="text-neutral-100"><code class="text-purple-400">uv</code></strong> manages everything: automatically creates the virtual environment, installs dependencies quickly, and lets you run the server with <code class="text-purple-400">uv run server.py</code>. Together, pyproject.toml and uv eliminate the complexity of configuring a Python environment.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use <strong class="text-neutral-100"><code class="text-purple-400">uv init nome-do-projeto</code></strong> to create pyproject.toml automatically, and <strong class="text-neutral-100"><code class="text-purple-400">uv add fastmcp</code></strong> to add the dependency. uv will create the virtual environment, resolve dependencies, and update pyproject.toml — all in a single command. You never need to run <code class="text-purple-400">pip install</code> manually or manage virtualenvs by hand.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Make sure the <strong class="text-neutral-100">uv</strong> is installed on your machine before you begin. Claude Desktop runs the server using the command <code class="text-purple-400">uv run</code>, so if uv isn’t available in PATH, the server simply won’t start — and the error may be silent. Check with <code class="text-purple-400">uv --version</code> before proceeding. If it isn’t installed, use <code class="text-purple-400">curl -LsSf https://astral.sh/uv/install.sh | sh</code>.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>An MCP Server with FastMCP has 4 parts: imports, an instance, decorated tools, and an entry point — ~10 lines of code.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Initialization uses <code class="text-purple-400">from fastmcp import FastMCP</code> e <code class="text-purple-400">mcp = FastMCP("nome")</code> — the name identifies the server in the client.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>The decorator <code class="text-purple-400">@mcp.tool()</code> turns Python functions into MCP tools, automatically extracting the name, parameters, and description.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>The lifecycle follows: start → register capabilities → wait → receive → execute → return → wait.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Minimal project: pyproject.toml + server.py. Complete project: src/, tests/, README, and separate modules.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>uv manages the virtual environment, dependencies, and execution — use <code class="text-purple-400">uv init</code> e <code class="text-purple-400">uv add fastmcp</code> to get started.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 3.2 — Hello World MCP
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-2.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 4.3 — Asistente de archivos | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .bg-amber-900\/40 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-900\/30 { background-color: rgba(217, 119, 6, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/modulo-4-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/modulo-4-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/modulo-4-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha4/modulo-4-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-4-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded bg-amber-500/20 text-amber-400" href="index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-amber-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-amber-400 transition-colors" href="index.html">Ruta 4</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 4.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 4.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📁 Asistente de archivos
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Construye un MCP Server que lea, resuma y organice archivos locales: un asistente personal de organización.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">40</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Intermedio</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Práctico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📁 Planificando las tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El Asistente de Archivos es un proyecto que combina el poder de MCP con operaciones del sistema de archivos. Vamos a crear <strong class="text-neutral-100">4 herramientas</strong> que permiten a Claude interactuar con archivos y carpetas locales: leer contenido, buscar texto, generar estadísticas y organizar archivos automáticamente. Todo usando los módulos <code class="text-amber-400">pathlib</code> e <code class="text-amber-400">os</code> de la biblioteca estándar de Python.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las 4 tools del Asistente de Archivos: <strong class="text-neutral-100">ler_arquivo(caminho)</strong> — lee el contenido de un archivo de texto y lo devuelve con metadatos (tamaño, fecha de modificación); <strong class="text-neutral-100">buscar_en_arquivos(pasta, texto)</strong> — busca una cadena en todos los archivos de una carpeta de forma recursiva y devuelve el archivo, la línea y el contexto; <strong class="text-neutral-100">estatisticas_pasta(caminho)</strong> — cuenta los archivos por extensión, el tamaño total y los archivos más grandes y más pequeños; <strong class="text-neutral-100">organizar_por_tipo(pasta)</strong> — mueve archivos a subcarpetas organizadas por extensión (.pdf para PDFs/, .jpg para Imágenes/, etc.). Todas usan <code class="text-amber-400">pathlib.Path</code> para manipular rutas de forma segura.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Usa <code class="text-amber-400">pathlib.Path</code> en lugar de <code class="text-amber-400">os.path</code> para todas las operaciones con rutas. pathlib ofrece una API más intuitiva y orientada a objetos: <code class="text-amber-400">Path("pasta").iterdir()</code> para listar, <code class="text-amber-400">path.suffix</code> para extensión, <code class="text-amber-400">path.stat().st_size</code> para el tamaño. Además, funciona correctamente en Windows, Linux y macOS sin ajustes manuales de barras.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📖 Tool: leer y resumir</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La tool <strong class="text-neutral-100">ler_arquivo</strong> es la más básica y poderosa de nuestro asistente. Lee el contenido de un archivo de texto y lo devuelve junto con metadatos útiles, como el tamaño y la fecha de modificación. Lo más interesante es que Claude resume naturalmente el contenido al presentárselo al usuario: no necesitas implementar una lógica de resumen, el modelo lo hace por sí solo.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La tool <code class="text-amber-400">ler_arquivo(caminho: str)</code> usa <code class="text-amber-400">Path(caminho)</code> para abrir el archivo, lee el contenido con <code class="text-amber-400">path.read_text(encoding="utf-8")</code> y recopila metadatos mediante <code class="text-amber-400">path.stat()</code>: tamaño en bytes/KB, fecha de la última modificación con formato. El resultado combina los metadatos y el contenido en una cadena organizada. Claude recibe todo esto y puede resumirlo, analizarlo o responder preguntas sobre el contenido, sin que tengas que agregar código de IA.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Leer archivos binarios (.exe, .zip, imágenes) como texto</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Leer archivos enormes (&gt;1MB) completos de una sola vez</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>No verificar si el archivo existe antes de leerlo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar errores de codificación (UnicodeDecodeError)</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Limitar la lectura a extensiones de texto conocidas</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Truncar archivos grandes (p. ej., los primeros 10KB)</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Comprobar path.exists() y path.is_file() antes</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Usar try/except para manejar errores de encoding</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">¡Limita el tamaño de la lectura!</strong> Si el usuario pide leer un archivo de 500MB, el servidor intentará cargarlo todo en la memoria y enviarlo como respuesta de la tool; esto puede bloquear el servidor o superar los límites del modelo. Define un límite seguro (p. ej., 10.000 caracteres) y, si el archivo es más grande, devuelve solo el comienzo con un aviso: "Archivo truncado: se muestran los primeros 10KB de 500MB."
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Tool: Buscar en archivos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La tool <strong class="text-neutral-100">buscar_en_arquivos</strong> funciona como un "grep" inteligente: recibe una carpeta y un texto que buscar, y recorre todos los archivos de forma recursiva, indicando dónde se encontró el texto con contexto. Imagina pedirle a Claude: "Busca 'TODO' en todos los archivos de mi proyecto" — esta tool lo hace posible.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La tool <code class="text-amber-400">buscar_em_arquivos(pasta: str, texto: str)</code> usa <code class="text-amber-400">Path(pasta).rglob("*")</code> para iterar recursivamente sobre todos los archivos. Para cada archivo de texto, lee las líneas y verifica si aparece el texto buscado (sin distinguir entre mayúsculas y minúsculas con <code class="text-amber-400">.lower()</code>). El resultado incluye: <strong class="text-neutral-100">nombre del archivo</strong>, <strong class="text-neutral-100">número de línea</strong> e a <strong class="text-neutral-100">línea con contexto</strong> (la línea encontrada, más una línea antes y otra después). Limita el número de resultados (p. ej., máximo 50) para no sobrecargar la respuesta.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Usa <code class="text-amber-400">rglob("*")</code> para la búsqueda recursiva (incluye subcarpetas) y filtra solo archivos con <code class="text-amber-400">path.is_file()</code>. Ignora los archivos binarios comprobando la extensión o usando un try/except al leer. Una buena lista de extensiones de texto: <code class="text-amber-400">.txt, .py, .js, .md, .html, .css, .json, .yml, .toml, .cfg, .ini, .log</code>. Ignorar carpetas como <code class="text-amber-400">.git</code>, <code class="text-amber-400">__pycache__</code> e <code class="text-amber-400">node_modules</code> acelera mucho la búsqueda.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Flujo de búsqueda</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Paso 1: Validar la carpeta</span>
+<p class="text-neutral-300 text-sm mt-1">Comprobar que la ruta exista y sea un directorio con Path(pasta).is_dir(). Devolver un error claro si no lo es.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Paso 2: Iterar y buscar</span>
+<p class="text-neutral-300 text-sm mt-1">Usar rglob("*") para recorrer archivos, leer cada uno con try/except y verificar si el texto aparece en cada línea.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Paso 3: Dar formato a los resultados</span>
+<p class="text-neutral-300 text-sm mt-1">Armar una cadena con archivo:línea:contenido para cada coincidencia encontrada. Incluir el recuento total: "Se encontraron X coincidencias en Y archivos."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📊 Tool: estadísticas de la carpeta</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La tool <strong class="text-neutral-100">estatisticas_pasta</strong> analiza una carpeta y devuelve un panorama completo: cuántos archivos hay, cómo se distribuyen por extensión, cuál es el tamaño total, cuál es el archivo más grande y el más pequeño, y cuándo se modificó el archivo más reciente. Es como una "radiografía" del directorio.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La tool <code class="text-amber-400">estatisticas_pasta(caminho: str)</code> recorre todos los archivos de la carpeta con <code class="text-amber-400">Path(caminho).rglob("*")</code>, recopilando información con <code class="text-amber-400">path.stat()</code> para cada archivo. Calcula: <strong class="text-neutral-100">total de archivos</strong>, <strong class="text-neutral-100">distribución por extensión</strong> (usando un diccionario/Counter), <strong class="text-neutral-100">tamaño total</strong> en bytes/KB/MB, <strong class="text-neutral-100">archivo más grande y más pequeño</strong> con sus nombres y tamaños, y <strong class="text-neutral-100">fecha del archivo más reciente</strong>. El resultado es una cadena formateada que Claude presenta como un informe organizado.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las herramientas de análisis de directorios son sorprendentemente útiles en el día a día. Los estudios muestran que el usuario promedio tiene más de <strong class="text-neutral-100">100.000 archivos</strong> en la computadora y tarda aproximadamente <strong class="text-neutral-100">2,5 horas por semana</strong> buscando y organizando archivos. Una tool que proporciona estadísticas rápidas permite identificar rápidamente las carpetas que necesitan limpieza, los archivos enormes que ocupan espacio y las extensiones inesperadas que pueden indicar problemas.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Usa <code class="text-amber-400">collections.Counter</code> para contar extensiones de forma elegante: <code class="text-amber-400">Counter(p.suffix.lower() for p in pasta.rglob("*") if p.is_file())</code>. Para mostrar los tamaños en un formato legible, crea una función auxiliar que convierta bytes a KB/MB/GB automáticamente. Ordena las extensiones por cantidad (las más comunes primero) para que el informe muestre la información más relevante al inicio.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📂 Tool: organizar por tipo</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La tool de mayor impacto de nuestro asistente: <strong class="text-neutral-100">organizar_por_tipo</strong> analiza una carpeta y mueve cada archivo a una subcarpeta correspondiente a su extensión. Los archivos .pdf van a una carpeta "PDFs/", .jpg y .png a "Imagens/", .py a "Python/", y así sucesivamente. Pero atención: esta tool <strong class="text-neutral-100">modifica el sistema de archivos</strong>, así que debe pedir confirmación antes de actuar.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La tool <code class="text-amber-400">organizar_por_tipo(pasta: str, confirmar: bool = False)</code> funciona en dos modos. Cuando <code class="text-amber-400">confirmar=False</code> (predeterminado), solo <strong class="text-neutral-100">enumera los cambios planificados</strong>: "Mover relatorio.pdf a PDFs/relatorio.pdf", "Mover foto.jpg a Imagens/foto.jpg", etc. Cuando <code class="text-amber-400">confirmar=True</code>, realiza los cambios usando <code class="text-amber-400">shutil.move()</code>. El mapeo de extensiones a carpetas usa un diccionario: <code class="text-amber-400">{".pdf": "PDFs", ".jpg": "Imagens", ".png": "Imagens", ".py": "Python", ...}</code>. Las extensiones desconocidas van a "Otros/".
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mover archivos sin mostrar primero el plan</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sobrescribir archivos con nombres duplicados</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Organizar carpetas del sistema u ocultas</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mover archivos de forma recursiva en subcarpetas</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Siempre enumera los cambios antes de ejecutar</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Renombrar si ya existe un archivo con el mismo nombre</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Ignorar los archivos ocultos (empiezan con ".")</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Organizar solo el nivel raíz de la carpeta de destino</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta — ¡Siempre confirma antes de mover!</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Nunca muevas archivos automáticamente sin la confirmación del usuario.</strong> El patrón de la tool debe ser <code class="text-amber-400">confirmar=False</code>, devolviendo solo la lista de cambios planificados. Claude le presentará esa lista al usuario y le preguntará si desea continuar. Solo cuando el usuario confirme, Claude volverá a llamar a la tool con <code class="text-amber-400">confirmar=True</code>. Este enfoque en dos pasos evita los movimientos accidentales de archivos importantes.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Probando con Claude</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Con todas las tools implementadas, probaremos el Asistente de Archivos en escenarios reales. El objetivo es validar que Claude pueda entender solicitudes en lenguaje natural, elegir la tool correcta y presentar los resultados de forma útil. Cada escenario prueba una combinación distinta de tools y capacidades.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Configura el servidor en Claude Desktop y crea una carpeta de prueba con archivos variados (textos, PDFs, imágenes, código Python). Cuanto más diversa sea la carpeta de prueba, más escenarios podrás validar. Observa cómo Claude decide qué tool usar; a veces combina varias en secuencia, por ejemplo, primero llama a estatisticas_pasta para saber qué hay en la carpeta y luego a ler_arquivo para inspeccionar un archivo específico.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Escenarios de prueba sugeridos</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Prueba 1: Explorar</span>
+<p class="text-neutral-300 text-sm mt-1">"¿Qué hay en mi carpeta Downloads?" — Claude debe llamar a estatisticas_pasta y presentar un resumen organizado con el conteo por tipo, el tamaño total, etc.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Prueba 2: Buscar</span>
+<p class="text-neutral-300 text-sm mt-1">"Busca 'TODO' en todos los archivos de mi proyecto" — Claude debe llamar a buscar_em_arquivos y enumerar cada coincidencia con archivo, línea y contexto.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Prueba 3: Leer</span>
+<p class="text-neutral-300 text-sm mt-1">"Lee el archivo notas.txt y hazme un resumen" — Claude debe llamar a ler_arquivo y luego resumir el contenido naturalmente en la respuesta.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Prueba 4: Organizar</span>
+<p class="text-neutral-300 text-sm mt-1">"Organiza los archivos de la carpeta Teste por tipo" — Claude primero debe mostrar el plan (confirmar=False), preguntar y solo después ejecutar (confirmar=True).</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Crea una carpeta de pruebas dedicada con archivos de ejemplo antes de probar: nunca pruebes directamente en carpetas importantes. Usa <code class="text-amber-400">mkdir pasta_teste &amp;&amp; touch pasta_teste/doc.pdf pasta_teste/foto.jpg pasta_teste/notas.txt pasta_teste/script.py</code> para crear rápidamente una estructura de prueba. Esto permite probar todas las tools sin riesgo de afectar archivos reales, especialmente la tool de organización que mueve archivos.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-amber-900/40 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Planificamos 4 tools para el Asistente de Archivos: leer, buscar, estadísticas y organizar.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Implementamos ler_arquivo con metadatos y límite de tamaño; Claude resume el contenido de forma natural.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Creamos buscar_em_arquivos con búsqueda recursiva mediante rglob, que devuelve el archivo, la línea y el contexto.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Implementamos estadisticas_pasta con conteo por extensión, tamaño total e identificación de extremos.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Construimos organizar_por_tipo con confirmación en dos pasos: primero lista y después ejecuta.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Probamos el asistente completo con escenarios reales de exploración, búsqueda, lectura y organización.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 4.4 — Integración con API REST
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-4-4.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

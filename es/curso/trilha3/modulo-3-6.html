@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3.6 — Agregando Resources | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Ruta 3</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 3.6</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 3.6</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📦 Cómo agregar Resources
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Aprende a exponer datos como Resources para que el modelo acceda a información sin ejecutar acciones.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">30</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermedio</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Práctico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Qué son los Resources en el código</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Hasta ahora hemos trabajado con <strong class="text-neutral-100">tools</strong> — funciones que ejecutan acciones y devuelven resultados. Ahora conozcamos los <strong class="text-neutral-100">resources</strong>: datos que el modelo puede leer, pero no modificar. Mientras que las tools son "verbos" (hacer algo), los resources son "sustantivos" (acceder a algo). Esta distinción es fundamental en la arquitectura MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          En FastMCP, un resource se crea con el decorador <code class="text-purple-400">@mcp.resource()</code>, que recibe una <strong class="text-neutral-100">URI</strong> como identificador único:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"config://app"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_config</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Devuelve la configuración de la app."""</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"versión: 1.0, modo: producción"</span></p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La diferencia fundamental: <strong class="text-neutral-100">tools ejecutan acciones</strong> (enviar un correo electrónico, calcular, consultar una API), mientras que <strong class="text-neutral-100">los resources exponen datos</strong> (configuraciones, documentación, estado). El modelo lee los resources para obtener contexto, pero no puede usarlos para modificar nada.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piensa en los resources como <strong class="text-neutral-100">archivos en un sistema de archivos virtual</strong>. Cada resource tiene una dirección (URI) y un contenido. El modelo puede "abrir y leer" estos archivos, pero no puede "escribir" en ellos. Usa resources para todo lo que el modelo necesita saber, pero no necesita hacer: configuraciones, documentación, constantes y datos de referencia.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar tools cuando bastan los resources</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Poner acciones (side effects) en resources</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Exponer datos sensibles sin control</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mezclar datos y acciones en el mismo componente</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar resources para datos de lectura</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Mantener resources como funciones puras (sin efectos)</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar URIs descriptivas y organizadas</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Separar claramente las tools de los resources</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 Resources estáticos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los Resources estáticos devuelven datos fijos que no cambian entre llamadas: configuraciones de la aplicación, documentación, constantes y reglas de negocio. Son los más fáciles de implementar y los más comunes en los servers MCP. El modelo puede acceder a ellos en cualquier momento para obtener información de referencia.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"config://app"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_app_config</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Configuración de la aplicación."""</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"""</span></p>
+<p><span class="text-green-400">    Aplicación: Mi Server MCP</span></p>
+<p><span class="text-green-400">    Versión: 1.0.0</span></p>
+<p><span class="text-green-400">    Entorno: producción</span></p>
+<p><span class="text-green-400">    Máx. de conexiones: 100</span></p>
+<p><span class="text-green-400">    Timeout predeterminado: 30s</span></p>
+<p><span class="text-green-400">    """</span></p>
+<br/>
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"docs://ajuda"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_help</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Documentación de ayuda."""</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Usa las tools disponibles para calcular y consultar el clima."</span></p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Los Resources estáticos son excelentes para proporcionar <strong class="text-neutral-100">contexto para el modelo</strong>. Por ejemplo, un resource con las reglas de negocio de la empresa permite que el modelo responda preguntas sobre políticas sin necesidad de una tool. Un resource con la documentación del sistema ayuda al modelo a guiar al usuario. Piensa en los resources como el «manual de instrucciones» que el modelo puede consultar.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 Resources dinámicos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A diferencia de los estáticos, los resources dinámicos devuelven datos que cambian en cada acceso. La fecha y hora actuales, el estado del sistema, los contadores, los datos de monitoreo: todo eso es dinámico. La función del resource se ejecuta cada vez que el modelo accede a ese URI, lo que garantiza que los datos estén siempre actualizados.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p><span class="text-purple-400">from</span> datetime <span class="text-purple-400">import</span> datetime</p>
+<br/>
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"status://hora-atual"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_hora_atual</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Devuelve la fecha y hora actuales del servidor."""</span></p>
+<p>    agora = datetime.now()</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Fecha y hora: </span>{agora.strftime('%d/%m/%Y %H:%M:%S')}<span class="text-green-400">"</span></p>
+<br/>
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"status://sistema"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_status_sistema</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Devuelve el estado actual del sistema."""</span></p>
+<p> <span class="text-purple-400">import</span> platform</p>
+<p> <span class="text-purple-400">return</span> (</p>
+<p> <span class="text-green-400">f"SO: </span>{platform.system()}<span class="text-green-400">\n"</span></p>
+<p> <span class="text-green-400">f"Python: </span>{platform.python_version()}<span class="text-green-400">\n"</span></p>
+<p> <span class="text-green-400">f"Hora: </span>{datetime.now().strftime('%H:%M:%S')}<span class="text-green-400">"</span></p>
+<p>    )</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Flujo de acceso a un resource dinámico</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 1</span>
+<p class="text-neutral-300 text-sm mt-1">El modelo decide que necesita un dato (ej.: la hora actual) y solicita el resource mediante la URI.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 2</span>
+<p class="text-neutral-300 text-sm mt-1">FastMCP recibe la solicitud y ejecuta la función asociada a esa URI en ese momento.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 3</span>
+<p class="text-neutral-300 text-sm mt-1">La función devuelve el dato actualizado (ej.: "14:35:22") y el modelo lo usa en su respuesta al usuario.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Los Resources dinámicos son particularmente útiles en escenarios de <strong class="text-neutral-100">monitoreo y observabilidad</strong>. Un server MCP puede exponer resources con métricas del sistema, estado de los servicios, registros recientes y paneles de estado, lo que permite que el modelo responda preguntas como «¿Cómo está el estado del sistema?» o «¿Cuál es el uso actual de la memoria?» sin necesidad de tools específicas.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔗 Esquemas URI</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Cada resource se identifica con una <strong class="text-neutral-100">URI</strong> (Uniform Resource Identifier): una dirección única que sigue el estándar <code class="text-purple-400">tipo://caminho</code>. El "tipo" (scheme) indica la categoría del dato y la "ruta" identifica el recurso específico. Las URIs bien organizadas facilitan que el modelo descubra y use los resources.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          El formato de la URI es <code class="text-purple-400">scheme://path</code>, donde el scheme indica el tipo de dato:
+        </p>
+<div class="space-y-2 text-sm text-neutral-300">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
+<span class="text-purple-400">config://</span>settings <span class="text-neutral-500">→ configuración del sistema</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
+<span class="text-purple-400">file://</span>readme.md <span class="text-neutral-500">→ contenido de un archivo</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
+<span class="text-purple-400">db://</span>users <span class="text-neutral-500">→ datos de una tabla</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
+<span class="text-purple-400">status://</span>health <span class="text-neutral-500">→ estado de salud del sistema</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
+<span class="text-purple-400">docs://</span>api/endpoints <span class="text-neutral-500">→ documentación de endpoints</span>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mt-4">
+          La URI identifica <strong class="text-neutral-100">únicamente</strong> cada recurso. Dos URI diferentes siempre apuntan a recursos diferentes. Organiza tus URI de forma lógica y coherente.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ URI confusas</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-neutral-400">data://x1</code> — sin significado</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-neutral-400">resource://get_stuff</code> — verbo en resource</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-neutral-400">abc://123</code> — scheme sin semántica</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-neutral-400">config://ConfiguraçõesDoApp</code> — acentos y mayúsculas</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ URI claras</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-neutral-400">config://app</code> — claro y conciso</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-neutral-400">status://health</code> — semántica clara</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-neutral-400">docs://api/endpoints</code> — jerárquico</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-neutral-400">db://users/schema</code> — específico</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Listar resources</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El protocolo MCP permite que el client liste todos los resources disponibles en el server. FastMCP lo hace automáticamente: todos los resources registrados con <code class="text-purple-400">@mcp.resource()</code> aparecen en el listado. Además, MCP admite <strong class="text-neutral-100">resource templates</strong> — resources parametrizados en los que una parte de la URI es variable.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Los resource templates permiten crear resources parametrizados. FastMCP detecta automáticamente los parámetros en la URI:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"users://{user_id}/profile"</span>)</p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">get_user_profile</span>(user_id: <span class="text-yellow-400">str</span>) -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Devuelve el perfil de un usuario."""</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Perfil del usuario </span>{user_id}<span class="text-green-400">"</span></p>
+</div>
+<p class="text-neutral-300 leading-relaxed mt-4">
+          O <code class="text-purple-400">{user_id}</code> en la URI se convierte en un parámetro. El modelo puede acceder <code class="text-purple-400">users://alice/profile</code> o <code class="text-purple-400">users://bob/profile</code> — cada uno devuelve datos diferentes. FastMCP los registra como un resource template en el listado.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El listado de resources funciona como un <strong class="text-neutral-100">"catálogo"</strong> del server. El client MCP puede solicitar la lista completa de resources antes de usar cualquiera de ellos. Esto permite que el modelo sepa exactamente qué datos están disponibles y cómo acceder a ellos. Mantén organizadas tus URIs y descripciones (docstrings) para facilitar su descubrimiento.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Ten cuidado con lo que expones como resource. Todos los resources registrados quedan visibles para el cliente MCP. <strong class="text-neutral-100">Nunca expongas datos sensibles</strong> como contraseñas, tokens de API, claves privadas o datos personales sin la protección adecuada. Trata los resources como endpoints públicos: si el modelo no debe leer un dato, no crees un resource para él.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Probando recursos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Probemos los resources que creamos en Claude Desktop. El modelo debería poder enumerar los resources disponibles y leer el contenido de cada uno. A diferencia de las tools (que el modelo llama activamente), los resources son datos a los que el modelo puede acceder cuando necesita contexto para responder una pregunta.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Prueba tus resources con preguntas que motiven al modelo a buscarlos:
+        </p>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">1.</span>
+<span>"¿Qué configuraciones están disponibles?" — el modelo debe leer el resource <code class="text-purple-400">config://app</code>.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">2.</span>
+<span>"¿Cuál es la fecha y hora actuales?" — el modelo debe leer <code class="text-purple-400">status://hora-atual</code> y devolver el valor dinámico.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">3.</span>
+<span>"¿Cuál es el estado del sistema?" — el modelo debe leer <code class="text-purple-400">status://sistema</code>.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">4.</span>
+<span>"Muéstrame la documentación de ayuda." — el modelo debe leer <code class="text-purple-400">docs://ajuda</code>.</span>
+</li>
+</ul>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Una buena práctica es crear un resource <code class="text-purple-400">docs://ajuda</code> en todo server MCP que explique qué tools y resources están disponibles. Cuando el usuario pregunta "¿Qué puedes hacer?", el modelo lee ese resource y presenta las capacidades del server de forma organizada. Es como crear un <strong class="text-neutral-100">menú de ayuda integrado</strong>.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Secuencia de pruebas recomendada</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Prueba 1 — Resource estático</span>
+<p class="text-neutral-300 text-sm mt-1">Pregunta sobre la configuración. Verifica que el modelo devuelva los datos fijos del resource config://app.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Prueba 2 — Resource dinámico</span>
+<p class="text-neutral-300 text-sm mt-1">Pregunta la hora dos veces con un intervalo. Verifica que los valores cambien entre las consultas.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Prueba 3 — Combinación de tools + resources</span>
+<p class="text-neutral-300 text-sm mt-1">Haz preguntas que usen tanto tools como resources. Ej.: "Consulta el clima y dime la hora actual."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los Resources son datos que el modelo lee, a diferencia de las tools, que ejecutan acciones.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los Resources estáticos devuelven datos fijos: configuraciones, documentación y constantes.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los resources dinámicos devuelven datos actualizados en cada acceso: hora, estado, métricas.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Las URI siguen el patrón scheme://path y deben ser claras, organizadas y descriptivas.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los resource templates permiten crear resources parametrizados con variables en la URI.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los Resources y las tools se complementan: datos de contexto + acciones forman un server completo.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 3.7 — Añadiendo prompts
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-7.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

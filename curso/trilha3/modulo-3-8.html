@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3.8 — Tratamento de Erros | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-8.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-8.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-8.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-3-8.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha3/modulo-3-8.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha3/modulo-3-8.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Trilha 3</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 3.8</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 3.8</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          ⚠️ Tratamento de Erros
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Aprenda a lidar com falhas de forma elegante — validação, try/except, timeouts e logging.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">25</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermediário</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Prático</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚠️ Tipos de Erros em MCP</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Servers MCP estão sujeitos a diversos tipos de falhas. Compreender cada categoria de erro é o primeiro passo para tratá-los adequadamente. Um bom server não é aquele que nunca falha — é aquele que falha de forma <strong class="text-neutral-100">previsível, informativa e recuperável</strong>.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Os erros em um server MCP se dividem em quatro categorias principais: <strong class="text-neutral-100">erros de entrada</strong> (parâmetros inválidos, tipos errados, valores fora do range esperado); <strong class="text-neutral-100">erros de execução</strong> (bugs no código, divisão por zero, chave inexistente em dicionário); <strong class="text-neutral-100">erros de rede</strong> (API externa fora do ar, timeout de conexão, DNS não resolvido); e <strong class="text-neutral-100">erros de permissão</strong> (acesso negado a arquivo, token expirado, credenciais inválidas). Cada tipo exige uma estratégia de tratamento diferente.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Estudos de engenharia de software mostram que <strong class="text-neutral-100">mais de 60% dos incidentes em produção</strong> são causados por tratamento inadequado de erros — não pelos erros em si. Em servers MCP, isso é ainda mais crítico porque o modelo de IA depende de mensagens de erro claras para informar o usuário sobre o que aconteceu e sugerir próximos passos. Um stack trace cru não ajuda ninguém.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Categorias de erros</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Erros de Entrada</span>
+<p class="text-neutral-300 text-sm mt-1">Parâmetros inválidos, tipos errados, valores fora do range. Detectáveis antes de executar a lógica principal. Prevenidos com validação.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Erros de Execução</span>
+<p class="text-neutral-300 text-sm mt-1">Bugs no código, KeyError, IndexError, divisão por zero. Acontecem durante o processamento. Prevenidos com try/except e testes.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Erros de Rede</span>
+<p class="text-neutral-300 text-sm mt-1">API fora do ar, timeout, DNS não resolvido. Imprevisíveis e transitórios. Tratados com retry e mensagens claras.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Erros de Permissão</span>
+<p class="text-neutral-300 text-sm mt-1">Acesso negado, token expirado, credenciais inválidas. Requerem ação do usuário ou admin. Mensagem clara sobre o que falta.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🛡️ Validação de Entrada</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A primeira linha de defesa contra erros é a validação de entrada. Antes de processar qualquer dado, verifique se os parâmetros estão corretos — tipo, formato, range, presença. Nunca confie nos dados que chegam. Retorne mensagens claras quando algo estiver errado, para que o modelo possa informar o usuário de forma útil.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Validação robusta no início da tool evita erros cascata:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-purple-400">@mcp.tool()</div>
+<div><span class="text-blue-400">async def</span> <span class="text-neutral-100">buscar_usuario</span>(<span class="text-neutral-300">id</span>: <span class="text-yellow-400">int</span>) -&gt; <span class="text-yellow-400">str</span>:</div>
+<div class="pl-4"><span class="text-neutral-500"># Validar tipo e range</span></div>
+<div class="pl-4"><span class="text-blue-400">if</span> id &lt;= <span class="text-yellow-400">0</span>:</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">"Erro: ID deve ser um número positivo."</span></div>
+<div class="pl-4"><span class="text-blue-400">if</span> id &gt; <span class="text-yellow-400">999999</span>:</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">"Erro: ID fora do range válido (1-999999)."</span></div>
+<div class="pl-4"><span class="text-neutral-500"># Agora sim, processar...</span></div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Confiar cegamente nos dados recebidos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Validar apenas o tipo, ignorando range e formato</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mensagens de erro genéricas ("Erro interno")</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Deixar a validação para o final do processamento</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Validar todos os parâmetros no início da função</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Checar tipo, range, formato e presença</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Retornar mensagem clara dizendo o que está errado</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Incluir o valor esperado na mensagem de erro</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Nunca exponha dados sensíveis em mensagens de erro.</strong> Evite retornar caminhos de arquivo do servidor, nomes de variáveis de ambiente, strings de conexão de banco de dados ou qualquer informação que possa ser usada para explorar o sistema. Mensagens de erro devem ser úteis para o usuário, não para um atacante.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 Try/Except em Tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Mesmo com validação perfeita, erros de execução podem acontecer. A estrutura <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">try/except</code> é sua rede de segurança — ela captura exceções antes que derrubem o server e permite retornar mensagens de erro úteis em vez de stack traces incompreensíveis.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Envolva a lógica principal em try/except com exceções específicas:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-purple-400">@mcp.tool()</div>
+<div><span class="text-blue-400">async def</span> <span class="text-neutral-100">processar_dados</span>(<span class="text-neutral-300">dados</span>: <span class="text-yellow-400">str</span>) -&gt; <span class="text-yellow-400">str</span>:</div>
+<div class="pl-4"><span class="text-blue-400">try</span>:</div>
+<div class="pl-8">resultado = json.loads(dados)</div>
+<div class="pl-8">valor = resultado[<span class="text-green-400">"chave"</span>]</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">f"Valor encontrado: </span><span class="text-yellow-400">{valor}</span><span class="text-green-400">"</span></div>
+<div class="pl-4"><span class="text-blue-400">except</span> json.JSONDecodeError:</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">"Erro: dados não são JSON válido."</span></div>
+<div class="pl-4"><span class="text-blue-400">except</span> KeyError <span class="text-blue-400">as</span> e:</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">f"Erro: chave </span><span class="text-yellow-400">{e}</span><span class="text-green-400"> não encontrada nos dados."</span></div>
+<div class="pl-4"><span class="text-blue-400">except</span> Exception <span class="text-blue-400">as</span> e:</div>
+<div class="pl-8"><span class="text-blue-400">return</span> <span class="text-green-400">f"Erro inesperado: </span><span class="text-yellow-400">{type(e).__name__}</span><span class="text-green-400">."</span></div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Sempre capture exceções específicas antes da genérica.</strong> Comece com os erros mais prováveis (<code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">ValueError</code>, <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">KeyError</code>, <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">json.JSONDecodeError</code>) e termine com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">except Exception</code> como rede de segurança final. Nunca use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">except:</code> sem tipo — isso captura até KeyboardInterrupt e SystemExit.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-xs">except:</code> sem tipo de exceção</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar stack trace completo ao modelo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Silenciar erros com <code class="text-xs">pass</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Um único except genérico para tudo</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Capturar exceções específicas primeiro</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Retornar mensagem de erro legível e útil</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Logar o erro completo (ver tópico 6)</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Exception genérica como fallback final</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📡 Erros de Rede</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Quando suas tools fazem requisições HTTP a APIs externas, falhas de rede são inevitáveis. O servidor da API pode estar fora do ar, a conexão pode expirar, ou a resposta pode ter um status de erro. Cada tipo de falha de rede exige tratamento específico com mensagens que ajudem o modelo a informar o usuário sobre o que aconteceu.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">httpx</code>, os principais erros de rede são:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded">httpx.ConnectError</code> — não conseguiu conectar ao servidor (DNS, porta fechada, host inacessível)</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded">httpx.TimeoutException</code> — conexão ou leitura excedeu o tempo limite</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span><code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded">httpx.HTTPStatusError</code> — servidor respondeu com status 4xx ou 5xx</li>
+</ul>
+<p class="mt-4">Trate cada um separadamente para dar mensagens precisas ao modelo.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Tipos de erro de rede e como tratar</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">ConnectError</span>
+<p class="text-neutral-300 text-sm mt-1">Servidor inacessível. Mensagem: "Não foi possível conectar ao serviço X. Verifique se o serviço está online." Retry pode ajudar se for transitório.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">TimeoutException</span>
+<p class="text-neutral-300 text-sm mt-1">Tempo esgotado. Mensagem: "A requisição ao serviço X demorou mais que o esperado." Considerar aumentar timeout ou retry com backoff.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">HTTPStatusError</span>
+<p class="text-neutral-300 text-sm mt-1">Resposta com erro. 404 = recurso não encontrado, 401/403 = não autorizado, 500 = erro no servidor externo. Adaptar mensagem ao status code.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Cuidado com retry infinito.</strong> Se a API está fora do ar, tentar novamente sem limites vai travar sua tool. Use retry com backoff exponencial e limite máximo de tentativas (ex: 3 tentativas com espera de 1s, 2s, 4s). Se todas falharem, retorne uma mensagem clara informando que o serviço está temporariamente indisponível.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⏱️ Timeouts</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Configurar timeouts é essencial em servers MCP. O modelo de IA espera a resposta da tool para continuar — se a tool travar em uma requisição HTTP sem timeout, o modelo fica parado indefinidamente. Sempre defina limites de tempo para operações que podem demorar.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Sempre configure timeout nas requisições HTTP:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div><span class="text-blue-400">async with</span> httpx.AsyncClient(<span class="text-neutral-300">timeout</span>=<span class="text-yellow-400">10.0</span>) <span class="text-blue-400">as</span> client:</div>
+<div class="pl-4">response = <span class="text-blue-400">await</span> client.get(url)</div>
+</div>
+<p class="mt-4">O valor <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">timeout=10.0</code> significa que a requisição será cancelada se demorar mais de 10 segundos. Para APIs rápidas, 5-10 segundos é suficiente. Para operações pesadas, pode ser necessário 30 segundos ou mais — mas sempre com um limite definido.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Você pode configurar timeouts granulares com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">httpx.Timeout(connect=5.0, read=10.0, write=5.0, pool=5.0)</code>. Isso permite limites diferentes para conexão, leitura, escrita e pool. Na maioria dos casos, <strong class="text-neutral-100">timeout=10.0</strong> como valor único é suficiente e mais simples de manter.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Requisições HTTP sem timeout (padrão pode ser infinito)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Timeouts muito longos (60s+) sem justificativa</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar TimeoutException e deixar o server travar</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Timeout diferente para cada tool sem padrão</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Definir timeout em toda requisição HTTP</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Valores razoáveis: 5-15s para APIs padrão</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Capturar TimeoutException com mensagem clara</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Padronizar timeouts em constantes do projeto</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Logging e Debug</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Mensagens de erro retornadas ao modelo devem ser simples e úteis. Mas para você, o desenvolvedor, precisa de detalhes completos para diagnosticar problemas. É aí que entra o logging — registrar erros detalhados para stderr sem interferir no protocolo MCP que usa stdout.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Configure logging para registrar erros detalhados em stderr:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div><span class="text-blue-400">import</span> logging</div>
+<div></div>
+<div>logging.basicConfig(</div>
+<div class="pl-4">level=logging.INFO,</div>
+<div class="pl-4">format=<span class="text-green-400">"%(asctime)s - %(name)s - %(levelname)s - %(message)s"</span>,</div>
+<div class="pl-4">handlers=[logging.StreamHandler()]  <span class="text-neutral-500"># stderr por padrão</span></div>
+<div>)</div>
+<div>logger = logging.getLogger(<span class="text-green-400">"mcp-server"</span>)</div>
+<div></div>
+<div><span class="text-neutral-500"># Dentro de uma tool:</span></div>
+<div><span class="text-blue-400">except</span> Exception <span class="text-blue-400">as</span> e:</div>
+<div class="pl-4">logger.error(<span class="text-green-400">f"Erro em buscar_usuario: </span><span class="text-yellow-400">{e}</span><span class="text-green-400">"</span>, exc_info=<span class="text-yellow-400">True</span>)</div>
+<div class="pl-4"><span class="text-blue-400">return</span> <span class="text-green-400">"Erro ao buscar usuário. Tente novamente."</span></div>
+</div>
+<p class="mt-4">O <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">exc_info=True</code> inclui o stack trace completo no log — essencial para debug. O protocolo MCP usa stdout para comunicação, então logs em stderr não interferem.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use níveis de log adequados: <strong class="text-neutral-100">DEBUG</strong> para detalhes de desenvolvimento, <strong class="text-neutral-100">INFO</strong> para operações normais (tool chamada, parâmetros recebidos), <strong class="text-neutral-100">WARNING</strong> para situações suspeitas mas não críticas, <strong class="text-neutral-100">ERROR</strong> para falhas que impedem a operação. Em produção, configure o nível para INFO; em desenvolvimento, use DEBUG.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O MCP Inspector mostra os logs do server na sua interface, facilitando o debug durante desenvolvimento. Logs estruturados (com timestamp, nível e nome do logger) são <strong class="text-neutral-100">3x mais rápidos de diagnosticar</strong> do que prints soltos, segundo estudos de engenharia de software. Invista tempo configurando logging adequado desde o início — você agradecerá quando surgir o primeiro bug em produção.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Erros em MCP se dividem em quatro categorias: entrada, execução, rede e permissão.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Validação de entrada é a primeira linha de defesa — cheque tipo, range e formato antes de processar.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Try/except com exceções específicas captura erros e retorna mensagens úteis em vez de stack traces.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Erros de rede (ConnectError, TimeoutException, HTTPStatusError) precisam de tratamento individual.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Timeouts são obrigatórios em requisições HTTP — o modelo não pode ficar esperando para sempre.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Logging em stderr preserva o protocolo MCP e fornece detalhes essenciais para debug.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 3.9 — Testando com MCP Inspector
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-9.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

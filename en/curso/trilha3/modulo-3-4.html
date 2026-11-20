@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 3.4 — Calculator Server | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-3-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/modulo-3-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Track 3</a>
+<span>/</span>
+<span class="text-neutral-300">Module 3.4</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 3.4</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🔢 Calculator Server
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Build a server with 4 math operations—your first multi-tool server with input validation.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">35</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎯 Planning the Tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Before writing any code, let's plan our calculator server. The idea is to create four basic math tools: <strong class="text-neutral-100">add</strong>, <strong class="text-neutral-100">subtract</strong>, <strong class="text-neutral-100">multiply</strong> e <strong class="text-neutral-100">divide</strong>. Each will receive two floating-point numbers (float) as parameters and return the result of the operation. This will be your first server with multiple tools—a significant step toward building more complex MCP servers.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Our server will have 4 tools, all following the same signature pattern:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
+<p><span class="text-purple-400">add</span>(a: float, b: float) → float</p>
+<p><span class="text-purple-400">subtract</span>(a: float, b: float) → float</p>
+<p><span class="text-purple-400">multiply</span>(a: float, b: float) → float</p>
+<p><span class="text-purple-400">divide</span>(a: float, b: float) → float <span class="text-neutral-500"># with validation that b != 0</span></p>
+</div>
+<p class="text-neutral-300 leading-relaxed mt-4">
+          All receive two <strong class="text-neutral-100">floats</strong> and return a <strong class="text-neutral-100">float</strong>. The exception is division, which needs to check whether the divisor is zero before performing the operation. This consistent pattern makes implementation and use by the AI model easier.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Planning the tools before coding is a <strong class="text-neutral-100">essential best practice</strong>. Define the name, parameters (with types), and return value for each tool. This ensures consistency, makes the automatic documentation generated by FastMCP easier, and helps the AI model understand when and how to use each tool. Think of tools as an API—the more predictable, the better.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">➕ Addition and Subtraction</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Let's start with the simplest operations: addition and subtraction. These are straightforward tools that don't need special validation. They serve as a foundation for understanding the pattern that will be repeated in the other operations. With FastMCP, each tool is just a decorated Python function—it's that simple.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p class="text-neutral-500"># server_calculadora.py</p>
+<p><span class="text-purple-400">from</span> mcp.server.fastmcp <span class="text-purple-400">import</span> FastMCP</p>
+<br/>
+<p>mcp = FastMCP(<span class="text-green-400">"Calculator"</span>)</p>
+<br/>
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">add</span>(a: <span class="text-yellow-400">float</span>, b: <span class="text-yellow-400">float</span>) -&gt; <span class="text-yellow-400">float</span>:</p>
+<p> <span class="text-green-400">"""Adds two numbers."""</span></p>
+<p> <span class="text-purple-400">return</span> a + b</p>
+<br/>
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">subtract</span>(a: <span class="text-yellow-400">float</span>, b: <span class="text-yellow-400">float</span>) -&gt; <span class="text-yellow-400">float</span>:</p>
+<p> <span class="text-green-400">"""Subtracts b from a."""</span></p>
+<p> <span class="text-purple-400">return</span> a - b</p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Notice how the <strong class="text-neutral-100">type hints</strong> (a: float, b: float) are essential. FastMCP uses these annotations to automatically generate the JSON schema that the MCP client sends to the model. Without type hints, the model doesn't know what kind of data to send.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always write <strong class="text-neutral-100">docstrings</strong> in your tools. The docstring becomes the tool description in the MCP schema—it’s what the model reads to decide which tool to use. A clear docstring like "Adds two numbers" is much better than having no docstring at all.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          FastMCP automatically converts Python type hints into <strong class="text-neutral-100">JSON Schema</strong>. A parameter <code class="text-purple-400">float</code> becomes <code class="text-purple-400">{"type": "number"}</code> in the schema. A <code class="text-purple-400">str</code> becomes <code class="text-purple-400">{"type": "string"}</code>. This automatic conversion eliminates the need to write schemas manually—just annotate the Python functions correctly and FastMCP takes care of the rest.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✖️ Multiplication</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The multiplication tool follows exactly the same pattern as the previous tools. This is intentional—consistency across tools makes life easier for both the developer and the model. This is also a good opportunity to understand how FastMCP automatically generates the schema from your Python function.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">multiply</span>(a: <span class="text-yellow-400">float</span>, b: <span class="text-yellow-400">float</span>) -&gt; <span class="text-yellow-400">float</span>:</p>
+<p> <span class="text-green-400">"""Multiplies two numbers."""</span></p>
+<p> <span class="text-purple-400">return</span> a * b</p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          When FastMCP registers this tool, it automatically generates a schema like: <code class="text-purple-400">{"name": "multiplicar", "description": "Multiplica dois números.", "inputSchema": {"type": "object", "properties": {"a": {"type": "number"}, "b": {"type": "number"}}, "required": ["a", "b"]}}</code>. All of this comes from a simple Python function with type hints and a docstring.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Functions without type hints (the schema is empty)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Functions without docstrings (no description for the model)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Generic names like “calculate” or “func1”</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing business logic with formatting</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Type hints for all parameters and the return value</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Clear, descriptive docstrings</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Specific names: add, subtract, multiply</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>One responsibility per tool</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">➗ Division with Validation</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Division differs from the other operations because it has a dangerous special case: the <strong class="text-neutral-100">division by zero</strong>. If the user asks to divide any number by zero and the tool simply executes <code class="text-purple-400">a / b</code>, Python will raise a <code class="text-purple-400">ZeroDivisionError</code> and the server may crash. We need to validate the input before running the operation.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">def</span> <span class="text-blue-400">divide</span>(a: <span class="text-yellow-400">float</span>, b: <span class="text-yellow-400">float</span>) -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Divides a by b. Returns an error if b is zero."""</span></p>
+<p> <span class="text-purple-400">if</span> b == <span class="text-yellow-400">0</span>:</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Error: Division by zero is not allowed."</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"</span>{a / b}<span class="text-green-400">"</span></p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Instead of letting the exception bubble up, we return a <strong class="text-neutral-100">friendly error message</strong> as a string. The model receives this message and can inform the user naturally: "You can't divide by zero." This is much better than an incomprehensible Python traceback.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Never let a tool crash!</strong> An unhandled exception can bring down the entire MCP server, disconnecting the client. Always validate inputs, use try/except when needed, and return clear error messages. The model knows how to handle error messages—it doesn't know how to handle a server that has stopped responding.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Let exceptions propagate without handling them</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Return Python tracebacks as the response</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore edge cases (zero, None, etc.)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Trust that the model always sends valid data</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Validate inputs before processing</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Return user-friendly error messages</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Use try/except for unexpected errors</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Intentionally test with invalid inputs</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing All Tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        With all 4 tools implemented, it's time to configure the server in Claude Desktop and test each operation. The goal is to verify that Claude correctly identifies which tool to use for each question and that all operations return correct results—including handling division by zero.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Add the server to <strong class="text-neutral-100">claude_desktop_config.json</strong> and restart Claude Desktop. Then, don’t forget to add the startup block to the end of the file:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p><span class="text-purple-400">if</span> __name__ == <span class="text-green-400">"__main__"</span>:</p>
+<p>    mcp.run()</p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Now test the tools with natural-language questions. Claude will automatically choose the right tool for each operation.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Recommended Testing Sequence</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Test 1 — Addition</span>
+<p class="text-neutral-300 text-sm mt-1">"What's 15 + 27?" — Claude should use the tool <code class="text-purple-400">somar</code> and return 42.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Test 2 — Subtraction</span>
+<p class="text-neutral-300 text-sm mt-1">"What's 100 minus 37?" — Claude should use <code class="text-purple-400">subtrair</code> and return 63.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Test 3 — Multiplication</span>
+<p class="text-neutral-300 text-sm mt-1">"Multiply 8 by 7." — Claude should use <code class="text-purple-400">multiplicar</code> and return 56.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Test 4 — Normal division</span>
+<p class="text-neutral-300 text-sm mt-1">"Divide 100 by 4." — Claude should use <code class="text-purple-400">dividir</code> and return 25.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Test 5 — Division by zero</span>
+<p class="text-neutral-300 text-sm mt-1">"Divide 100 by 0." — Claude should receive the error message and explain that division by zero is not possible.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Also test with <strong class="text-neutral-100">decimal numbers</strong> ("How much is 3.14 times 2?") and with <strong class="text-neutral-100">negative numbers</strong> ("Subtract 50 from 30"). Check whether Claude can chain operations: "Add 10 and 20, then multiply by 3" — it should call the tools in the correct order.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Improvements and Refactoring</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Now that the server works, we can think about improvements. Rounding results, explicitly supporting integers and floats, and adding new operations such as exponentiation. These improvements turn a demo server into something more robust and professional.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Some practical improvements for the calculator server:
+        </p>
+<ul class="space-y-3 text-neutral-300">
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">1.</span>
+<span><strong class="text-neutral-100">Rounding:</strong> Use <code class="text-purple-400">round(resultado, 10)</code> to avoid floating-point issues like 0.1 + 0.2 = 0.30000000000000004.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">2.</span>
+<span><strong class="text-neutral-100">Union types:</strong> Use <code class="text-purple-400">a: int | float</code> to explicitly accept both integers and floats.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">3.</span>
+<span><strong class="text-neutral-100">New tool:</strong> Add <code class="text-purple-400">potenciar(base: float, expoente: float)</code> as an exercise — it follows the same pattern as the others.</span>
+</li>
+</ul>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          As an exercise, implement the tool <code class="text-purple-400">potenciar(base: float, expoente: float)</code>. It should return <code class="text-purple-400">base ** expoente</code>. Think: does it need special validation? What happens with <code class="text-purple-400">0 ** 0</code>? And with negative exponents? Practice thinking in <strong class="text-neutral-100">"what could go wrong?"</strong> — this mindset will serve you well with every MCP server you build.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Leave floating-point issues unhandled</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Create a single "calculate" tool that does everything</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Add unnecessary complexity</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting to test the improvements</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Round floating-point results</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Keep tools separated by operation</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Add new tools incrementally</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Test each improvement in isolation</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We planned 4 tools with consistent signatures: add, subtract, multiply, and divide.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We implemented addition and subtraction as simple functions with type hints and docstrings.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We learned how FastMCP automatically generates JSON schemas from Python type hints.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We added division-by-zero validation, returning an error message instead of crashing.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We tested all the tools in Claude Desktop with different types of input.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>We explored improvements such as rounding, union types, and new operations.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 3.5 — Weather Lookup Server
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-5.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 5.1 — Packaging Your MCP Server | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Track 5</a>
+<span>/</span>
+<span class="text-neutral-300">Module 5.1</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 5.1</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📦 Packaging Your MCP Server
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Turn your server into a professional Python package—installable, distributable, and ready to publish.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">30</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Advanced</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Why Package</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Having an MCP Server running as a script is great for development, but to distribute, version, and let others use your work, you need to turn it into a <strong class="text-neutral-100">professional Python package</strong>. Packaging means creating a structure that lets you install with pip or uv, declare dependencies, define versions, and share reliably with the community.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Package</strong> your MCP Server means turning it from a loose script into a Python project with a formal structure: metadata declared in the <code class="text-teal-400">pyproject.toml</code>, explicit dependencies, semantic versioning, and an entry point that lets you run the server with a single command in the terminal. You can install a package with <code class="text-teal-400">pip install</code> or <code class="text-teal-400">uv pip install</code>, distributed via PyPI or GitHub, and versioned with Git tags. The difference between a standalone script and a professional package is the difference between a prototype and a product.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Distribute as a loose .py file by email</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Install dependencies manually on each machine</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Without versioning—it's impossible to know which version is running</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Installation instructions: "copy this file and hope for the best"</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Structure with pyproject.toml and src layout</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Declared and versioned dependencies</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Installation with one command: <code class="text-teal-400">uv pip install .</code></li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Clear, traceable versioning via semver</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of packaging as putting your server in a <strong class="text-neutral-100">professional toolbox with an instruction manual</strong>. Without the box, you have loose parts that only you know how to assemble. With the box, anyone can install and use it with a single command. Start with <code class="text-teal-400">uv init</code> to create the basic structure automatically.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 pyproject.toml</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <code class="text-teal-400">pyproject.toml</code> is the central file for any modern Python project. It replaces the old <code class="text-neutral-400">setup.py</code> e <code class="text-neutral-400">setup.cfg</code> with a clean declarative syntax standardized by PEP 621. This is where you define the package name, version, description, dependencies, and how the package should be built.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">A <code class="text-teal-400">pyproject.toml</code> typical for an MCP Server:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto">
+<pre class="text-neutral-300"><span class="text-teal-400">[project]</span>
+name = <span class="text-primary">"meu-mcp-server"</span>
+version = <span class="text-primary">"0.1.0"</span>
+description = <span class="text-primary">"MCP Server para consulta de dados"</span>
+requires-python = <span class="text-primary">"&gt;=3.10"</span>
+dependencies = [
+    <span class="text-primary">"fastmcp&gt;=0.1.0"</span>,
+    <span class="text-primary">"httpx&gt;=0.25"</span>,
+]
+
+<span class="text-teal-400">[build-system]</span>
+requires = [<span class="text-primary">"hatchling"</span>]
+build-backend = <span class="text-primary">"hatchling.build"</span>
+
+<span class="text-teal-400">[project.scripts]</span>
+meu-server = <span class="text-primary">"meu_server.server:main"</span></pre>
+</div>
+<p class="mt-4">The section <code class="text-teal-400">[project]</code> defines metadata, <code class="text-teal-400">[build-system]</code> defines how to build and <code class="text-teal-400">[project.scripts]</code> creates executable commands in the terminal.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use <code class="text-teal-400">hatchling</code> as a build backend — it's modern, fast, and works perfectly with <code class="text-teal-400">uv</code>. If you prefer, <code class="text-teal-400">setuptools</code> also works, but hatchling is the recommended choice for new projects. Never write a <code class="text-neutral-400">setup.py</code> — o <code class="text-teal-400">pyproject.toml</code> is the official standard since PEP 621.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          PEP 621 (2021) standardized Python project metadata in <code class="text-teal-400">pyproject.toml</code>. Since then, more than <strong class="text-neutral-100">85% of new packages</strong> published on PyPI adopted this format. The <code class="text-neutral-400">setup.py</code> is considered legacy—it works, but isn’t recommended for new projects. Modern tools like <code class="text-teal-400">uv</code>, <code class="text-teal-400">hatch</code> e <code class="text-teal-400">rye</code> work natively with <code class="text-teal-400">pyproject.toml</code>.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📁 Directory Organization</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A Python package’s directory structure follows conventions that make building, testing, and distribution easier. The pattern <strong class="text-neutral-100">src layout</strong> is the recommended approach for avoiding import issues and ensuring that tests run against the installed package, not the local source code.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Recommended structure for a packaged MCP Server:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono">
+<pre class="text-neutral-300">meu-mcp-server/
+├── <span class="text-teal-400">pyproject.toml</span>
+├── <span class="text-teal-400">README.md</span>
+├── <span class="text-neutral-500">src/</span>
+│   └── <span class="text-neutral-500">meu_server/</span>
+│       ├── <span class="text-teal-400">__init__.py</span>
+│       └── <span class="text-teal-400">server.py</span>
+└── <span class="text-neutral-500">tests/</span>
+    └── <span class="text-teal-400">test_server.py</span></pre>
+</div>
+<p class="mt-4">The directory <code class="text-teal-400">src/</code> isolates the source code. The <code class="text-teal-400">__init__.py</code> marks the directory as a Python package. The <code class="text-teal-400">server.py</code> contains the MCP Server logic with the function <code class="text-teal-400">main()</code>.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Put server.py in the project root</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting __init__.py in the package</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing tests with source code</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use a flat layout without src/ for distributable packages</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Use a src layout for proper isolation</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Separate tests into their own directory</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Include README.md in the root</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Keep pyproject.toml at the root at all times</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Steps to Create the Structure</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">Create the project's root directory and initialize it with <code class="text-teal-400">uv init meu-mcp-server</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">Create <code class="text-teal-400">src/meu_server/</code> with <code class="text-teal-400">__init__.py</code> and move the server code to <code class="text-teal-400">server.py</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">Create directory <code class="text-teal-400">tests/</code> and configure the <code class="text-teal-400">pyproject.toml</code> with metadata, dependencies, and entry points.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Entry Points</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Entry points are the magic that lets you turn your MCP Server into a <strong class="text-neutral-100">executable command</strong> in the terminal. Instead of running <code class="text-neutral-400">python -m meu_server.server</code>, the user simply types <code class="text-teal-400">meu-server</code> and the package is run. This is configured in the <code class="text-teal-400">[project.scripts]</code> of the <code class="text-teal-400">pyproject.toml</code>.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The entry point configuration in <code class="text-teal-400">pyproject.toml</code>:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300"><span class="text-teal-400">[project.scripts]</span>
+meu-server = <span class="text-primary">"meu_server.server:main"</span></pre>
+</div>
+<p>This tells Python: "when someone types <code class="text-teal-400">meu-server</code> in the terminal, run the function <code class="text-teal-400">main()</code> from the file <code class="text-teal-400">server.py</code> inside the package <code class="text-teal-400">meu_server</code>." After installation, the command is available globally in the active virtual environment.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Make sure your function <code class="text-teal-400">main()</code> in <code class="text-teal-400">server.py</code> calls <code class="text-teal-400">mcp.run()</code>. This is the function that will be invoked when the user runs the command in the terminal. Always test with <code class="text-teal-400">uv pip install -e .</code> (editable mode) during development — this way, code changes are reflected immediately without reinstalling.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The command name (before the <code class="text-neutral-400">=</code>) uses <strong class="text-neutral-100">hyphens</strong>: <code class="text-teal-400">meu-server</code>. The module path (after the <code class="text-neutral-400">=</code>) uses <strong class="text-neutral-100">underscores</strong>: <code class="text-teal-400">meu_server.server:main</code>. Mixing the two is a common mistake that results in <code class="text-red-400">ModuleNotFoundError</code>. Remember: hyphens in the terminal, underscores in Python.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Dependencies and Versions</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Declaring dependencies correctly is essential for your package to work on any machine. In <code class="text-teal-400">pyproject.toml</code>, you list all the libraries your server needs with <strong class="text-neutral-100">version constraints</strong> that ensure compatibility without blocking updates. The <code class="text-teal-400">uv lock</code> generates a lockfile that pins exact versions for reproducibility.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Dependencies are declared in the section <code class="text-teal-400">[project]</code> with semantic versioning (semver):</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300">dependencies = [
+    <span class="text-primary">"fastmcp&gt;=0.1.0"</span>,      <span class="text-neutral-500"># mínimo 0.1.0</span>
+    <span class="text-primary">"httpx&gt;=0.25,&lt;1.0"</span>,    <span class="text-neutral-500"># entre 0.25 e 1.0</span>
+    <span class="text-primary">"pydantic&gt;=2.0"</span>,       <span class="text-neutral-500"># mínimo 2.0</span>
+]</pre>
+</div>
+<p><strong class="text-neutral-100">Semver</strong> (semantic versioning) uses the format <code class="text-teal-400">MAJOR.MINOR.PATCH</code>: MAJOR changes when there are breaking changes, MINOR for new features, PATCH for bug fixes. Use <code class="text-teal-400">&gt;=</code> for minimums and <code class="text-teal-400">&lt;</code> for compatibility caps.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Pin exact versions: <code class="text-red-400">fastmcp==0.1.0</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't declare a minimum version: <code class="text-red-400">httpx</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting dependencies that "are already installed"</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't run <code class="text-red-400">uv lock</code> to generate a lockfile</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Use ranges: <code class="text-teal-400">&gt;=0.1.0,&lt;1.0</code></li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>List ALL direct dependencies</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Run <code class="text-teal-400">uv lock</code> and commit the <code class="text-teal-400">uv.lock</code></li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Test in a clean environment before publishing</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          According to PyPI analyses, <strong class="text-neutral-100">23% of problems</strong> of Python package installation are caused by poorly specified dependencies — incompatible versions, missing dependencies, or overly strict constraints. Using lockfiles (<code class="text-teal-400">uv.lock</code>) reduces reproducibility failures by more than <strong class="text-neutral-100">90%</strong>, ensuring that all developers and production environments use exactly the same versions.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing the Package</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Before distributing your package, you need to <strong class="text-neutral-100">verify that it works when installed</strong> — not only when run directly from the source code. This means building the package with <code class="text-teal-400">uv build</code>, install the file <code class="text-teal-400">.whl</code> generated and test that the entry point works correctly.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The build process generates distributable files in the folder <code class="text-teal-400">dist/</code>:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Construir o pacote</span>
+$ <span class="text-teal-400">uv build</span>
+<span class="text-neutral-500">Successfully built meu_server-0.1.0-py3-none-any.whl</span>
+
+<span class="text-neutral-500"># Instalar o .whl gerado</span>
+$ <span class="text-teal-400">uv pip install dist/meu_server-0.1.0-py3-none-any.whl</span>
+
+<span class="text-neutral-500"># Testar o entry point</span>
+$ <span class="text-teal-400">meu-server</span>
+<span class="text-neutral-500">MCP Server rodando...</span></pre>
+</div>
+<p>The file <code class="text-teal-400">.whl</code> (wheel) is the standard Python distribution format. It contains your code, metadata, and entry point information — everything pip/uv needs to install correctly.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Package Testing Checklist</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">Run <code class="text-teal-400">uv build</code> and verify that the .whl is generated without errors in the folder <code class="text-teal-400">dist/</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">Create a clean virtual environment and install the .whl with <code class="text-teal-400">uv pip install</code> — simulates a real installation.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">Run the entry point command and verify that the server starts correctly and responds to MCP requests.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always test in a <strong class="text-neutral-100">clean virtual environment</strong> — not in the same environment where you developed it. This ensures all dependencies are correctly declared in the <code class="text-teal-400">pyproject.toml</code>. If something works in your dev environment but fails in a clean one, it means you forgot to declare a dependency.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Packaging turns your server from a standalone script into a professional package—installable, distributable, and versioned.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>pyproject.toml is the central file: metadata, dependencies, build system, and entry points all in one place.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>The src layout isolates the source code and avoids import problems during testing and distribution.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Entry points create executable commands in the terminal—the user runs your server with a single command.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Dependencies should be declared with version ranges and locked with uv lock for reproducibility.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Always test the built package in a clean environment before distributing it.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 5.2 — Publishing on GitHub
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-5-2.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

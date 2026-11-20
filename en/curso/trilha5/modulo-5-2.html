@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 5.2 — Publishing on GitHub | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-2.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-2.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-2.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-2.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-2.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-2.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Track 5</a>
+<span>/</span>
+<span class="text-neutral-300">Module 5.2</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 5.2</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🌐 Publishing on GitHub
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Publish your MCP Server on GitHub with a professional README, license, and installation documentation.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Advanced</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Preparing the Repository</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Before publishing on GitHub, your repository needs to be <strong class="text-neutral-100">clean and organized</strong>. This means initializing Git and configuring a <code class="text-teal-400">.gitignore</code> suitable for Python and ensure that sensitive or unnecessary files are never committed. A well-prepared repository conveys professionalism and makes contributions easier.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Essential steps to prepare the repository:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Inicializar o repositório</span>
+$ <span class="text-teal-400">git init</span>
+
+<span class="text-neutral-500"># Criar .gitignore com template Python</span>
+$ <span class="text-teal-400">curl -o .gitignore https://raw.githubusercontent.com/github/gitignore/main/Python.gitignore</span>
+
+<span class="text-neutral-500"># Primeiro commit</span>
+$ <span class="text-teal-400">git add .</span>
+$ <span class="text-teal-400">git commit -m "Initial commit: MCP Server structure"</span></pre>
+</div>
+<p>O <code class="text-teal-400">.gitignore</code> for Python should exclude: <code class="text-neutral-400">__pycache__/</code>, <code class="text-neutral-400">.env</code>, <code class="text-neutral-400">.venv/</code>, <code class="text-neutral-400">dist/</code>, <code class="text-neutral-400">*.egg-info/</code> and other build artifacts.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Never commit</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">.env</code> — API keys and secrets</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">__pycache__/</code> — Python cache</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">.venv/</code> — local virtual environment</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">dist/</code> — build artifacts</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Always commit</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span><code class="text-teal-400">pyproject.toml</code> — package definition</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span><code class="text-teal-400">uv.lock</code> — dependency lockfile</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span><code class="text-teal-400">src/</code> — server source code</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span><code class="text-teal-400">.gitignore</code> — exclusion rules</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use the <strong class="text-neutral-100">official Python .gitignore template</strong> from GitHub—it covers more than 30 file patterns that shouldn’t be committed. If you’ve already committed a <code class="text-neutral-400">.env</code> if you accidentally do this, remove it from the history with <code class="text-teal-400">git filter-branch</code> or <code class="text-teal-400">BFG Repo-Cleaner</code> and immediately replace all exposed keys.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Writing the README</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The README is the <strong class="text-neutral-100">entry point</strong> for your project. It’s the first thing anyone sees when they visit your GitHub repository. A well-written README can make the difference between someone installing and using your server or closing the tab in 5 seconds. It should clearly explain what the server does, how to install it, and how to configure it.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A professional README for an MCP Server should contain these essential sections: <strong class="text-neutral-100">title and description</strong> clear about what the server does; <strong class="text-neutral-100">installation</strong> with exact commands to install via uv or pip; <strong class="text-neutral-100">configuration in Claude Desktop</strong> with the exact JSON for the <code class="text-teal-400">claude_desktop_config.json</code>; <strong class="text-neutral-100">available tools</strong> with a description of each tool; and <strong class="text-neutral-100">usage examples</strong> showing real interactions. Python and License badges at the top add visual credibility.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 README Sections (in Order)</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Title + Badges</span>
+<p class="text-neutral-300 text-sm mt-1">Project name, one-line description, and badges (Python version, License, Build status).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Installation</span>
+<p class="text-neutral-300 text-sm mt-1">Clear commands: <code class="text-teal-400">uv pip install git+https://github.com/usuario/repo</code> or clone + install locally.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Configuration</span>
+<p class="text-neutral-300 text-sm mt-1">Exact JSON to add to <code class="text-teal-400">claude_desktop_config.json</code>, with the required environment variables.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Tools + Examples</span>
+<p class="text-neutral-300 text-sm mt-1">List of all tools with descriptions and example prompts the user can use in Claude.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use the <strong class="text-neutral-100">30-second test</strong>: if someone can't understand what your server does and how to install it in 30 seconds by reading the README, it needs to be rewritten. Put the installation command and Claude Desktop configuration right at the beginning — those are the most frequently sought-after details.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 License and Contributions</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A project without a license is, by default, <strong class="text-neutral-100">all rights reserved</strong> — no one can legally use, modify, or distribute your code. Adding an open source license is essential so the community can contribute to and use your MCP Server. In addition, contribution guidelines help maintain the project's quality.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">MIT License</strong> is the most popular choice for open source projects—it’s simple, permissive, and allows commercial use. Just create a file <code class="text-teal-400">LICENSE</code> in the project root with the standard MIT text. For contributions, a <code class="text-teal-400">CONTRIBUTING.md</code> should explain how to report bugs, suggest features, and submit pull requests. Optionally, a <code class="text-teal-400">CODE_OF_CONDUCT.md</code> establishes rules for the community to coexist.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Publish without any license</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use a restrictive license unnecessarily (GPL for libraries)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Accept contributions without guidelines</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore the code of conduct in public projects</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Use the MIT License for maximum adoption</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Create CONTRIBUTING.md with clear guidelines</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Declare the license in pyproject.toml as well</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Adopt Contributor Covenant as the code of conduct</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The MIT License is used in more than <strong class="text-neutral-100">44% of open-source projects</strong> on GitHub, followed by Apache 2.0 (18%) and GPL 3.0 (9%). Projects with clear licenses receive <strong class="text-neutral-100">3x more contributions</strong> than projects without a license. Most community-published MCP Servers use MIT—it’s the de facto standard for this ecosystem.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 GitHub Actions Basics</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        GitHub Actions lets you automate tests and checks on every push or pull request. For an MCP Server, a basic CI (Continuous Integration) workflow ensures that the code passes the linter, the package builds without errors, and imports work correctly. This prevents broken code from reaching the main branch.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">A simple YAML workflow for MCP Server CI:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto">
+<pre class="text-neutral-300"><span class="text-teal-400">name:</span> CI
+<span class="text-teal-400">on:</span> [push, pull_request]
+<span class="text-teal-400">jobs:</span>
+  <span class="text-teal-400">test:</span>
+    <span class="text-teal-400">runs-on:</span> ubuntu-latest
+    <span class="text-teal-400">steps:</span>
+      - <span class="text-teal-400">uses:</span> actions/checkout@v4
+      - <span class="text-teal-400">uses:</span> astral-sh/setup-uv@v4
+      - <span class="text-teal-400">run:</span> uv sync
+      - <span class="text-teal-400">run:</span> uv run ruff check .
+      - <span class="text-teal-400">run:</span> uv build
+      - <span class="text-teal-400">run:</span> uv run python -c "import meu_server"</pre>
+</div>
+<p class="mt-4">This workflow installs dependencies, runs the linter <code class="text-teal-400">ruff</code>, tests the build, and verifies that the package can be imported. Save it to <code class="text-teal-400">.github/workflows/ci.yml</code>.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use <code class="text-teal-400">astral-sh/setup-uv</code> to configure the <code class="text-teal-400">uv</code> in GitHub Actions—it’s the fastest way to install Python dependencies in CI. The <code class="text-teal-400">ruff</code> is the fastest linter in the Python ecosystem and covers the same rules as flake8, isort, and pyupgrade in a single binary.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Never put secrets directly in the workflow YAML.</strong> If your MCP Server needs API keys for testing, use <code class="text-teal-400">GitHub Secrets</code> (Settings → Secrets → Actions) and reference them as <code class="text-teal-400">${{ secrets.API_KEY }}</code> in the workflow. Hardcoded secrets in workflows are visible to anyone with access to the repository.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Releases and Tags</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Tags and releases are the professional way to <strong class="text-neutral-100">mark stable versions</strong> for your project. A Git tag marks a specific point in the history; a GitHub Release combines that tag with changelog notes, allowing users to identify and install specific versions of your MCP Server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The release creation flow:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Atualizar versão no pyproject.toml para 0.1.0</span>
+<span class="text-neutral-500"># Commitar a mudança</span>
+$ <span class="text-teal-400">git add pyproject.toml</span>
+$ <span class="text-teal-400">git commit -m "Release v0.1.0"</span>
+
+<span class="text-neutral-500"># Criar tag anotada</span>
+$ <span class="text-teal-400">git tag -a v0.1.0 -m "First stable release"</span>
+
+<span class="text-neutral-500"># Push com tags</span>
+$ <span class="text-teal-400">git push origin main --tags</span></pre>
+</div>
+<p>Use <strong class="text-neutral-100">semver</strong> (semantic versioning): <code class="text-teal-400">v0.1.0</code> for the first release, incrementing PATCH for fixes, MINOR for features, and MAJOR for breaking changes. On GitHub, create a Release from the tag with a changelog describing what changed.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Release Process</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">Update the version in the <code class="text-teal-400">pyproject.toml</code> and commit the change.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">Create an annotated tag with <code class="text-teal-400">git tag -a</code> and push to the remote with <code class="text-teal-400">--tags</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">On GitHub, create a Release from the tag with a changelog describing bug fixes, features added, and breaking changes.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Keep a consistent changelog format across releases. Use categories like <strong class="text-neutral-100">"Added"</strong>, <strong class="text-neutral-100">"Fixed"</strong>, <strong class="text-neutral-100">"Changed"</strong> e <strong class="text-neutral-100">"Breaking"</strong> so users can quickly see what changed. The format <a class="text-teal-400 hover:underline" href="https://keepachangelog.com">Keep a Changelog</a> is an excellent reference.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing the Installation</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The final test before announcing your MCP Server is the <strong class="text-neutral-100">clean clone test</strong>: clone the repository into a different folder (or onto another machine), follow the README instructions exactly, and verify that everything works. If you can't install it by following your own README, no one else will be able to either.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The installation test simulates the experience of a new user:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Clonar em pasta limpa</span>
+$ <span class="text-teal-400">git clone https://github.com/usuario/meu-mcp-server /tmp/teste</span>
+$ <span class="text-teal-400">cd /tmp/teste</span>
+
+<span class="text-neutral-500"># Seguir instruções do README</span>
+$ <span class="text-teal-400">uv sync</span>
+$ <span class="text-teal-400">uv run meu-server</span>
+
+<span class="text-neutral-500"># Verificar que funciona no Claude Desktop</span>
+<span class="text-neutral-500"># Configurar e testar uma chamada de tool</span></pre>
+</div>
+<p>If any step fails, update the README or fix the issue before publishing. The test should cover: installation, execution, configuration in Claude Desktop, and at least one working tool call.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Test only in your development environment</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Assuming “obvious” dependencies are installed</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Publish without following your own README</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting to test the entry point after installation</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Clone into a clean folder and follow the README</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Test in a new virtual environment without extra dependencies</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Check integration with Claude Desktop</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Asking someone to test before announcing</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Final Verification Checklist</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Clone</span>
+<p class="text-neutral-300 text-sm mt-1">Clone the repository into a temporary folder and check that the structure is complete.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Install</span>
+<p class="text-neutral-300 text-sm mt-1">Install by following the README exactly — no extra steps that "you know" but didn’t document.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Verify</span>
+<p class="text-neutral-300 text-sm mt-1">Run the server, configure it in Claude Desktop, and successfully execute at least one tool.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Prepare the repository with git init, an appropriate .gitignore, and a clean structure — never commit .env or __pycache__.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Write a professional README with installation instructions, Claude Desktop configuration, available tools, and examples.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Add an MIT license and contribution guidelines to encourage adoption and collaboration.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Configure GitHub Actions for basic CI: linter, build, and import checks.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Use tags and semver releases to mark stable versions and document changes.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Always test a clean clone before announcing it—follow your own README from scratch.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 5.3 — HTTP/SSE Transport
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-5-3.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

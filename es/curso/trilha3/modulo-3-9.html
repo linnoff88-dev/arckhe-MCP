@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3.9 — Probando con MCP Inspector | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-9.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-9.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-9.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-9.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-9.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-9.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Ruta 3</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 3.9</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 3.9</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🔍 Probando con MCP Inspector
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Usa MCP Inspector para depurar y probar tools sin necesitar Claude Desktop.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">30</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermedio</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Práctico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Qué es MCP Inspector</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        MCP Inspector es la herramienta oficial de debug para servers MCP. Es una interfaz web que se conecta a tu server y te permite ver todas las tools, resources y prompts registrados, ejecutar tools manualmente con parámetros personalizados e inspeccionar respuestas, todo sin necesidad de Claude Desktop.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">MCP Inspector</strong> actúa como un cliente MCP visual. Inicia tu server, establece la conexión mediante STDIO y presenta una interfaz web interactiva donde puedes: ver la lista completa de <strong class="text-neutral-100">tools</strong> (con descripciones y parámetros), <strong class="text-neutral-100">resources</strong> (con URI y tipos) y <strong class="text-neutral-100">prompts</strong> (con argumentos). Puedes ejecutar cualquier tool completando los parámetros en la interfaz y ver la respuesta formateada en tiempo real. Es esencial durante el desarrollo.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El Inspector es mantenido por el equipo oficial de MCP en el repositorio <strong class="text-neutral-100">modelcontextprotocol/inspector</strong> en GitHub. Admite todas las versiones del protocolo MCP y se actualiza junto con la especificación. Los desarrolladores que usan Inspector durante el desarrollo reportan <strong class="text-neutral-100">reducción del 50% en el tiempo de depuración</strong> en comparación con probar directamente desde Claude Desktop, porque el ciclo de retroalimentación es instantáneo.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Usa el Inspector como tu <strong class="text-neutral-100">primer paso de prueba</strong> — incluso antes de configurar Claude Desktop. Si tu tool funciona en Inspector, funcionará en Claude. Si no funciona en Inspector, el problema está en tu server, no en la configuración del client. Inspector es tu herramienta para aislar problemas.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📥 Cómo instalar el Inspector</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La instalación de MCP Inspector es sorprendentemente sencilla: basta con un solo comando <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">npx</code> que descarga y ejecuta todo automáticamente. No hace falta instalarlo globalmente ni configurar nada. La interfaz se abre en el navegador y está lista para usarse.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">El comando para ejecutar Inspector es:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-green-400">npx @modelcontextprotocol/inspector</div>
+</div>
+<p class="mt-4">O <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">npx</code> descarga el paquete temporalmente y lo ejecuta sin instalación global. El Inspector se abre automáticamente en el navegador en <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">http://localhost:5173</code> (puerto predeterminado). La primera ejecución puede tardar unos segundos en descargar las dependencias.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Pasos para instalar y ejecutar</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 1</span>
+<p class="text-neutral-300 text-sm mt-1">Asegúrate de tener Node.js instalado (versión 18 o superior). Verifica con <code class="text-purple-400 bg-purple-900/20 px-1 py-0.5 rounded text-xs">node --version</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 2</span>
+<p class="text-neutral-300 text-sm mt-1">Ejecuta <code class="text-purple-400 bg-purple-900/20 px-1 py-0.5 rounded text-xs">npx @modelcontextprotocol/inspector uv run server.py</code> — esto inicia el Inspector Y tu server al mismo tiempo.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 3</span>
+<p class="text-neutral-300 text-sm mt-1">El navegador se abre automáticamente. Si no se abre, accede manualmente <code class="text-purple-400 bg-purple-900/20 px-1 py-0.5 rounded text-xs">http://localhost:5173</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Node.js es obligatorio</strong> para ejecutar el Inspector. Si no tienes Node.js instalado, visita <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">nodejs.org</code> e instala la versión LTS. En Linux, puedes usar <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">sudo apt install nodejs npm</code> o instalar mediante nvm para administrar varias versiones.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔌 Conectando al Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El Inspector necesita saber cómo iniciar tu server MCP. Especificas el comando para ejecutar el server y el Inspector se encarga de iniciar el proceso, establecer la conexión STDIO y mantener la comunicación activa durante toda la sesión de debug.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">El comando completo para conectarte a tu server:</p>
+<div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
+<div class="text-green-400">npx @modelcontextprotocol/inspector uv run server.py</div>
+</div>
+<p class="mt-4">El Inspector inicia el proceso <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">uv run server.py</code> como subproceso y se conecta mediante <strong class="text-neutral-100">STDIO</strong> — el mismo mecanismo que usa Claude Desktop. Esto significa que, si funciona en Inspector, funcionará en Claude. Cualquier output que tu server envíe a stdout se interpreta como mensajes MCP; los logs deben ir a stderr.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Si usas <strong class="text-neutral-100">python</strong> directamente en lugar de <strong class="text-neutral-100">uv</strong>, el comando sería <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">npx @modelcontextprotocol/inspector python server.py</code>. El Inspector acepta cualquier comando que inicie un proceso MCP vía STDIO. Asegúrate de que el entorno virtual correcto esté activado si usas python directamente.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar print() para depurar (interfiere con STDIO)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ejecutar el Inspector sin especificar el server</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Olvidar activar el entorno virtual</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ejecutar el server en otro puerto, esperando una conexión</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar logging para stderr en lugar de print</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Pasar el comando completo del server al Inspector</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar uv run para gestionar dependencias</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Comprobar que el server funcione antes de conectar</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Probando herramientas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La interfaz de Inspector muestra todas las tools registradas en tu server, con sus descripciones y parámetros. Puedes completar los campos de parámetros, ejecutar la tool y ver la respuesta de inmediato: un ciclo de retroalimentación rápido que acelera enormemente el desarrollo.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          En la pestaña <strong class="text-neutral-100">"Tools"</strong> del Inspector, verás la lista completa de tools del server. Cada tool muestra su nombre, descripción (de la docstring) y los parámetros esperados (de los type hints). Al hacer clic en una tool, aparecen campos de formulario para cada parámetro. Completa los valores y haz clic en <strong class="text-neutral-100">"Run Tool"</strong> y la respuesta aparece formateada abajo, incluido el contenido devuelto, el tipo MIME y los posibles errores. Esto permite probar cada tool por separado, con distintas combinaciones de parámetros.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Flujo de prueba de una tool</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 1 — Ubicar</span>
+<p class="text-neutral-300 text-sm mt-1">En la pestaña "Tools", encuentra en la lista la tool que quieres probar. Verifica que el nombre y la descripción sean correctos.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 2 — Completar</span>
+<p class="text-neutral-300 text-sm mt-1">Completa los campos de parámetros con valores de prueba. Empieza con valores válidos y luego prueba los edge cases.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 3 — Ejecutar</span>
+<p class="text-neutral-300 text-sm mt-1">Haz clic en "Run Tool" y observa la respuesta. Verifica el formato, el contenido y el manejo de errores.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 4 — Iterar</span>
+<p class="text-neutral-300 text-sm mt-1">Ajusta el código del server y guarda el archivo. Vuelve a conectar el Inspector para probar los cambios.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Crea una <strong class="text-neutral-100">lista de escenarios de prueba</strong> para cada tool: valores válidos normales, valores vacíos, valores en el límite del rango, caracteres especiales, cadenas muy largas. Ejecuta cada escenario desde el Inspector y verifica que la respuesta sea adecuada en todos los casos. Esto es especialmente importante para las tools que hacen solicitudes HTTP o acceden a archivos.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📊 Análisis de respuestas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El Inspector muestra las respuestas de las tools en un formato estructurado, incluido el JSON sin procesar de la comunicación MCP. Así puedes verificar no solo el contenido de la respuesta, sino también que el formato y los tipos sean correctos; esta información es esencial para garantizar que el modelo interprete correctamente la respuesta.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Al ejecutar una tool en Inspector, la respuesta se muestra en dos vistas: la <strong class="text-neutral-100">vista formateada</strong> (texto legible, imágenes renderizadas) y el <strong class="text-neutral-100">JSON sin procesar</strong> (el mensaje MCP exacto que se enviaría al client). El JSON sin procesar muestra el array de <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">content</code> con cada bloque teniendo <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">type</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">text</code>. Comparar el JSON sin procesar con el resultado esperado es la forma más confiable de validar que tu tool funciona correctamente.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Comprobar solo la vista formateada</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar el campo isError en la respuesta</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Probar solo con un escenario (happy path)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Asumir que la respuesta es correcta sin verificarla</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Inspeccionar el JSON sin procesar de cada respuesta</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Comprobar los tipos, el formato y la estructura</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Probar escenarios de éxito y de error</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Comparar la respuesta real con la esperada</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Una respuesta MCP bien formateada sigue esta estructura: <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">{"content": [{"type": "text", "text": "..."}]}</code>. El campo <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">isError</code> indica si la tool encontró un error. Cuando devuelve <strong class="text-neutral-100">True</strong>, el modelo sabe que debe informar del error al usuario en lugar de usar la respuesta como dato válido. El Inspector lo muestra visualmente con distintos colores.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🐛 Depurando problemas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Cuando algo no funciona como esperas, Inspector es tu mejor aliado para diagnosticar el problema. Desde servers que no se conectan hasta tools que devuelven errores inesperados, hay un proceso sistemático de depuración que resuelve la mayoría de los problemas en pocos minutos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Los problemas más comunes y sus soluciones: <strong class="text-neutral-100">El server no se conecta</strong> — comprueba que el comando sea correcto y que las dependencias estén instaladas. <strong class="text-neutral-100">La tool no aparece en la lista</strong> — comprueba que el decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.tool()</code> esté presente y que la función no tenga errores de sintaxis. <strong class="text-neutral-100">La tool devuelve un error</strong> — revisa los logs del server en el terminal donde se está ejecutando Inspector; el stderr del server aparece allí. <strong class="text-neutral-100">Respuesta vacía</strong> — comprueba que la función devuelva algo (que no sea None).
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Lista de verificación de depuración</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">1. Verificar la conexión</span>
+<p class="text-neutral-300 text-sm mt-1">¿El Inspector muestra "Connected" en la parte superior? Si no, el comando del server es incorrecto o el server tiene un error de importación.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">2. Verificar las tools registradas</span>
+<p class="text-neutral-300 text-sm mt-1">¿La pestaña "Tools" muestra tus tools? Si no, revisa los decorators, los imports y que el server no falle al iniciarse.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">3. Verificar parámetros</span>
+<p class="text-neutral-300 text-sm mt-1">¿Los parámetros son correctos en la interfaz? Si faltan, verifica los type hints en la firma de la función.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">4. Verificar los registros</span>
+<p class="text-neutral-300 text-sm mt-1">Si la tool se ejecuta, pero devuelve un error, revisa los logs en el terminal. El stderr del server contiene el stack trace completo.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">5. Reconectarse tras los cambios</span>
+<p class="text-neutral-300 text-sm mt-1">Después de editar el código, debes volver a conectar el Inspector para que los cambios surtan efecto.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El error más común y más difícil de diagnosticar: <strong class="text-neutral-100">print() en el código del server</strong>. Como MCP usa stdout para la comunicación, cualquier <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">print()</code> en tu código corrompe el protocolo y provoca una desconexión inmediata. Sustituye todos los prints por <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">logging.info()</code> o <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">logging.debug()</code> que van a stderr.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>MCP Inspector es la herramienta oficial de debug: una interfaz web para probar servers MCP sin Claude Desktop.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Instalación sencilla con <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">npx @modelcontextprotocol/inspector</code> — requiere Node.js.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Se conecta al server mediante STDIO, el mismo mecanismo que Claude Desktop.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Permite probar tools completando parámetros y ejecutándolas manualmente.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Muestra el JSON sin procesar de las respuestas para validar detalladamente el formato y el contenido.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Lista de verificación para depurar: conexión, tools registradas, parámetros, logs y reconexión tras los cambios.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">¡Este es el último módulo de la Ruta 3!</strong> Siguiente Ruta: Ruta 4 — Proyectos del mundo real
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="../trilha4/index.html">
+            Siguiente Ruta →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

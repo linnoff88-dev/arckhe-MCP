@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3.3 — Entendiendo Decorators y Schemas | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Ruta 3</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 3.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 3.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🎨 Entendiendo los decorators y los schemas
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Descubre cómo FastMCP usa decorators de Python y schemas JSON para registrar tools y validar parámetros automáticamente.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">25</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermedio</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Teórico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎨 Qué son los decorators</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los decorators son una de las características más elegantes de Python. Al usar la sintaxis <code class="text-purple-400">@</code>, puedes modificar el comportamiento de una función sin cambiar su código. FastMCP aprovecha esta característica para convertir funciones comunes de Python en tools MCP, sin necesidad de archivos de configuración, registros manuales ni código boilerplate. Solo tienes que agregar el decorator y la magia ocurre.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Un <strong class="text-neutral-100">decorator</strong> en Python es una función que recibe otra función como argumento y devuelve una versión modificada de esta. La sintaxis <code class="text-purple-400">@decorator</code> es solo un atajo para <code class="text-purple-400">funcao = decorator(funcao)</code>. En el caso de FastMCP, el decorator <code class="text-purple-400">@mcp.tool()</code> hace tres cosas: <strong class="text-neutral-100">(1)</strong> registra la función en la lista de tools del server; <strong class="text-neutral-100">(2)</strong> extrae metadatos (nombre, parámetros, descripción) usando introspección de Python; y <strong class="text-neutral-100">(3)</strong> mantiene intacta la función original — sigue funcionando normalmente como cualquier función de Python.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piensa en un decorator como un <strong class="text-neutral-100">insignia que marca la función como «disponible para la IA»</strong>. Así como un producto en el estante de una tienda necesita una etiqueta de precio para venderse, una función de Python necesita el decorator <code class="text-purple-400">@mcp.tool()</code> para que sea visible como tool de MCP. Sin la etiqueta, la función existe, pero nadie fuera del código sabe que está ahí. Con la etiqueta, aparece en el catálogo de tools que el modelo puede usar.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 @mcp.tool() en detalle</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El decorator <code class="text-purple-400">@mcp.tool()</code> es el componente más importante de FastMCP. Hace el trabajo pesado de conectar tu código de Python al protocolo MCP y extrae automáticamente todo lo que el cliente necesita saber sobre la tool: nombre, descripción y schema de parámetros. Veamos exactamente qué extrae y cómo.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El decorator <code class="text-purple-400">@mcp.tool()</code> extrae automáticamente tres datos esenciales de la función: <strong class="text-neutral-100">Nombre</strong> — obtenido directamente del nombre de la función de Python (ej.: <code class="text-purple-400">def buscar_clima</code> se convierte en la tool <code class="text-purple-400">buscar_clima</code>); <strong class="text-neutral-100">Descripción</strong> — extraída del docstring de la función, que el modelo lee para entender cuándo y cómo usar la tool; y <strong class="text-neutral-100">Parámetros</strong> — extraídos de los type hints, convertidos automáticamente en JSON Schema para la validación. Todo esto ocurre sin ninguna configuración manual.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El enfoque de "convención sobre configuración" de FastMCP está inspirado en frameworks como Ruby on Rails y FastAPI. Los estudios sobre productividad de desarrolladores muestran que eliminar código boilerplate puede <strong class="text-neutral-100">aumentar la velocidad de desarrollo hasta en un 40%</strong>. En el caso de FastMCP, la misma tool que requeriría ~30 líneas de configuración manual (nombre, schema JSON, handler) se define en apenas <strong class="text-neutral-100">3-5 líneas</strong> de Python idiomático con el decorator.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funciones sin docstring (tool sin descripción)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parámetros sin type hints (schema incompleto)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nombres de función genéricos como «procesar»</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Olvidar los paréntesis: @mcp.tool vs @mcp.tool()</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Siempre incluye un docstring descriptivo</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Type hints en todos los parámetros</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Nombres específicos: «buscar_clima», «crear_tarea»</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar siempre @mcp.tool() con paréntesis</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Esquemas de parámetros</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los type hints de Python son la base del sistema de schemas de FastMCP. Cada tipo de Python se convierte automáticamente en un tipo equivalente de JSON Schema, que el modelo de IA usa para saber exactamente qué parámetros enviar al llamar a la tool. Cuanto más precisos sean los type hints, más preciso será el modelo al usar la tool.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">FastMCP convierte automáticamente los type hints de Python en JSON Schema:</p>
+<div class="grid grid-cols-2 gap-2 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">str</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "string"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">int</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "integer"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">float</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "number"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">bool</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "boolean"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">list</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "array"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-purple-400 font-mono font-bold">dict</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "object"</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700 col-span-2">
+<div class="text-purple-400 font-mono font-bold">Optional[str]</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "string" (no obligatorio)</div>
+</div>
+</div>
+<p class="mt-4">El modelo usa este esquema para <strong class="text-neutral-100">validar</strong> los parámetros antes de enviar, lo que garantiza que la tool siempre reciba datos en el formato correcto.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Siempre usa type hints <strong class="text-neutral-100">lo más específico posible</strong>. En lugar de <code class="text-purple-400">list</code>, usa <code class="text-purple-400">list[str]</code>. En lugar de <code class="text-purple-400">dict</code>, usa <code class="text-purple-400">dict[str, int]</code>. Cuanta más información tenga el schema, más correctamente completará el modelo los parámetros. Un parámetro marcado como <code class="text-purple-400">Optional[str] = None</code> indica al modelo que puede omitir este campo cuando no sea relevante.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📤 Tipos de retorno</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Lo que devuelve la tool es tan importante como lo que recibe. FastMCP admite varios tipos de retorno y se encarga de la serialización automáticamente. Las cadenas se devuelven directamente, los diccionarios y las listas se convierten en JSON y los tipos complejos se procesan de forma transparente. Entender los tipos de retorno te ayuda a crear tools que comuniquen los resultados con claridad al modelo.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las tools MCP pueden devolver diferentes tipos de datos: <strong class="text-neutral-100"><code class="text-purple-400">str</code></strong> — el más común, devuelve texto simple que el modelo puede usar directamente; <strong class="text-neutral-100"><code class="text-purple-400">dict</code></strong> — para datos estructurados, serializado automáticamente en JSON; <strong class="text-neutral-100"><code class="text-purple-400">list</code></strong> — para colecciones de elementos, también serializado en JSON. FastMCP convierte cualquiera de estos tipos al formato de respuesta MCP correcto. En la mayoría de los casos, devolver una <code class="text-purple-400">str</code> con la información formateada es la opción más simple y eficaz.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver None sin avisar</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver objetos no serializables</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver mensajes de error genéricos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver datos sin contexto explicativo</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Devolver cadenas claras e informativas</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar dicts para datos estructurados</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Incluir mensajes de error descriptivos</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Agregar contexto al resultado para el modelo</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Flujo de serialización de la respuesta</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 1</span>
+<p class="text-neutral-300 text-sm mt-1">La función de Python devuelve un valor (str, dict, list u otro tipo compatible).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 2</span>
+<p class="text-neutral-300 text-sm mt-1">FastMCP detecta el tipo del valor devuelto y lo convierte al formato de contenido MCP (TextContent para strings, JSON para dicts/lists).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Paso 3</span>
+<p class="text-neutral-300 text-sm mt-1">El resultado se encapsula en una respuesta JSON-RPC y se envía de vuelta al client, que se lo reenvía al modelo.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📖 Descripciones y documentación</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Las docstrings de tus funciones no son solo una buena práctica de programación: en el contexto de MCP, son la interfaz entre el modelo de IA y la tool. El modelo lee la descripción para decidir cuándo usar la tool y cómo completarla. Una descripción deficiente hará que el modelo use la tool en el momento equivocado o con parámetros incorrectos. Una buena descripción hará que la tool se use a la perfección.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">docstring</strong> de la función se convierte en el campo <code class="text-purple-400">description</code> de la tool en el protocolo MCP. El modelo de IA lee esta descripción para tomar tres decisiones: <strong class="text-neutral-100">(1)</strong> Cuándo usar — "¿esta tool es relevante para lo que pidió el usuario?"; <strong class="text-neutral-100">(2)</strong> Cómo usarlo — «¿qué parámetros debo pasar?»; y <strong class="text-neutral-100">(3)</strong> Qué esperar: "¿qué tipo de resultado devuelve esta tool?". Cuanto más clara, específica e informativa sea la descripción, mejor usará el modelo la tool. Las descripciones vagas llevan a un uso impreciso.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Escribe docstrings como si le explicaras la tool a un colega que nunca ha visto tu código. Sé <strong class="text-neutral-100">específico sobre lo que hace la tool</strong>, menciona <strong class="text-neutral-100">cuándo debe usarse</strong>, y describe <strong class="text-neutral-100">qué significa cada parámetro</strong>. Por ejemplo: en vez de «Busca datos», escribe «Busca el pronóstico del tiempo actual para una ciudad brasileña. Devuelve la temperatura, la humedad y las condiciones climáticas».
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Descripciones deficientes</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Procesa datos" — ¿qué? ¿Qué datos?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Haz la cosa" — ¿qué cosa?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Helper function" — ¿helper para qué?</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sin docstring (descripción vacía)</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Buenas descripciones</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Busca el pronóstico del tiempo para una ciudad"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Calcula la suma de dos números enteros"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Envía un correo electrónico al destinatario indicado"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Lista los 10 repositorios más recientes de GitHub"</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚡ Buenas prácticas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Construir tools MCP que funcionen es fácil. Construir tools que funcionen <em>bien</em> exige prestar atención a las buenas prácticas. Los nombres claros, los type hints completos, las docstrings descriptivas y el uso inteligente de defaults y Optional impactan directamente en la calidad de la experiencia del usuario final con la IA. Estas son las prácticas que distinguen las tools de aficionados de las profesionales.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las buenas prácticas para las tools MCP incluyen: <strong class="text-neutral-100">Nombres claros</strong> — usa verbos descriptivos como <code class="text-purple-400">buscar_clima</code>, <code class="text-purple-400">criar_tarefa</code>, <code class="text-purple-400">enviar_email</code>; <strong class="text-neutral-100">Type hints completos</strong> — marca todos los parámetros y el valor de retorno con tipos precisos; <strong class="text-neutral-100">Docstrings descriptivos</strong> — explica qué hace la tool, cuándo usarla y qué significa cada parámetro; <strong class="text-neutral-100">Valores predeterminados inteligentes</strong> — usa valores predeterminados cuando un parámetro suele tener un valor más común; y <strong class="text-neutral-100">Optional</strong> — usa <code class="text-purple-400">Optional[tipo]</code> para los campos que no son obligatorios, lo que permite que el modelo los omita cuando no sean relevantes.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tools que hacen muchas cosas (principio de responsabilidad única)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parámetros sin type hints (schema incompleto)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Errores silenciosos sin mensajes explicativos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Demasiados parámetros obligatorios cuando no son necesarios</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Una tool = una responsabilidad clara</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Type hints + docstring en cada tool</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Manejo de errores con mensajes útiles</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar Optional y valores predeterminados para mayor flexibilidad</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Nunca confíes en que el modelo enviará parámetros correctos — <strong class="text-neutral-100">valida siempre las entradas</strong> dentro de la función. Aunque JSON Schema ayuda, el modelo puede enviar valores inesperados (cadenas vacías, números fuera del rango, etc.). Usa validaciones simples al inicio de la función y devuelve mensajes de error claros cuando los datos no sean válidos. Una tool que falla con un mensaje útil es mucho mejor que una que se bloquea sin avisar.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los decorators en Python usan @ para modificar funciones; FastMCP lo usa para registrar tools sin código adicional.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>O <code class="text-purple-400">@mcp.tool()</code> extrae automáticamente: nombre (de la función), descripción (de la docstring) y parámetros (de las anotaciones de tipo).</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los type hints de Python (str, int, float, bool, list, dict, Optional) se convierten automáticamente en JSON Schema.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Las tools pueden devolver str, dict o list; FastMCP los serializa automáticamente al formato MCP.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Los docstrings son la interfaz con el modelo: cuanto mejor sea la descripción, más correctamente usará el modelo la tool.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Buenas prácticas: nombres claros, type hints completos, docstrings descriptivas, valores predeterminados y Optional cuando tenga sentido.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 3.4 — Servidor de calculadora
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-4.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

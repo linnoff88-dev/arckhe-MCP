@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 4.5 — Combining Multiple Servers | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .bg-amber-900\/40 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-900\/30 { background-color: rgba(217, 119, 6, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/modulo-4-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/modulo-4-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/modulo-4-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded bg-amber-500/20 text-amber-400" href="index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-amber-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-amber-400 transition-colors" href="index.html">Track 4</a>
+<span>/</span>
+<span class="text-neutral-300">Module 4.5</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 4.5</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🔗 Combining Multiple Servers
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Configure 2+ MCP Servers simultaneously in Claude Desktop and see the power of a multi-tool assistant.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">35</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔗 The Power of Combining</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        So far, each MCP Server we’ve created does one thing well: manage tasks, query databases, manipulate files, or interact with GitHub. But the real power of MCP emerges when you combine multiple servers simultaneously. Claude Desktop supports multiple MCP Servers running at the same time, and Claude automatically decides which server and tool to use based on the conversation context.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          An MCP Server does <strong class="text-neutral-100">something very</strong> — the single responsibility principle. But when you configure <strong class="text-neutral-100">multiple servers</strong> in Claude Desktop, they complement each other and create a complete assistant. Claude sees all the tools from all the servers as a unified catalog and automatically chooses the right tool. You don’t need to say "use the GitHub server"—just ask "create an issue," and Claude knows which tool to call. This modular architecture is one of the MCP protocol’s biggest advantages.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of each MCP Server as a <strong class="text-neutral-100">"skill module"</strong> that you add to Claude. A file server = the ability to read/write files. A GitHub server = the ability to interact with repositories. A database server = the ability to query data. The more modules you add, the more capable the assistant becomes — without any module needing to know the others exist.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          In practice, advanced Claude Desktop users configure between <strong class="text-neutral-100">3 to 8 MCP Servers</strong> simultaneously. Performance is not significantly affected because each server runs as an independent process, and Claude only calls the server it needs when it needs a specific tool. The overhead of having "idle" servers is minimal—they just wait for calls via stdio.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Configuring Multiple Servers</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Configuring multiple servers in Claude Desktop is surprisingly simple. Just add multiple entries to the <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">mcpServers</code> from the configuration file. Each server has its own name, command, and arguments, and they don’t interfere with one another.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Configuration example with 3 simultaneous servers:</p>
+<pre class="bg-dark-900 border border-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
+  "mcpServers": {
+    "tarefas": {
+      "command": "python",
+      "args": ["servidor_tarefas.py"]
+    },
+    "banco": {
+      "command": "python",
+      "args": ["servidor_banco.py"]
+    },
+    "github": {
+      "command": "python",
+      "args": ["servidor_github.py"],
+      "env": {
+        "GITHUB_TOKEN": "ghp_seu_token_aqui"
+      }
+    }
+  }
+}</code></pre>
+<p class="mt-4">Each entry has a <strong class="text-neutral-100">unique name</strong> (tasks, database, GitHub) that identifies the server. Claude Desktop starts all servers automatically when it opens and shuts them down when it closes.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Duplicate names for different servers</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tools with the same names on different servers</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Relative paths in args (use absolute paths)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Configuring servers that depend on each other</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Descriptive and unique names for each server</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Tools with distinct, descriptive names</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Absolute paths to the scripts</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Independent servers (no coupling)</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          If two servers expose tools with the <strong class="text-neutral-100">same name</strong>, conflicts and unpredictable behavior can occur. Always use tool names that make the context clear: <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">list_repos</code> (GitHub), <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">list_tasks</code> (tasks), <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">list_files</code> (filesystem). Avoid generic names such as <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">list</code> or <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">create</code>.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🤖 How Claude Chooses</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        When multiple MCP Servers are configured, Claude sees all the tools from all the servers as a unified catalog. It doesn't think in terms of "servers" — it thinks in terms of "available tools." It chooses which tool to use based on the tool description and the context of the user's request. That's why good descriptions are absolutely essential.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Claude sees <strong class="text-neutral-100">ALL tools from ALL servers</strong> as a flat list. When the user makes a request, Claude analyzes the context and chooses the most suitable tool based on two factors: the <strong class="text-neutral-100">tool name</strong> and, most importantly, the <strong class="text-neutral-100">description (docstring)</strong>. A tool with a poor description like "does things" will be ignored in favor of one with a clear description like "Lists all the authenticated user's GitHub repositories, including name, language, and stars." Good descriptions = better automatic choices.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Write tool descriptions as if you were explaining them to a <strong class="text-neutral-100">a colleague who has never seen your code</strong>. Include what the tool does, which parameters it accepts, and what it returns. Instead of <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">"""Busca issues."""</code>, write <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">"""Busca issues de um repositório GitHub por estado (open/closed) e labels. Retorna número, título, autor e etiquetas."""</code>. The difference in the quality of Claude's choices is dramatic.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          In tests with multiple servers, Claude's accuracy when choosing the correct tool is approximately <strong class="text-neutral-100">95%+ when descriptions are detailed</strong> and drops to around <strong class="text-neutral-100">70% with vague descriptions</strong>. The difference between a good description and a bad one can mean the difference between a reliable assistant and a frustrating one. Invest time in writing high-quality docstrings—they offer the greatest return on investment in MCP development.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Example: Tasks + Database</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Let's look at a concrete example of combining them: the task server (Module 4.1) running alongside the database server (Module 4.2). This combination enables requests that span both domains—for example, "create a task for each product with low stock." Claude uses both servers automatically.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          With the servers from <strong class="text-neutral-100">tasks</strong> e <strong class="text-neutral-100">database</strong> running simultaneously, Claude can run workflows involving both. For example, when it receives "create a task for each product with less than 10 in stock," Claude first queries the database (the database server tool) to find products with low stock, then creates a task for each one (the tasks server tool). It all happens automatically, in a single conversation, without the user having to orchestrate it manually.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Multi-Server Flow: Tasks + Database</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 1 — User</span>
+<p class="text-neutral-300 text-sm mt-1">"Create a task for each product with fewer than 10 units in stock."</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 2 — Database Server</span>
+<p class="text-neutral-300 text-sm mt-1">Claude calls query_database with SQL to find products with inventory &lt; 10. It receives the list: "Pen (5), Notebook (3), Eraser (8)".</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 3 — Tasks server</span>
+<p class="text-neutral-300 text-sm mt-1">Claude calls create_task 3 times: "Restock: Pen (5 units)", "Restock: Notebook (3 units)", "Restock: Eraser (8 units)".</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 4 — Response</span>
+<p class="text-neutral-300 text-sm mt-1">Claude says: "I created 3 restocking tasks for products with low inventory."</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The magic happens because each server is <strong class="text-neutral-100">independent</strong> — the database server doesn't know the task server exists, and vice versa. Claude handles the <strong class="text-neutral-100">intelligent orchestration</strong>, deciding the order of calls and passing data from one to the other. This is much more flexible than hardcoding the integration between the two systems.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 Example: Files + GitHub</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Another powerful example: combine the file server (Module 4.3) with the GitHub server (Module 4.4). This combination enables workflows like “read the local README and create an issue with the TODOs you find”—bringing together access to the local filesystem and actions in the cloud.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          With the servers from <strong class="text-neutral-100">files</strong> e <strong class="text-neutral-100">GitHub</strong> running together, Claude can read local files and act on GitHub based on the content it finds. Example: "Read the project's README.md and create an issue for each TODO you find." Claude uses the file server to read the README, identifies the TODOs in the text, and uses the GitHub server to create an issue for each one. A local file becomes a cloud action—all automated.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Multi-Server Flow: Files + GitHub</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 1 — User</span>
+<p class="text-neutral-300 text-sm mt-1">"Read my project's README.md and create issues for any TODOs you find."</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 2 — Files Server</span>
+<p class="text-neutral-300 text-sm mt-1">Claude calls read_file to read README.md. It identifies 3 TODOs in the content.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 3 — GitHub server</span>
+<p class="text-neutral-300 text-sm mt-1">Claude calls create_issue 3 times, once for each TODO found, with descriptive titles.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Create a mega-server that does everything</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Hardcode dependencies between servers</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Expecting servers to communicate directly</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Vague descriptions that confuse Claude’s choices</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>One server per domain (files, GitHub, database)</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Let Claude orchestrate the servers</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Independent and decoupled servers</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Rich descriptions that guide the right choices</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing the Multi-Server Assistant</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        With multiple servers configured, it's time to test scenarios that require collaboration between them. The goal is to verify that Claude moves naturally between servers, choosing the right tool at each step. Test with requests involving 2 or more servers in a single conversation.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Test scenarios that use 2+ servers:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"List my repos and create a task to review each one"</strong> — GitHub + Tasks</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Read config.json and check whether the listed products exist in the database"</strong> — Database + Files</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Check for inactive customers in the database and create a follow-up issue"</strong> — Database + GitHub</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Generate a report on the products and save it to a local file"</strong> — Database + Files</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          During testing, observe the <strong class="text-neutral-100">tool indicator</strong> in Claude Desktop—it shows which tool is being called at each step. This helps you check whether Claude is choosing correctly. If it chooses the wrong one, review the tool descriptions. In most cases, a more specific description solves the problem right away.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Multi-Server Testing Checklist</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Check 1</span>
+<p class="text-neutral-300 text-sm mt-1">All servers start without errors when opening Claude Desktop (check logs).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Check 2</span>
+<p class="text-neutral-300 text-sm mt-1">Claude lists all the tools available from all servers (ask "what tools do you have?").</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Check 3</span>
+<p class="text-neutral-300 text-sm mt-1">Requests involving 2+ servers are executed correctly, with Claude moving between servers without intervention.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Check 4</span>
+<p class="text-neutral-300 text-sm mt-1">Errors in one server do not affect the operation of the others (resilience).</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-amber-900/40 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Multiple MCP servers running simultaneously create a complete, multi-tool assistant.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Configuration is simple: multiple entries in mcpServers in config.json, each with a unique name.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Claude sees all the tools from all the servers and chooses the right one based on the description and context.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Tasks + Database combination: query data and automatically create tasks based on the results.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Files + GitHub combination: read local content and take action in the cloud based on what you find.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Good tool descriptions are essential for Claude to choose correctly among servers.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 4.6 — Security Best Practices
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-4-6.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

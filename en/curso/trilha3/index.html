@@ -1,0 +1,1392 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Track 3: First Server | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha3/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors" href="../../index.html">🔌 MCP — From Zero to Server</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-2">
+<a class="text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha1/index.html">T1</a>
+<a class="text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha2/index.html">T2</a>
+<a class="text-purple-400 bg-purple-500/10 px-3 py-1.5 rounded-lg text-sm font-medium" href="../trilha3/index.html">T3</a>
+<a class="text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha4/index.html">T4</a>
+<a class="text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha5/index.html">T5</a>
+<button class="ml-4 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 text-neutral-400 hidden" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Header -->
+<header class="bg-gradient-to-r from-purple-900/30 via-dark-800 to-dark-800 border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="text-center">
+<span class="inline-block px-4 py-1.5 bg-purple-500/20 text-purple-400 text-sm font-bold rounded-full mb-6 tracking-wider">TRACK 3</span>
+<h1 class="text-4xl md:text-5xl font-extrabold text-neutral-100 mb-6">🐍 Creating Your First MCP Server</h1>
+<p class="text-xl text-neutral-300 max-w-3xl mx-auto mb-10">Build an MCP Server from scratch in Python, understanding every line of code—from Hello World to a complete server with tools, resources, and prompts.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-purple-400">9</div>
+<div class="text-sm text-neutral-400">Modules</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-purple-400">54</div>
+<div class="text-sm text-neutral-400">Topics</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-purple-400">~6h</div>
+<div class="text-sm text-neutral-400">Duration</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-purple-400">Intermediate</div>
+<div class="text-sm text-neutral-400">Level</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Navegação Rápida -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">Quick Navigation</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-1">
+<span class="text-sm text-purple-400 font-bold">Module 3.1</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">🏗️ MCP Server Structure</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-2">
+<span class="text-sm text-purple-400 font-bold">Module 3.2</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">👋 Hello World MCP</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-3">
+<span class="text-sm text-purple-400 font-bold">Module 3.3</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">🎨 Understanding Decorators and Schemas</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-4">
+<span class="text-sm text-purple-400 font-bold">Module 3.4</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">🔢 Calculator Server</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-5">
+<span class="text-sm text-purple-400 font-bold">Module 3.5</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">🌤️ Weather Lookup Server</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-6">
+<span class="text-sm text-purple-400 font-bold">Module 3.6</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">📦 Adding Resources</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-7">
+<span class="text-sm text-purple-400 font-bold">Module 3.7</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">📝 Adding Prompts</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-8">
+<span class="text-sm text-purple-400 font-bold">Module 3.8</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">⚠️ Error Handling</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-purple-500/30 transition-colors group" href="#modulo-3-9">
+<span class="text-sm text-purple-400 font-bold">Module 3.9</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-purple-400 transition-colors mt-1">🔍 Testing with MCP Inspector</h3>
+</a>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center mb-12">
+<div class="flex-1 border-t border-dark-700"></div>
+<span class="px-4 text-neutral-400 text-sm font-medium">Detailed Content</span>
+<div class="flex-1 border-t border-dark-700"></div>
+</div>
+<!-- Module 3.1 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.1</span>
+<span class="text-sm text-neutral-400">~25 min · Theory</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🏗️ MCP Server Structure</h3>
+<p class="text-neutral-300 mb-6">Server anatomy: initialization, tool registration, and execution cycle.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Anatomy of a server</h4>
+<p class="text-sm text-neutral-400">The essential components of an MCP Server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">An MCP Server consists of essential components: the FastMCP object that manages everything, the decorated functions that define tools, resources, and prompts, and the entry point that starts the server. Each part has a clear responsibility.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing a server's anatomy lets you understand any MCP code you encounter and confidently create your own servers, knowing where each piece fits.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">FastMCP, server object, decorators, entry point, components, responsibilities.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Initialization and Setup</h4>
+<p class="text-sm text-neutral-400">How the server starts running</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Starting an MCP Server involves creating a FastMCP instance with a name, configuring optional parameters such as version and description, and preparing the environment to receive connections. This is when everything gets registered.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">A well-configured setup ensures your server works correctly from the start. Startup errors are the hardest to diagnose if you don’t understand the process.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">FastMCP(), server name, configuration parameters, instantiation, initial setup.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Registering Tools</h4>
+<p class="text-sm text-neutral-400">Making functions available to the model</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Registering tools means decorating Python functions with @mcp.tool() to make them available to the AI model. The decorator automatically extracts the function’s name, description, and parameter schema.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Registering tools is the most fundamental operation of an MCP Server. Mastering this process is essential for creating servers that expose useful functionality to the model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">@mcp.tool(), automatic registration, function introspection, schema generation, Python decorators.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔄 Lifecycle</h4>
+<p class="text-sm text-neutral-400">From start to finish</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The lifecycle of an MCP Server includes: initialization, handshake with the Client, capability registration, waiting for requests, processing calls, and graceful shutdown. Each phase has specific events and behaviors.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Understanding the lifecycle lets you create robust servers that handle each phase correctly, including clean startup and shutdown.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Lifecycle, handshake, capabilities, request loop, graceful shutdown, lifecycle events.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📁 File Structure</h4>
+<p class="text-sm text-neutral-400">Organizing the project on disk</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">A typical MCP Server file structure includes the server’s main file, a pyproject.toml or requirements.txt for dependencies, and optionally separate modules for complex tools. Simple servers can be a single file.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Good file organization makes maintenance, testing, and collaboration easier. Following conventions helps other developers understand your server quickly.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Project structure, main file, dependencies, pyproject.toml, modules, organization.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Essential settings</h4>
+<p class="text-sm text-neutral-400">Parameters every server needs</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The essential settings for an MCP Server include the server name, version, transport used, and environment variables. These settings define how the server presents itself to the Client and how it behaves in different environments.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Configuring your server correctly ensures compatibility with different Hosts and environments. Incorrect settings are a common cause of connection problems.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Name and version, transport, environment variables, Host configuration, compatibility.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-1')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-1.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.2 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.2</span>
+<span class="text-sm text-neutral-400">~30 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">👋 Hello World MCP</h3>
+<p class="text-neutral-300 mb-6">Create your first server with a tool that returns 'Hello, world!'—the minimum viable setup.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎯 The Goal</h4>
+<p class="text-sm text-neutral-400">What we’ll build and why</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The goal is to create the simplest MCP Server possible: a server with a single tool that returns "Hello, world!". This is the equivalent of Hello World for the MCP ecosystem—the minimum working example that proves everything is working.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Starting with the functional minimum eliminates complexity and lets you focus on what matters. Once Hello World works, you have a solid foundation for adding features.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Hello World, minimum viable implementation, proof of concept, learning foundation, simplicity.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Creating the File</h4>
+<p class="text-sm text-neutral-400">Initial project structure</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Creating the server file involves defining the project directory, creating the main Python file (e.g., server.py), and ensuring the virtual environment is configured with the correct dependencies installed via pip.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing how to create the initial structure correctly prevents import, dependency, and execution issues. It’s the foundation everything else is built on.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Project creation, server.py, virtual environment, pip install, directory structure.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💻 Writing the Code</h4>
+<p class="text-sm text-neutral-400">Hello World, line by line</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The Hello World MCP code consists of importing FastMCP, creating the server instance, defining a function decorated with @mcp.tool() that returns "Hello, world!", and adding the entry point with mcp.run(). It's fewer than 10 lines of code.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Writing the code from scratch instead of copying and pasting ensures you understand every line. This is the foundational knowledge that will be expanded on in all the following modules.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">from mcp.server.fastmcp import FastMCP, instantiation, @mcp.tool(), return string, mcp.run().</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Configuring in Claude</h4>
+<p class="text-sm text-neutral-400">Adding to claude_desktop_config.json</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">For Claude Desktop to recognize your server, you need to add it to claude_desktop_config.json. The entry includes the command to run Python, the path to the server file, and optional environment variables.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Host configuration is the step that connects your code to the AI model. Without it, your server exists, but no one can use it. It’s the bridge between development and real-world use.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json, mcpServers, command, args, script path, restart Claude.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing</h4>
+<p class="text-sm text-neutral-400">Verifying that Hello World works</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing Hello World involves restarting Claude Desktop, checking that the server appears in the connections list, and sending a message that triggers the tool. Claude should call your tool and display “Hello, world!” in the response.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Seeing your first server working is the most motivating moment in the course. Confirming that everything works gives you the confidence to build more complex servers.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Manual testing, connection verification, tool calling, expected response, basic troubleshooting.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Understanding Each Line</h4>
+<p class="text-sm text-neutral-400">Detailed code explanation</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">A line-by-line analysis of the Hello World code: the import brings in the framework, FastMCP() creates the server, @mcp.tool() registers the function, the docstring becomes the tool description, return defines the response, and mcp.run() starts the event loop.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Understanding every line in depth turns memorized code into real knowledge. You'll know how to safely modify and expand any part of the server.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Import statement, instantiation, decorator pattern, docstring as metadata, event loop, execution.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-2')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-2.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.3 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.3</span>
+<span class="text-sm text-neutral-400">~25 min · Theory</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🎨 Understanding Decorators and Schemas</h3>
+<p class="text-neutral-300 mb-6">How FastMCP uses Python decorators to register tools and define parameters.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎨 What Are Decorators</h4>
+<p class="text-sm text-neutral-400">Functions that modify other functions</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Python decorators are functions that wrap other functions, adding behavior without modifying the original code. The @ symbol before a function indicates that it is being decorated. In MCP, decorators register functions as tools, resources, or prompts.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Decorators are FastMCP’s core mechanism. Without understanding them, the code seems like magic. With this knowledge, you control exactly what’s happening.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Python decorators, @syntax, wrapper functions, metaprogramming, automatic registration.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 @mcp.tool()</h4>
+<p class="text-sm text-neutral-400">The main decorator for tools</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The @mcp.tool() decorator turns a regular Python function into an MCP tool. It extracts the function name, its docstring as the description, and the parameter type hints as the input schema. It also accepts optional parameters to customize the registration.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">@mcp.tool() is the decorator you'll use in 90% of cases. Mastering its options and behavior lets you create precise, well-documented tools.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">@mcp.tool(), automatic naming, docstring as description, type hints, optional parameters.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Parameter Schemas</h4>
+<p class="text-sm text-neutral-400">Defining types and validations</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Parameter schemas define the input types a tool accepts. FastMCP uses Python type hints (str, int, float, bool, list, dict) to automatically generate the JSON Schema the model uses to build correct calls.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Well-defined schemas ensure the model sends data in the correct format. Without proper schemas, your tools receive unexpected data and fail silently.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">JSON Schema, type hints, str, int, float, bool, Optional, required vs. optional parameters.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📤 Return Types</h4>
+<p class="text-sm text-neutral-400">What a tool can return</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">MCP tools can return simple strings, dictionaries serialized as JSON, or lists of content with specific types (text, image, etc.). The return type determines how the model interprets and presents the result to the user.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Choosing the right return type affects how the model uses the result. Well-formatted returns allow the model to generate more accurate and useful responses.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Return a string, return a dict, TextContent, ImageContent, serialization, response formatting.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📖 Descriptions and Docs</h4>
+<p class="text-sm text-neutral-400">Documentation the model reads</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Tool descriptions come from the Python functions’ docstrings. The model reads these descriptions to decide when and how to use each tool. Clear, specific descriptions help the model use your tools more intelligently and accurately.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Description quality directly affects the quality of interactions. A poorly described tool will be ignored or misused by the model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Docstrings, tool descriptions, parameter descriptions, prompt engineering for tools, clarity.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚡ Best practices</h4>
+<p class="text-sm text-neutral-400">Patterns for well-written tools</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">MCP tool best practices include descriptive snake_case names, detailed docstrings, type hints for all parameters, default values when appropriate, informative return values, and consistent error handling.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Following best practices from the start builds habits that lead to more robust servers that are easier to maintain and more effective at interacting with the model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Naming conventions, documentation, type safety, default values, error handling, consistency.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-3')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-3.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.4 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.4</span>
+<span class="text-sm text-neutral-400">~35 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🔢 Calculator Server</h3>
+<p class="text-neutral-300 mb-6">4 tools (add, subtract, multiply, divide) with input validation.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎯 Planning the Tools</h4>
+<p class="text-sm text-neutral-400">Defining the 4 operations</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Planning the calculator's tools involves defining 4 mathematical operations (add, subtract, multiply, divide), their parameters (two numbers), input types (float), and special behaviors such as validating division by zero.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Planning before coding is an essential habit. Defining the tools' interface before implementing them ensures consistency and avoids rework.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">API planning, interface definition, consistent parameters, edge cases, validation.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">➕ Implementing addition and subtraction</h4>
+<p class="text-sm text-neutral-400">The first two tools</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Implementing addition and subtraction as MCP tools involves creating decorated functions that take two float parameters, perform the operation, and return the formatted result. They are the simplest tools and serve as a model for the next ones.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Starting with the simplest operations lets you focus on the implementation pattern. Once addition and subtraction work, multiplication and division follow the same model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Tool implementation, float parameters, formatted return value, descriptive docstrings, replicable pattern.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✖️ Implementing multiplication</h4>
+<p class="text-sm text-neutral-400">The third tool</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The multiplication tool follows the same pattern as the previous tools, but introduces an opportunity to discuss formatting results with many decimal places and presenting large numbers in a readable way for the model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The multiplication seems trivial, but it raises practical questions about formatting and numerical precision that matter for any tool that works with numbers.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Multiplication, number formatting, decimal precision, large numbers, result presentation.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">➗ Implementing division with validation</h4>
+<p class="text-sm text-neutral-400">Handling division by zero</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The division tool introduces the first real input validation case: checking whether the divisor is zero before performing the operation. This demonstrates how to handle errors elegantly and return informative messages to the model.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Input validation is a critical skill for any server. Division by zero is the perfect example for introducing how tools should handle invalid inputs.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Input validation, division by zero, error message, conditional return, robustness.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing all tools</h4>
+<p class="text-sm text-neutral-400">Complete calculator check</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing all calculator tools involves checking each operation with different types of input: integers, decimals, negative numbers, zero, and very large numbers. It includes testing division by zero to confirm that validation works.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Comprehensive testing ensures that your server works in every scenario. Making a habit of testing with varied inputs helps prevent bugs in production.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Manual testing, test cases, edge cases, varied inputs, validation checks.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Improving Error Handling</h4>
+<p class="text-sm text-neutral-400">Robustness beyond the basics</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Improving the calculator with robust error handling includes adding try/except to catch unexpected exceptions, validating input types, limiting the size of accepted numbers, and returning standardized error messages the model can interpret.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Turning a working prototype into robust code is a professional skill. This step shows you how to evolve your server from “works” to “always works.”</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Try/except, robust validation, input limits, standardized error messages, defensive programming.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-4')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-4.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.5 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.5</span>
+<span class="text-sm text-neutral-400">~35 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🌤️ Weather Lookup Server</h3>
+<p class="text-neutral-300 mb-6">Tool that queries an external API and returns formatted data.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Choosing the API</h4>
+<p class="text-sm text-neutral-400">Choosing a free weather API</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Choosing a free and reliable weather API is the first step in building the server. APIs like Open-Meteo offer weather data without requiring an API key, making setup simpler and more accessible for learning.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing how to choose and evaluate external APIs is an essential skill. Many MCP Servers in practice are wrappers that connect AI models to existing APIs.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Weather API, Open-Meteo, free API, endpoints, API documentation, rate limits.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📡 Making HTTP Requests</h4>
+<p class="text-sm text-neutral-400">Using httpx for asynchronous calls</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Making HTTP requests inside an MCP Server requires asynchronous libraries such as httpx, since FastMCP runs on an asyncio event loop. The requests fetch data from the API and return JSON responses that need to be parsed.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">HTTP requests are the foundation of any integration with external services. Mastering asynchronous calls ensures your server doesn’t hang while waiting for API responses.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">httpx, async/await, GET request, JSON parsing, headers, query parameters.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💻 Implementing the Tool</h4>
+<p class="text-sm text-neutral-400">Creating the weather query tool</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Implementing the weather tool involves creating a decorated async function that takes the city name as a parameter, makes the API request, extracts the relevant data (temperature, humidity, condition), and returns a formatted string with the information.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">This is the first tool that connects your server to the outside world. The pattern of receiving input, fetching data, and formatting a response is used in 80% of real MCP Servers.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">async def, city parameter, API call, data extraction, response formatting.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📊 Formatting the response</h4>
+<p class="text-sm text-neutral-400">Presenting data in a readable format</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Formatting the response means transforming raw API data into an organized, readable string. This includes presenting temperature with units, weather conditions as descriptive text, and additional information in a structured way for the model to interpret.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Formatting quality determines how well the model interprets and presents data to the user. Well-formatted data leads to more natural and informative responses.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Data formatting, f-strings, units of measurement, information structuring, readability.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚠️ Network Error Handling</h4>
+<p class="text-sm text-neutral-400">Handling connection failures</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Network errors are inevitable: the API may be down, the connection may drop, or the response may come in an unexpected format. Handling these errors involves try/except for httpx.HTTPError, configurable timeouts, and informative error messages.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Tools that depend on external APIs need to be resilient. Without error handling, a network failure takes down the entire server instead of returning a helpful message.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">HTTPError, timeout, ConnectionError, retry logic, fallback, user-friendly error message.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing with Claude</h4>
+<p class="text-sm text-neutral-400">Verifying the complete integration</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing with Claude involves asking about the weather in different cities and checking that the model calls the tool correctly, receives the data, and presents the information naturally to the user. It includes testing with nonexistent cities to validate error handling.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Testing with Claude is the real integration test. It shows how the model decides when to use your tool and how it interprets the results it returns.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Integration testing, interaction with Claude, real tool calling, end-to-end validation, error scenarios.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-5')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-5.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.6 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.6</span>
+<span class="text-sm text-neutral-400">~30 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📦 Adding Resources</h3>
+<p class="text-neutral-300 mb-6">Expose static and dynamic data as Resources for the model to consume.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 What Resources Are in Code</h4>
+<p class="text-sm text-neutral-400">Hands-on implementation of Resources</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">In code, Resources are functions decorated with @mcp.resource() that return data when accessed through a specific URI. Unlike tools, resources don’t perform actions—they expose information that the model can read to enrich its context.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Resources are the second pillar of an MCP Server. Implementing them in code builds on the theoretical knowledge from Track 1 and expands your server’s capabilities.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">@mcp.resource(), URI, data return, context exposure, difference from tools.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 Static Resources</h4>
+<p class="text-sm text-neutral-400">Data that doesn't change</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Static resources always return the same content — such as documentation, guides, default settings, or any data that doesn’t change between calls. They’re the simplest to implement and ideal for reference context.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Static resources are the simplest way to provide rich context to the model. They can improve response quality by giving the model always-available reference information.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Static content, documentation, settings, reference guides, immutable data.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔄 Dynamic Resources</h4>
+<p class="text-sm text-neutral-400">Data that changes with each access</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Dynamic resources calculate or retrieve data on each access—such as the current system status, data from a database, or information that changes over time. They use the same URIs but return updated content.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Dynamic resources let the model access real-time data without tool calls. They’re ideal for dashboards, status, and frequently changing information.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Dynamic content, real-time data, on-demand calculations, automatic updates, freshness.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔗 URI Schemes</h4>
+<p class="text-sm text-neutral-400">Uniquely identifying resources</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">URI schemes define how resources are identified and accessed. Each resource has a unique URI (e.g., config://app/settings, data://users/list) that the Client uses to request its content. The scheme indicates the type, and the path indicates the specific resource.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Well-designed URIs make your resources intuitive and organized. A good URI scheme makes it easy for the model to discover and use resources.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">URI, scheme, path, unique identification, naming conventions, resource hierarchy.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Listing Resources</h4>
+<p class="text-sm text-neutral-400">Automatic resource discovery</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The MCP protocol lets the Client list all resources available on the Server via resources/list. This enables automatic discovery: the model knows what data is available without needing external documentation.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The resource listing is what makes the protocol self-documenting. The model can explore the available resources and choose the most relevant ones for each situation.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">resources/list, automatic discovery, self-documentation, resource metadata, dynamic listing.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing resources</h4>
+<p class="text-sm text-neutral-400">Verifying that resources work</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing resources involves checking that they appear in the list, their URIs are accessible, the returned content is correct, and dynamic resources update their data. You can test via Claude or the MCP Inspector.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Testing resources ensures the model has access to the correct data. Broken resources can cause the model to generate responses based on outdated or incorrect information.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Resource testing, URI verification, correct content, dynamic updates, debugging.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-6')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-6.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.7 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-7">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.7</span>
+<span class="text-sm text-neutral-400">~25 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📝 Adding Prompts</h3>
+<p class="text-neutral-300 mb-6">Create reusable prompts that the model can invoke.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 What Prompts Are in Code</h4>
+<p class="text-sm text-neutral-400">Hands-on implementation of Prompts</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">In code, Prompts are functions decorated with @mcp.prompt() that return predefined message templates. They can accept parameters for customization and return a list of messages that guide the model’s behavior.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Prompts are the third pillar of MCP and its most underused. Implementing them in code completes your mastery of the three capabilities of an MCP Server.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">@mcp.prompt(), message templates, parameters, message list, role (user/assistant).</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✏️ Creating simple prompts</h4>
+<p class="text-sm text-neutral-400">A prompt without parameters</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">A simple prompt is a function that returns a fixed message without accepting parameters. For example, a prompt that instructs the model to act as a code reviewer or debugging assistant, with detailed instructions about the expected behavior.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Simple prompts are the most accessible starting point. They demonstrate the mechanism without the complexity of parameters, letting you focus on structure and format.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Prompt with no parameters, fixed message, behavior instruction, return format, simplicity.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Prompts with Parameters</h4>
+<p class="text-sm text-neutral-400">Customizable templates</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Prompts with parameters accept arguments that customize the generated message. For example, a code review prompt that takes the programming language and review focus as parameters, generating specific instructions for each case.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Parameterized prompts are much more versatile than fixed prompts. They let you create reusable templates that adapt to different contexts with a single piece of code.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Prompt parameters, dynamic templates, f-strings in prompts, customization, reuse.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Listing Prompts</h4>
+<p class="text-sm text-neutral-400">Automatic prompt discovery</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Like tools and resources, prompts can be listed by the Client via prompts/list. The listing shows each prompt’s name, description, and accepted parameters, allowing the Host to offer the user a selection interface.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The prompt listing is how the Host discovers which workflows are available. Well-documented prompts appear clearly in the user interface.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">prompts/list, prompt discovery, metadata, parameter descriptions, Host interface.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎯 Use Cases</h4>
+<p class="text-sm text-neutral-400">When prompts are the best choice</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The best use cases for MCP prompts include standardized workflows (code review, data analysis), onboarding new users, domain-specific instructions, and templates that combine resource context with instructions for using tools.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing when to use prompts vs. tools vs. resources is an important design decision. Prompts shine in scenarios where the model’s behavior needs to be guided consistently.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Standardized workflows, onboarding, domain instructions, combining with tools and resources, consistency.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing prompts</h4>
+<p class="text-sm text-neutral-400">Verifying that prompts work</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing prompts involves checking that they appear in the list, accept parameters correctly, and that the generated messages guide the model as expected. The test includes checking the model's behavior when the prompt is activated.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Poorly tested prompts can make the model behave unexpectedly. Testing ensures the instructions are clear and produce the desired behavior.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Prompt testing, parameter validation, behavior checks, instruction quality, iteration.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-7')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-7.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.8 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-8">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.8</span>
+<span class="text-sm text-neutral-400">~25 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">⚠️ Error Handling</h3>
+<p class="text-neutral-300 mb-6">How to handle failures, timeouts, and invalid inputs gracefully.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚠️ Types of errors</h4>
+<p class="text-sm text-neutral-400">Classifying errors in MCP Servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Errors in MCP Servers fall into categories: input errors (invalid parameters), runtime errors (logic failures), network errors (inaccessible APIs), system errors (out of memory, disk full), and protocol errors (malformed messages).</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Classifying errors is the first step to handling them correctly. Each type of error requires a different handling strategy and an appropriate response message.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Input errors, runtime errors, network errors, system errors, classification, strategy.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🛡️ Input Validation</h4>
+<p class="text-sm text-neutral-400">Verifying before running</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Input validation is the process of checking that the received parameters are valid before running the tool's logic. This includes checking types, ranges, string formats, list sizes, and any conditions the data must meet.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Input validation is the first line of defense against errors. Rejecting bad inputs is easier and safer than dealing with the cascading errors they cause during execution.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Input validation, type checking, range checking, early return, clear rejection messages.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔄 Try/Except in Tools</h4>
+<p class="text-sm text-neutral-400">Catching exceptions during execution</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Using try/except in tools lets you catch exceptions during execution and return helpful error messages instead of crashes. The recommended pattern is to catch specific exceptions, log the error, and return a message the model can use to inform the user.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">A well-implemented try/except is the difference between a server that crashes and one that recovers gracefully. Unhandled exceptions can bring down the entire MCP server.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">try/except, specific exceptions, logging, recovery, error message as return value.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📡 Network Errors</h4>
+<p class="text-sm text-neutral-400">Handling unavailable APIs</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Network errors include connection refused, DNS resolution failure, connection timeout, and HTTP responses with error status codes. Each type requires specific handling: retry for transient errors, fallback for prolonged outages.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">If your server depends on external APIs, network errors are inevitable. Knowing how to handle them ensures your server remains useful even when external services fail.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">ConnectionError, TimeoutError, HTTP status codes, retry, fallback, circuit breaker.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⏱️ Timeouts</h4>
+<p class="text-sm text-neutral-400">Limiting execution time</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Timeouts limit how long an operation can take before it is canceled. In MCP tools, it's essential to configure timeouts for network calls, disk operations, and any processing that could stall. asyncio.wait_for() is the standard tool.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Without timeouts, a tool can hang indefinitely, blocking the server and frustrating the user. Timeouts ensure the server always responds within a reasonable time.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">asyncio.wait_for(), configurable timeout, TimeoutError, cancellation, response time.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Logging and Debugging</h4>
+<p class="text-sm text-neutral-400">Tracking what happens on the server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Logging in MCP Servers uses Python’s logging module to record events, errors, and debug information. Logs should go to stderr (not stdout, which is used by the protocol). Levels such as DEBUG, INFO, WARNING, and ERROR help filter information.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Without logs, debugging an MCP Server is like navigating in the dark. Good logs are essential for diagnosing problems in development and production.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">logging module, stderr vs stdout, log levels, formatting, debugging in production, traceability.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-8')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-8.html">View Full</a>
+</div>
+</div>
+<!-- Module 3.9 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-3-9">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-purple-400">Module 3.9</span>
+<span class="text-sm text-neutral-400">~30 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🔍 Testing with MCP Inspector</h3>
+<p class="text-neutral-300 mb-6">Use MCP Inspector to debug and test tools without needing Claude.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 What Is the MCP Inspector</h4>
+<p class="text-sm text-neutral-400">Official testing and debugging tool</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The MCP Inspector is an official tool that lets you connect to an MCP Server and interactively test its tools, resources, and prompts without needing an AI model. It works as an MCP Client with a visual interface.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The Inspector is the most efficient tool for developing and debugging MCP Servers. It lets you test quickly without relying on Claude Desktop, speeding up the development cycle.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP Inspector, testing tool, visual interface, MCP Client, rapid development.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📥 Installing</h4>
+<p class="text-sm text-neutral-400">Set up Inspector in your environment</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">You can run the MCP Inspector via npx without a permanent installation. The command npx @modelcontextprotocol/inspector starts the tool and opens a web interface where you can connect to your server and explore its capabilities.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Installing and running the Inspector quickly is a practical skill that speeds up your entire MCP development workflow. It’s a tool you’ll use constantly.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">npx, @modelcontextprotocol/inspector, web interface, no permanent installation, Node.js.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔌 Connecting to the Server</h4>
+<p class="text-sm text-neutral-400">Establishing the MCP connection</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Connecting the Inspector to your server involves specifying the command to start the server (e.g., python server.py), the transport (usually STDIO), and clicking Connect. The Inspector performs the MCP handshake and lists all available capabilities.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing how to connect the Inspector to your server is the essential first step to using it. The connection immediately reveals whether there are startup or configuration issues with your server.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">STDIO connection, execution command, handshake, capabilities, troubleshooting.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing tools</h4>
+<p class="text-sm text-neutral-400">Running tools manually</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The Inspector lets you select any listed tool, fill in its parameters manually, and run it. The result appears in the interface with full details: returned content, execution time, and any errors that occurred.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Testing tools in the Inspector is much faster than testing via Claude. You can iterate quickly, test edge cases, and verify that your tools work correctly before integrating them.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Manual execution, parameter entry, result viewing, execution time, rapid iteration.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📊 Analyzing responses</h4>
+<p class="text-sm text-neutral-400">Interpreting the results</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Analyzing responses in the Inspector means examining the content returned by tools, resources, and prompts in raw format. You can see exactly the JSON the server sends, including content types, metadata, and response structure.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Viewing the raw responses lets you understand exactly what the model receives. This is crucial for optimizing formatting and ensuring the responses are interpretable.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Raw responses, JSON, content types, metadata, formatting, output analysis.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-purple-500/20 text-purple-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🐛 Debugging Issues</h4>
+<p class="text-sm text-neutral-400">Finding and fixing bugs</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-purple-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The Inspector shows detailed errors when something goes wrong: Python stack traces, protocol errors, timeouts, and connection issues. Combined with server logs, it lets you quickly identify the root cause of any problem.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Efficient debugging is what separates a productive developer from one who gets stuck for hours. Inspector is your main tool for diagnosing and resolving problems in MCP Servers.</p></div>
+<div><span class="text-purple-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Stack traces, protocol errors, diagnostics, root cause, fix, debug-fix-test cycle.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-purple-500/20 text-purple-400 rounded-lg hover:bg-purple-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-3-9')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-3-9.html">View Full</a>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex items-center justify-between mt-12 pt-8 border-t border-dark-700">
+<a class="flex items-center gap-2 text-neutral-400 hover:text-purple-400 transition-colors font-medium" href="../trilha2/index.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        ← Previous Track
+      </a>
+<a class="flex items-center gap-2 text-neutral-400 hover:text-amber-400 transition-colors font-medium" href="../trilha4/index.html">
+        Next Track →
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</main>
+<!-- Modals -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-1">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.1 — Structure of an MCP Server</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-1.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-2">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.2 — Hello World MCP</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-2.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-3">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.3 — Understanding Decorators and Schemas</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-3.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-4">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.4 — Calculator Server</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-4.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-5">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.5 — Weather Lookup Server</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-5.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-6">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.6 — Adding Resources</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-6.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-7">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.7 — Adding Prompts</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-7.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-8">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.8 — Error Handling</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-8.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-3-9">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 3.9 — Testing with MCP Inspector</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-3-9.html"></iframe>
+</div>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-neutral-400 text-sm">
+<span>🔌 MCP — From Zero to Server</span>
+<span>·</span>
+<a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<p class="text-neutral-500 text-sm">Track 3 — Creating Your First MCP Server</p>
+</div>
+</div>
+</footer>
+<script>
+    // Toggle topics
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

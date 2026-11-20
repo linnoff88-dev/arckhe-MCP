@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 5.5 — Explorando Servers da Comunidade | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-5-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha5/modulo-5-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha5/modulo-5-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Trilha 5</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 5.5</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 5.5</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🗺️ Explorando Servers da Comunidade
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Descubra os melhores MCP Servers open-source e aprenda a integrar servers de terceiros no seu workflow.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">25</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Avançado</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Teórico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🗺️ O Ecossistema Atual</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O ecossistema MCP cresceu rapidamente desde o lançamento do protocolo. Centenas de servers estão disponíveis no repositório oficial e em projetos da comunidade, cobrindo desde produtividade e dados até ferramentas de desenvolvimento e comunicação. O ponto central é o repositório <strong class="text-neutral-100">github.com/modelcontextprotocol/servers</strong>.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O ecossistema MCP é organizado em categorias: <strong class="text-neutral-100">Produtividade</strong> (Notion, Google Drive, Obsidian), <strong class="text-neutral-100">Dados</strong> (PostgreSQL, SQLite, MongoDB), <strong class="text-neutral-100">Dev Tools</strong> (GitHub, GitLab, filesystem), <strong class="text-neutral-100">Comunicação</strong> (Slack, Discord, e-mail) e <strong class="text-neutral-100">Cloud</strong> (AWS, GCP, Cloudflare). O repositório oficial em <code class="text-teal-400">github.com/modelcontextprotocol/servers</code> é o hub central, com servers mantidos pela Anthropic e contribuições da comunidade curadas.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O repositório oficial de MCP Servers já acumula mais de <strong class="text-neutral-100">30.000 stars</strong> no GitHub e centenas de contribuidores. Novos servers são publicados semanalmente pela comunidade. As categorias mais populares são <strong class="text-neutral-100">dev tools</strong> (filesystem, GitHub, git) e <strong class="text-neutral-100">dados</strong> (PostgreSQL, SQLite), refletindo o uso predominante em fluxos de trabalho de desenvolvimento.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Comece explorando o repositório oficial: <code class="text-teal-400">github.com/modelcontextprotocol/servers</code>. Leia o README de cada server que lhe interessar — ele explica as tools disponíveis, como configurar e quais permissões são necessárias. Favorite os servers mais úteis para o seu workflow e acompanhe atualizações.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⭐ Top Servers Oficiais</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A Anthropic mantém um conjunto de servers oficiais que cobrem os casos de uso mais comuns. Esses servers são bem testados, documentados e atualizados regularmente. São o ponto de partida ideal para qualquer usuário MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Os servers oficiais são mantidos no repositório <code class="text-teal-400">modelcontextprotocol/servers</code> e cobrem as funcionalidades mais essenciais: acesso a arquivos, requisições HTTP, persistência de dados, integração com bancos, controle de repositórios, mensageria e documentos na nuvem. São escritos em TypeScript e servem como referência de implementação para a comunidade.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Servers oficiais em destaque</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">filesystem</span>
+<p class="text-neutral-300 text-sm mt-1">Leitura e escrita de arquivos locais. Permite ao modelo acessar, criar, editar e organizar arquivos no seu sistema.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">fetch</span>
+<p class="text-neutral-300 text-sm mt-1">Requisições HTTP a qualquer URL. O modelo pode buscar dados de APIs, páginas web e serviços externos.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">memory</span>
+<p class="text-neutral-300 text-sm mt-1">Persistência de notas e knowledge graph. O modelo pode salvar e recuperar informações entre sessões.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">postgres</span>
+<p class="text-neutral-300 text-sm mt-1">Conexão direta com bancos PostgreSQL. Permite consultas SQL, inspeção de schema e análise de dados.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">github</span>
+<p class="text-neutral-300 text-sm mt-1">Integração completa com GitHub: repos, issues, PRs, commits, code search e gestão de repositórios.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">slack</span>
+<p class="text-neutral-300 text-sm mt-1">Envio e leitura de mensagens no Slack. O modelo pode interagir com canais, threads e mensagens diretas.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">google-drive</span>
+<p class="text-neutral-300 text-sm mt-1">Acesso a documentos no Google Drive. Leitura de arquivos, busca e navegação na estrutura de pastas.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Comece com <strong class="text-neutral-100">filesystem</strong> e <strong class="text-neutral-100">fetch</strong> — são os mais versáteis e não requerem autenticação complexa. Depois adicione <strong class="text-neutral-100">memory</strong> para dar persistência ao modelo. Para desenvolvimento, <strong class="text-neutral-100">github</strong> é indispensável. Cada server adicional amplia exponencialmente as capacidades do modelo.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌟 Top Servers da Comunidade</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Além dos servers oficiais, a comunidade MCP tem criado centenas de servers para ferramentas e serviços específicos. Esses servers estendem as capacidades do ecossistema para áreas que os servers oficiais não cobrem, como gestão de projetos, bases de conhecimento e automação de navegadores.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Os servers mais populares da comunidade incluem: <strong class="text-neutral-100">Notion</strong> (gestão de páginas e databases), <strong class="text-neutral-100">Jira</strong> (gestão de tickets e sprints), <strong class="text-neutral-100">Linear</strong> (tracking de issues), <strong class="text-neutral-100">Obsidian</strong> (notas e knowledge base), <strong class="text-neutral-100">browser automation</strong> (Puppeteer/Playwright para interagir com páginas web) e <strong class="text-neutral-100">e-mail</strong> (envio e leitura via SMTP/IMAP). Cada um é mantido por desenvolvedores independentes ou empresas interessadas em conectar seus produtos ao ecossistema MCP.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Os servers da comunidade com mais tração incluem: servers de <strong class="text-neutral-100">browser automation</strong> (permitem ao modelo navegar e interagir com páginas web), <strong class="text-neutral-100">Notion</strong> (popular entre equipes que usam Notion como hub de conhecimento) e <strong class="text-neutral-100">database servers</strong> para MongoDB, Redis e DynamoDB. A comunidade publica em média <strong class="text-neutral-100">10-15 novos servers por semana</strong>, demonstrando o crescimento acelerado do ecossistema.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Instalar servers sem verificar o código-fonte</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar servers abandonados (sem commits recentes)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Dar permissões excessivas a servers desconhecidos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar issues abertas e bugs reportados</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Verificar stars, contribuidores e atividade</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Ler o código antes de instalar</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Preferir servers com documentação completa</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Contribuir com issues e PRs para melhorar servers</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Como Avaliar um Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Nem todo server MCP é criado com o mesmo nível de qualidade e segurança. Antes de instalar e usar um server de terceiros, é essencial avaliá-lo criteriosamente. Um server mal feito pode introduzir vulnerabilidades, bugs ou comportamentos inesperados no seu workflow.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Checklist de avaliação de um MCP Server: <strong class="text-neutral-100">Documentação</strong> — tem README completo com instruções de setup? <strong class="text-neutral-100">Stars e forks</strong> — indica adoção pela comunidade. <strong class="text-neutral-100">Manutenção ativa</strong> — último commit é recente? <strong class="text-neutral-100">Issues abertas</strong> — há bugs críticos não resolvidos? <strong class="text-neutral-100">Segurança</strong> — o código faz algo suspeito com suas credenciais? <strong class="text-neutral-100">Dependências</strong> — usa libs confiáveis e atualizadas? Nunca instale um server sem revisar pelo menos o código principal.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Red flags</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sem documentação ou README vazio</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Último commit há mais de 6 meses</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Pede credenciais desnecessárias</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Código ofuscado ou não legível</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Green flags</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>README detalhado com exemplos de uso</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Commits e releases regulares</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Testes automatizados e CI/CD</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Princípio de menor privilégio nas permissões</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Sempre revise o código antes de instalar!</strong> Um MCP Server tem acesso ao seu sistema local — ele pode ler arquivos, acessar bancos de dados e fazer requisições de rede. Um server malicioso poderia exfiltrar dados sensíveis, modificar arquivos ou usar suas credenciais. Trate a instalação de um server MCP com o mesmo cuidado que trata a instalação de qualquer software com acesso privilegiado.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Instalando Servers de Terceiros</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        A instalação de servers MCP de terceiros pode ser feita de várias formas: via <strong class="text-neutral-100">npx</strong> para servers TypeScript, via <strong class="text-neutral-100">pip/uvx</strong> para servers Python, ou via <strong class="text-neutral-100">Docker</strong> para isolamento completo. Cada método tem suas vantagens e o processo final é sempre adicionar o server ao seu arquivo de configuração.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Existem três formas principais de instalar: <strong class="text-neutral-100">npx</strong> — <code class="text-teal-400">"command": "npx", "args": ["-y", "@pacote/server"]</code> — baixa e executa automaticamente, ideal para servers npm; <strong class="text-neutral-100">pip/uvx</strong> — <code class="text-teal-400">"command": "uvx", "args": ["pacote-server"]</code> — para servers Python; <strong class="text-neutral-100">Docker</strong> — <code class="text-teal-400">"command": "docker", "args": ["run", "-i", "imagem"]</code> — máximo isolamento. Após escolher o método, adicione a entrada no <code class="text-teal-400">claude_desktop_config.json</code> dentro de <code class="text-teal-400">"mcpServers"</code>.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Passos para instalar um server de terceiros</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 1</span>
+<p class="text-neutral-300 text-sm mt-1">Ler o README completo do server — entender quais tools oferece, que permissões precisa e como configurar variáveis de ambiente.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 2</span>
+<p class="text-neutral-300 text-sm mt-1">Revisar o código-fonte, especialmente o que o server faz com credenciais e dados. Verificar dependências.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Adicionar a entrada no <code class="text-teal-400">claude_desktop_config.json</code> com command, args e env conforme documentação.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 4</span>
+<p class="text-neutral-300 text-sm mt-1">Reiniciar o Claude Desktop e verificar se o server aparece conectado. Testar cada tool individualmente.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Para máxima segurança, use <strong class="text-neutral-100">Docker</strong> para servers de terceiros que precisam de acesso a credenciais sensíveis. O container isola o server do seu sistema. Para servers oficiais e confiáveis, <strong class="text-neutral-100">npx</strong> ou <strong class="text-neutral-100">uvx</strong> são mais práticos e rápidos de configurar. Sempre defina variáveis de ambiente sensíveis (API keys, tokens) na seção <code class="text-teal-400">"env"</code> do config, nunca hardcoded no código.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧩 Criando Combinações Poderosas</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O verdadeiro poder do MCP aparece quando você combina múltiplos servers em um único workflow. O modelo pode usar tools de diferentes servers na mesma conversa, criando automações sofisticadas que seriam impossíveis com um único server.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Exemplos de combinações poderosas: <strong class="text-neutral-100">GitHub + Slack</strong> — monitorar issues e notificar a equipe automaticamente; <strong class="text-neutral-100">PostgreSQL + filesystem</strong> — consultar dados do banco e exportar para CSV ou relatórios; <strong class="text-neutral-100">Notion + Google Drive</strong> — sincronizar documentação entre plataformas; <strong class="text-neutral-100">fetch + memory</strong> — buscar dados de APIs e persistir para uso futuro. Cada server que você adiciona multiplica as possibilidades combinatórias disponíveis.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Workflows de exemplo</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Dev Workflow</span>
+<p class="text-neutral-300 text-sm mt-1">GitHub (ler issues) + filesystem (editar código) + git (commitar) — o modelo analisa um bug reportado, localiza o problema no código, aplica o fix e cria o commit.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Data Workflow</span>
+<p class="text-neutral-300 text-sm mt-1">PostgreSQL (consultar dados) + filesystem (gerar relatório) + Slack (enviar para equipe) — análise automatizada de métricas com distribuição imediata.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Knowledge Workflow</span>
+<p class="text-neutral-300 text-sm mt-1">fetch (buscar artigo) + memory (salvar resumo) + Notion (criar página) — curadoria automática de conteúdo com persistência organizada.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Comece com 2-3 servers e explore as combinações antes de adicionar mais. O modelo é inteligente o suficiente para encadear tools de diferentes servers automaticamente — basta descrever o que você quer e ele monta o pipeline. <strong class="text-neutral-100">Dica</strong>: documente seus workflows favoritos para reutilizá-los. Com o tempo, você criará um arsenal personalizado de automações que multiplicam sua produtividade.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>O ecossistema MCP tem centenas de servers organizados em categorias: produtividade, dados, dev tools, comunicação e cloud.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Servers oficiais como filesystem, fetch, memory, postgres, github e slack cobrem os casos de uso mais comuns.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>A comunidade contribui com servers para Notion, Jira, Linear, Obsidian, browser automation e muito mais.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Sempre avalie servers de terceiros antes de instalar: documentação, atividade, segurança e dependências.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Instalação pode ser via npx, pip/uvx ou Docker — configure no claude_desktop_config.json.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Combinar múltiplos servers cria workflows poderosos que multiplicam a produtividade.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 5.6 — O Futuro do MCP
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-5-6.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

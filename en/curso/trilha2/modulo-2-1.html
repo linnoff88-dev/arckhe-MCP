@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 2.1 — Installing Python and uv | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-1.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-1.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-1.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-1.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-1.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-1.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Track 2</a>
+<span>/</span>
+<span class="text-neutral-300">Module 2.1</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 2.1</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🐍 Installing Python and uv
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Set up Python 3.11+ and the uv package manager—the basic tools for creating MCP Servers in Python.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">25</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Basic</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🐍 What Is Python and Why Use It</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Python is the world's most popular programming language for AI development, automation, and scripting. Its clear, readable syntax makes it ideal for both beginners and experienced professionals. In the context of MCP, Python is the number one choice thanks to the official SDK <strong class="text-neutral-100">FastMCP</strong>, which greatly simplifies creating MCP servers.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Python</strong> is a high-level, interpreted, dynamically typed programming language. In the MCP ecosystem, Python stands out for offering the SDK <strong class="text-neutral-100">FastMCP</strong> — a library that lets you create complete MCP servers with just a few lines of code. The combination of Python's simplicity and FastMCP's convenience makes it possible to create a functional MCP Server in under 10 minutes, even if you've never programmed before.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Python is used in <strong class="text-neutral-100">60%+ of MCP Servers</strong> published by the community. The language has led the TIOBE popularity index for consecutive years and has the world’s largest AI library ecosystem—including TensorFlow, PyTorch, LangChain, and, of course, <strong class="text-neutral-100">FastMCP</strong>. The Python community contributes more than 500,000 packages to PyPI, so you'll always find a library for any integration need.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Installing Python 3.11+</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The first step to creating MCP Servers in Python is to install the correct version of the language. FastMCP requires <strong class="text-neutral-100">Python 3.11 or higher</strong>, since it uses modern language features such as advanced typing and improved asyncio. The installation process varies by operating system, but it’s simple on all of them.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">Python 3.11+</strong> is required because FastMCP and the official MCP SDK use features introduced in this version, such as <strong class="text-neutral-100">Exception Groups</strong>, significant performance improvements (up to 25% faster than 3.10) and <strong class="text-neutral-100">advanced typing</strong> with native support for generic types. Installing an earlier version can cause import errors and incompatibilities that are difficult to diagnose.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Installation by Operating System</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Windows</span>
+<p class="text-neutral-300 text-sm mt-1">Access <strong class="text-neutral-100">python.org/downloads</strong>, download the installer, and run it. <strong class="text-neutral-100">Required check</strong> the "Add Python to PATH" option before clicking Install. After installation, open PowerShell and test with <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python --version</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">macOS</span>
+<p class="text-neutral-300 text-sm mt-1">Install via Homebrew: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">brew install python</code>. Homebrew already configures the PATH automatically. If you don't have Homebrew, install it first at <strong class="text-neutral-100">brew.sh</strong>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Linux</span>
+<p class="text-neutral-300 text-sm mt-1">Ubuntu/Debian: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">sudo apt update &amp;&amp; sudo apt install python3.11</code>. Fedora/RHEL: <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">sudo dnf install python3.11</code>. Most distros already come with Python, but it may be an older version.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Check the minimum version!</strong> Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python --version</code> or <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python3 --version</code> and confirm that it is <strong class="text-neutral-100">3.11 or higher</strong>. Versions such as 3.9 or 3.10 may seem to work initially, but will cause errors when you try to use FastMCP. On Linux, the command may be <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python3</code> instead of <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python</code>.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚡ What Is uv</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">uv</strong> is a next-generation Python package and environment manager, written in Rust by Astral. It replaces pip, venv, and pip-tools at the same time, offering a unified and dramatically faster experience. If Python is the engine behind your MCP Servers, uv is the high-performance fuel that keeps everything running smoothly.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">uv</strong> is an ultra-fast Python package manager, written in Rust, that combines the features of <strong class="text-neutral-100">pip</strong> (package installation), <strong class="text-neutral-100">venv</strong> (virtual environments) and <strong class="text-neutral-100">pip-tools</strong> (dependency resolution) in a single tool. It resolves and installs dependencies for <strong class="text-neutral-100">10 to 100 times faster</strong> than traditional pip, has native lockfiles for reproducible builds, and creates virtual environments automatically when needed.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of uv as the <strong class="text-neutral-100">"Python's npm"</strong> — a modern tool that manages everything: project creation, package installation, isolated environments, and lockfiles. While pip requires you to create a venv manually, install packages separately, and manage requirements.txt by hand, uv does all of this with simple commands like <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv init</code> e <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv add</code>.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          In real-world benchmarks, uv installs dependencies <strong class="text-neutral-100">10–100x faster</strong> than pip. A project with 50 dependencies that takes 45 seconds with pip is resolved in less than 1 second by uv. The project surpassed <strong class="text-neutral-100">30,000 stars</strong> on GitHub in less than a year after its launch, and adopted by companies like Pydantic and FastAPI, as well as by the official MCP SDK itself. Astral, the company behind uv, received more than US$ 30 million in investments to develop next-generation Python tools.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Installing uv</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Installing uv is quick and straightforward—one command in the terminal is all it takes. uv installs as a standalone binary, without relying on pip or any other previously installed Python tool. That means it works right away, without dependency complications.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          uv is distributed as a <strong class="text-neutral-100">standalone binary</strong> compiled in Rust—it isn't a Python package installed via pip. This eliminates the classic "chicken-and-egg" problem: you don't need pip to install the package manager. The official installation script automatically detects your operating system and architecture, downloads the correct binary, and configures the PATH.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Installation commands by operating system:</p>
+<div class="space-y-3">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 text-xs font-bold">macOS / Linux</span>
+<code class="block mt-1 text-sm text-neutral-100">curl -LsSf https://astral.sh/uv/install.sh | sh</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 text-xs font-bold">Windows (PowerShell)</span>
+<code class="block mt-1 text-sm text-neutral-100">powershell -c "irm https://astral.sh/uv/install.ps1 | iex"</code>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Install uv via pip (<code class="text-xs">pip install uv</code>)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use outdated versions of uv</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore PATH configuration after installation</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing pip and uv in the same project</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use the official installation script</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Restart the terminal after installing</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Check with <code class="text-xs">uv --version</code></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Update regularly with <code class="text-xs">uv self update</code></li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">✅ Verifying the Installation</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        After installing Python and uv, it’s crucial to check that both tools are working correctly and accessible in the terminal. PATH issues are the most common cause of frustration for beginners — let’s make sure everything is configured before continuing.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A <strong class="text-neutral-100">installation check</strong> consists of confirming that the commands <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python</code> e <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv</code> are recognized by the terminal and run the correct versions. If a command returns "not recognized" or "command not found," it means the executable is not in the <strong class="text-neutral-100">PATH</strong> of the system—the list of directories where the terminal looks for programs.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Verification Checklist</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 1 — Check Python</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python --version</code> (or <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python3 --version</code> on Linux/Mac). It should show <strong class="text-neutral-100">Python 3.11.x</strong> or higher.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 2 — Check uv</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv --version</code>. It should show the installed version (e.g.: <strong class="text-neutral-100">uv 0.5.x</strong> or higher).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 3 — Test uv with Python</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv python list</code> to verify that uv detects the Python installations on your system.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert — Common Problems</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">"command not found"</strong> — PATH is not configured. On Windows, reinstall Python and check "Add to PATH". On Mac/Linux, add the directory to your <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">~/.bashrc</code> or <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">~/.zshrc</code>.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">Wrong version</strong> — If Python 3.9 or 3.10 appears, you have an old version installed. On Linux, use <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">python3.11</code> explicitly or update it.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">Old terminal</strong> — Close and reopen the terminal after installation so the PATH changes take effect.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 First Test</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Now that Python and uv are installed and verified, let’s do a hands-on test: create a Python project with uv and install FastMCP. This test confirms that the entire environment is configured correctly and ready to create MCP Servers.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The command <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv init</code> creates a new Python project with the standard structure—including <strong class="text-neutral-100">pyproject.toml</strong> (project configuration), a directory for source code, and a file <strong class="text-neutral-100">.python-version</strong>. The command <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">uv add</code> installs packages and automatically registers them as dependencies, creating an isolated virtual environment if needed. Together, these two commands replace all the ceremony of <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">python -m venv</code> + <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">pip install</code> + manual editing of requirements.txt.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Run the commands below step by step in the terminal:</p>
+<div class="space-y-2">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 text-xs font-bold">1. Create the project</span>
+<code class="block mt-1 text-sm text-neutral-100">uv init meu-projeto</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 text-xs font-bold">2. Enter the folder</span>
+<code class="block mt-1 text-sm text-neutral-100">cd meu-projeto</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 text-xs font-bold">3. Install FastMCP</span>
+<code class="block mt-1 text-sm text-neutral-100">uv add fastmcp</code>
+</div>
+</div>
+<p class="mt-3 text-sm">If FastMCP installs without errors, your environment is <strong class="text-neutral-100">100% ready</strong> to create MCP Servers!</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Install packages globally with pip</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Skip FastMCP verification</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Create projects without <code class="text-xs">uv init</code></li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore installation errors</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Always use <code class="text-xs">uv init</code> for new projects</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use <code class="text-xs">uv add</code> instead of <code class="text-xs">pip install</code></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Check that fastmcp appears in pyproject.toml</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Commit the <code class="text-xs">uv.lock</code> in Git</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Python is the most popular language for MCP Servers, used in 60%+ of community servers.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Python 3.11+ is required for FastMCP — earlier versions cause incompatibilities.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>uv is an ultrafast manager that replaces pip, venv, and pip-tools with 10-100x better performance.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>uv is installed via the official script—one command in the terminal.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Checking the installation with python --version and uv --version helps prevent future problems.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>The uv init + uv add fastmcp test confirms that the environment is ready for MCP.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 2.2 — Installing Node.js and npm
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-2-2.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 4.4 — REST API Integration | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-amber-400 { color: #92400e; }
+    html:not(.dark) .bg-amber-500\/20 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-500\/10 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .border-amber-500\/30 { border-color: rgba(217, 119, 6, 0.25); }
+    html:not(.dark) .hover\:bg-amber-500\/30:hover { background-color: rgba(217, 119, 6, 0.18); }
+    html:not(.dark) .bg-amber-900\/20 { background-color: rgba(217, 119, 6, 0.08); }
+    html:not(.dark) .bg-amber-900\/40 { background-color: rgba(217, 119, 6, 0.12); }
+    html:not(.dark) .bg-amber-900\/30 { background-color: rgba(217, 119, 6, 0.10); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha4/modulo-4-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha4/modulo-4-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha4/modulo-4-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha4/modulo-4-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-4-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha4/modulo-4-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded bg-amber-500/20 text-amber-400" href="index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-amber-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-amber-400 transition-colors" href="index.html">Track 4</a>
+<span>/</span>
+<span class="text-neutral-300">Module 4.4</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 4.4</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🌐 Integrating with a REST API
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Create an MCP Server that uses the GitHub API—list repos, search issues, and create issues via Claude.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">45</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Intermediate</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-amber-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 Understanding the GitHub API</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The GitHub API is one of the best-documented and most widely used REST APIs in the world. It lets you programmatically access practically everything you do in the web interface—repositories, issues, pull requests, commits, organizations. For our MCP Server, we’ll use this API as the foundation for building powerful tools Claude can use to interact with your GitHub projects.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The GitHub REST API is available at <strong class="text-neutral-100">api.github.com</strong>. The main endpoints we'll use are: <strong class="text-neutral-100">GET /user/repos</strong> to list your repositories, <strong class="text-neutral-100">GET /repos/{owner}/{repo}/issues</strong> to search for issues in a specific repository, and <strong class="text-neutral-100">POST /repos/{owner}/{repo}/issues</strong> to create new issues. All responses are in JSON format, making it easier to parse and format the data. The API has rate limits — 5,000 requests per hour with authentication — which your server must respect.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The GitHub API processes more than <strong class="text-neutral-100">billions of requests per day</strong> and is used by virtually all modern development tools—CI/CD, IDEs, bots, dashboards. With token authentication, the rate limit increases to <strong class="text-neutral-100">5,000 requests/hour</strong>, more than enough for a personal MCP Server. Without authentication, the limit drops to just 60 requests/hour, making any practical use unfeasible.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Before writing any code, test the API manually with <strong class="text-neutral-100">curl</strong> or with tools like Insomnia/Postman. Run <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">curl https://api.github.com/users/{seu-usuario}/repos</code> to see the structure of the returned JSON. This makes implementing the MCP Server tools much easier, since you’ll know exactly which fields to extract and format.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔑 Token Authentication</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        To access the GitHub API with authentication—which is essential for decent rate limits and accessing private repositories—you need a Personal Access Token (PAT). This token works like a temporary password with a limited scope, allowing your MCP Server to access the API on your behalf without needing your actual password.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          To create a Personal Access Token: go to <strong class="text-neutral-100">GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong>. Select the required scopes—for our project, we need access to <strong class="text-neutral-100">repos</strong> e <strong class="text-neutral-100">issues</strong>. The generated token must be stored as an environment variable (e.g., <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">GITHUB_TOKEN</code>) and passed through HTTP headers as <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">Authorization: Bearer {token}</code>. Never put the token directly in the source code.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">NEVER commit tokens to the repository!</strong> If you accidentally push a token to GitHub, GitHub Secret Scanning will automatically revoke it—but the damage may already be done. Always use <strong class="text-neutral-100">environment variables</strong>, add <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">.env</code> to <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">.gitignore</code>, and never log the token value in server outputs.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token hardcoded in the source code</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Commit the .env file to the repository</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token with excessive scopes (admin)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token with no expiration date</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Store token in an environment variable</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Add .env to .gitignore</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Use the minimum necessary scopes</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Set an expiration date for the token</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📋 Tool: List Repositories</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The first tool in our GitHub MCP Server will list repositories. Using the endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">GET /user/repos</code>, we'll fetch the authenticated user's repositories, filter by visibility, sort by last updated, and format the results in a readable way for Claude to present to the user.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The repository listing tool uses the library <strong class="text-neutral-100">httpx</strong> to make asynchronous requests to the GitHub API. The essential code:</p>
+<pre class="bg-dark-900 border border-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">@server.tool()
+async def list_repos(visibility: str = "all") -&gt; str:
+    """Lista repositórios do usuário autenticado."""
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            "https://api.github.com/user/repos",
+            headers={"Authorization": f"Bearer {GITHUB_TOKEN}"},
+            params={"visibility": visibility, "sort": "updated"}
+        )
+        repos = resp.json()
+    lines = []
+    for r in repos:
+        stars = r["stargazers_count"]
+        lang = r.get("language", "N/A")
+        lines.append(f"⭐ {stars} | {r['name']} ({lang}) — {r.get('description', 'Sem descrição')}")
+    return "\n".join(lines)</code></pre>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Format the output so that the <strong class="text-neutral-100">Claude can interpret easily</strong>. Include the name, description, primary language, and star count. Use optional parameters such as <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">visibility</code> (all, public, private) to give Claude flexibility in its queries. The parameter <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">sort=updated</code> ensures the most recent repos appear first.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 list_repos Tool Flow</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1">Claude receives the user's request ("list my repos") and calls the list_repos tool with the appropriate parameters.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1">The MCP Server sends GET /user/repos with the authentication token and receives the list of repositories in JSON.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1">The tool formats the data (name, description, language, stars) and returns structured text for Claude to present.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Tool: Search Issues</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The second tool lets you search for issues in a specific repository. Using the endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">GET /repos/{owner}/{repo}/issues</code>, Claude will be able to check open or closed issues, filter by labels, and present relevant information such as number, title, author, and assigned labels.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The issue search tool receives <strong class="text-neutral-100">owner</strong> (repository owner), <strong class="text-neutral-100">repo</strong> (repository name) and optional parameters such as <strong class="text-neutral-100">state</strong> (open/closed/all) and <strong class="text-neutral-100">labels</strong> (filter by labels). The endpoint returns a JSON array where each issue contains: <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">number</code>, <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">title</code>, <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">user.login</code>, <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">state</code>, <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">labels[]</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">created_at</code>. Format the output with the number, title, author, and labels to make it easier to read.</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Return raw JSON to Claude</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore handling for a nonexistent repo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't filter — return hundreds of issues</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing issues and pull requests (PRs come from the same endpoint)</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Format output with #number, title, and author</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Handle 404 errors with a clear message</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Limit results (e.g., max 30 issues)</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Filter PRs by checking the "pull_request" field</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          One important detail: the endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/repos/{owner}/{repo}/issues</code> returns <strong class="text-neutral-100">both issues and pull requests</strong>. To filter only real issues, check whether the field <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">pull_request</code> is missing from the object. The API supports pagination via parameters <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">page</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">per_page</code> (maximum 100 per page).
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">➕ Tool: Create Issue</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The third tool is the most powerful—and the most dangerous. Using <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">POST /repos/{owner}/{repo}/issues</code>, Claude will be able to create issues directly in your repository. This is a write action, which requires careful validation of parameters and awareness that we’re giving the model the ability to modify real data.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">The issue creation tool sends a POST with a JSON body containing <strong class="text-neutral-100">title</strong> (required) and <strong class="text-neutral-100">body</strong> (description, optional but recommended). Validate that the title is not empty and has a reasonable length. After creating it, return the URL of the created issue so the user can access it directly:</p>
+<pre class="bg-dark-900 border border-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">@server.tool()
+async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; str:
+    """Cria uma nova issue em um repositório GitHub."""
+    if not title.strip():
+        return "Erro: o título da issue não pode ser vazio."
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            f"https://api.github.com/repos/{owner}/{repo}/issues",
+            headers={"Authorization": f"Bearer {GITHUB_TOKEN}"},
+            json={"title": title, "body": body}
+        )
+    if resp.status_code == 201:
+        issue = resp.json()
+        return f"Issue criada com sucesso! #{issue['number']}: {issue['html_url']}"
+    return f"Erro ao criar issue: {resp.status_code}"</code></pre>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert — Destructive Action</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Creating issues is a <strong class="text-neutral-100">write action</strong> — it modifies real data in your GitHub. Unlike listing or searching, this tool has permanent side effects. Consider adding a confirmation before creating an issue, or at least logging each issue created. In a corporate environment, this tool should have <strong class="text-neutral-100">strict access control</strong> and a complete audit trail.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Always return the <strong class="text-neutral-100">URL of the created issue</strong> in the response—this allows Claude to show the user a clickable link. Validate the parameters before sending the request: nonempty title, and owner and repo in the correct format. Consider adding optional parameters such as <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">labels</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">assignees</code> to create more complete issues.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing the Integration</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        With the three tools implemented—list repos, search issues, and create issues—it's time to test the complete integration. Configure the server in Claude Desktop and try natural-language commands to verify that everything works correctly. Claude should be able to automatically choose the right tool based on your request.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Test with these prompts in Claude Desktop:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"List my repositories"</strong> — should call list_repos and display name, language, stars</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Which issues are open in repo X?"</strong> — should call search_issues with state=open</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Create an issue in repo Y with title Z"</strong> — should call create_issue and return the URL</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">→</span><strong class="text-neutral-100">"Which private repos do I have?"</strong> — should call list_repos with visibility=private</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-amber-400 font-semibold text-sm">📋 Complete Test Scenario</span>
+</div>
+<div class="relative pl-8 border-l-2 border-amber-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Test 1 — Read</span>
+<p class="text-neutral-300 text-sm mt-1">Ask Claude to list your repositories. Check whether the data matches what appears in the GitHub web interface.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Test 2 — Query</span>
+<p class="text-neutral-300 text-sm mt-1">Ask it to search for issues in a real repository. Confirm that the numbers, titles, and labels are correct.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Test 3 — Write</span>
+<p class="text-neutral-300 text-sm mt-1">Ask it to create a test issue. Check on GitHub that the issue was created with the correct title and body.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-amber-400 font-bold text-sm">Test 4 — Error</span>
+<p class="text-neutral-300 text-sm mt-1">Ask it to search for issues in a repository that doesn't exist. Check whether the error is handled gracefully.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Test only the “happy path”</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore error scenarios (invalid repo, no permission)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't check whether the returned data is correct</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Create test issues in production repos</li>
+</ul>
+</div>
+<div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-amber-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Test all scenarios (success + error)</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Check data against the web interface</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Use a test repository to create issues</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Test with different parameters (filters, visibility)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-amber-900/40 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>The GitHub REST API at api.github.com provides endpoints for repositories, issues, and much more, returning JSON.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Authentication via a Personal Access Token stored in an environment variable — never in the code.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>The list_repos tool uses GET /user/repos to list repositories with their name, description, language, and stars.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>The search_issues tool uses GET /repos/{owner}/{repo}/issues to search and filter issues by state and labels.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>The create_issue tool uses POST to create issues, validates parameters, and returns the URL of the created issue.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-amber-400 mt-0.5">✓</span>
+<span>Tests should cover success and error scenarios, using test repositories for write actions.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 4.5 — Combining Multiple Servers
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 border border-amber-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-4-5.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

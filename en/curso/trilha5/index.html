@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Track 5: Advanced | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="./" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors" href="../../index.html">🔌 MCP — From Zero to Server</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-2">
+<a class="text-neutral-400 hover:text-emerald-400 hover:bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha1/index.html">T1</a>
+<a class="text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha2/index.html">T2</a>
+<a class="text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha3/index.html">T3</a>
+<a class="text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha4/index.html">T4</a>
+<a class="text-teal-400 bg-teal-500/10 px-3 py-1.5 rounded-lg text-sm font-medium" href="../trilha5/index.html">T5</a>
+<button class="ml-4 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 text-neutral-400 hidden" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Header -->
+<header class="bg-gradient-to-r from-teal-900/30 via-dark-800 to-dark-800 border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="text-center">
+<span class="inline-block px-4 py-1.5 bg-teal-500/20 text-teal-400 text-sm font-bold rounded-full mb-6 tracking-wider">TRACK 5</span>
+<h1 class="text-4xl md:text-5xl font-extrabold text-neutral-100 mb-6">🚀 Advanced: Publishing and Ecosystem</h1>
+<p class="text-xl text-neutral-300 max-w-3xl mx-auto mb-10">Take your servers into the real world — package them, publish them, use HTTP/SSE, and explore the MCP ecosystem.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-teal-400">6</div>
+<div class="text-sm text-neutral-400">Modules</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-teal-400">36</div>
+<div class="text-sm text-neutral-400">Topics</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-teal-400">~4h</div>
+<div class="text-sm text-neutral-400">Duration</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-teal-400">Advanced</div>
+<div class="text-sm text-neutral-400">Level</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Navegação Rápida -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">Quick Navigation</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-1">
+<span class="text-sm text-teal-400 font-bold">Module 5.1</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">📦 Packaging Your MCP Server</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-2">
+<span class="text-sm text-teal-400 font-bold">Module 5.2</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">🌐 Publishing on GitHub</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-3">
+<span class="text-sm text-teal-400 font-bold">Module 5.3</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">🌐 HTTP/SSE Transport</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-4">
+<span class="text-sm text-teal-400 font-bold">Module 5.4</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">📘 MCP with TypeScript</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-5">
+<span class="text-sm text-teal-400 font-bold">Module 5.5</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">🗺️ Exploring Community Servers</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-teal-500/30 transition-colors group" href="#modulo-5-6">
+<span class="text-sm text-teal-400 font-bold">Module 5.6</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-teal-400 transition-colors mt-1">🔮 The Future of MCP</h3>
+</a>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center mb-12">
+<div class="flex-1 border-t border-dark-700"></div>
+<span class="px-4 text-neutral-400 text-sm font-medium">Detailed Content</span>
+<div class="flex-1 border-t border-dark-700"></div>
+</div>
+<!-- Module 5.1 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.1</span>
+<span class="text-sm text-neutral-400">~30 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📦 Packaging Your MCP Server</h3>
+<p class="text-neutral-300 mb-6">Structure your server as an installable Python package with pyproject.toml.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Why Package</h4>
+<p class="text-sm text-neutral-400">Benefits of distributing as a package</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Packaging your MCP Server means turning it from a standalone script into an installable Python package. This lets other developers install it with pip, manage dependencies automatically, and use entry points for direct execution.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Without packaging, your server is stuck in your local environment. Packaging is the first step toward sharing, publishing, and professionalizing your work.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Python package, pip install, distribution, reproducibility, clean installation, versioning.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 Structuring pyproject.toml</h4>
+<p class="text-sm text-neutral-400">The central configuration file</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">pyproject.toml is the modern standard file for configuring Python packages. It replaces the old setup.py and centralizes project metadata, dependencies, build system, and configurations for tools such as pytest and black.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Every modern Python package uses pyproject.toml. Mastering its structure ensures that your MCP Server follows best practices and is compatible with the Python ecosystem.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">pyproject.toml, build-system, project metadata, PEP 621, setuptools, hatchling.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📁 Directory Organization</h4>
+<p class="text-sm text-neutral-400">Professional folder structure</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The correct directory organization follows the src layout pattern: a src/ folder containing the package, tests in tests/, documentation in docs/, and configuration files in the root. This avoids import conflicts and makes builds easier.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">A well-organized structure is the foundation of a maintainable project. Other developers will immediately know where to find each part of the code.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">src layout, __init__.py, __main__.py, separation of concerns, Python conventions, namespace packages.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 Entry Points</h4>
+<p class="text-sm text-neutral-400">Executable commands from the package</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Entry points are how a Python package exposes executable commands. When you define an entry point in pyproject.toml, pip automatically creates a terminal command that starts your MCP Server directly.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Entry points are essential for MCP Servers because they let Claude Desktop and other hosts run your server as a simple command, without needing to know where Python is installed.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">console_scripts, entry points, pip install, terminal command, __main__.py, direct execution.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Dependencies and versions</h4>
+<p class="text-sm text-neutral-400">Managing what your server needs</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Declaring dependencies correctly in pyproject.toml ensures that all required libraries are installed automatically. Specifying minimum and maximum versions prevents future incompatibilities.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Poorly managed dependencies are the number one cause of installation failures. Mastering semantic versioning and constraints ensures your server works in any environment.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">dependencies, optional dependencies, version constraints, semver, pip freeze, lock files.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing the package</h4>
+<p class="text-sm text-neutral-400">Verifying the complete installation</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing the package means creating a clean virtual environment, installing the package with pip install, and verifying that all entry points work, dependencies are resolved, and the server starts correctly.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Testing in a clean environment is the only way to ensure your package works for others. What works in your development environment may fail for someone installing from scratch.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">venv, pip install -e, pip install ., smoke test, entry point test, clean environment.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-1')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-1.html">View Full</a>
+</div>
+</div>
+<!-- Module 5.2 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.2</span>
+<span class="text-sm text-neutral-400">~25 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🌐 Publishing on GitHub</h3>
+<p class="text-neutral-300 mb-6">Create a repository, a professional README, and document how to install your server.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📋 Preparing the Repository</h4>
+<p class="text-sm text-neutral-400">Initial structure and configuration</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Preparing the repository involves creating the repo on GitHub, configuring .gitignore for Python, adding essential files such as LICENSE and CHANGELOG, and organizing the directory structure according to best practices.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">A well-prepared repository conveys professionalism and makes collaboration easier. It’s the first impression other developers will have of your project.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">.gitignore, LICENSE, CHANGELOG, branch protection, repository settings, GitHub templates.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Writing the README</h4>
+<p class="text-sm text-neutral-400">Documentation that attracts users</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">A professional README for an MCP Server should include: a clear description of what it does, status badges, installation instructions, configuration for Claude Desktop, usage examples, and a troubleshooting section.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The README is your project’s marketing. A well-written README can be the difference between a project with hundreds of stars and one that gets ignored.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Markdown, badges, shields.io, code examples, demo GIFs, standard sections.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📄 License and Contributions</h4>
+<p class="text-sm text-neutral-400">Legal aspects and collaboration</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Choosing an open source license (MIT, Apache 2.0, GPL) defines how others can use your code. CONTRIBUTING.md guides contributors on how to submit PRs, report bugs, and follow the project's code style.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Without a license, no one can legally use your code. Without a contribution guide, no one knows how to collaborate. Both are essential for open source projects.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MIT License, Apache 2.0, CONTRIBUTING.md, Code of Conduct, pull request template, issue template.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔧 GitHub Actions Basics</h4>
+<p class="text-sm text-neutral-400">CI/CD for your MCP Server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">GitHub Actions lets you automate tests, linting, and builds for your MCP Server on every push or pull request. A basic workflow runs pytest, checks types with mypy, and ensures the package installs correctly.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Automated CI/CD prevents bugs in production and gives you confidence to accept contributions. It’s a quality signal that attracts users and contributors.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">GitHub Actions, workflow YAML, CI/CD, pytest, linting, matrix testing, artifacts.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Releases and Tags</h4>
+<p class="text-sm text-neutral-400">Versioning and distribution</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">GitHub releases combine Git tags with release notes and artifacts. Using semantic versioning (v1.0.0) and maintaining a CHANGELOG lets users track changes and choose stable versions.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Well-managed releases let users install specific versions and roll back if needed. They’re a fundamental part of a professional project.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">git tag, GitHub Releases, semver, CHANGELOG, release notes, pre-release, assets.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing the installation from scratch</h4>
+<p class="text-sm text-neutral-400">Validating the user experience</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing from scratch means following your own installation instructions on a clean machine or Docker container. Clone the repo, install the dependencies, configure Claude Desktop, and verify that everything works as documented.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">If you don’t test from scratch, your users will be the first to find problems. This final test ensures the installation experience is flawless.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Fresh install test, Docker, clean environment, verified documentation, user experience, onboarding.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-2')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-2.html">View Full</a>
+</div>
+</div>
+<!-- Module 5.3 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.3</span>
+<span class="text-sm text-neutral-400">~35 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🌐 HTTP/SSE Transport</h3>
+<p class="text-neutral-300 mb-6">Convert a STDIO server to HTTP — enable remote access to your MCP Server.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔄 STDIO vs HTTP</h4>
+<p class="text-sm text-neutral-400">When to use each transport</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">STDIO is the local transport where the host runs the server as a child process and communicates via stdin/stdout. HTTP lets the server run on another machine and receive requests over the network, enabling remote and multi-client access.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Understanding the differences between STDIO and HTTP is essential for deciding how to deploy your server. Each transport has trade-offs in security, performance, and complexity.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">STDIO, HTTP, local vs. remote transport, child process, request/response, network latency.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Configuring HTTP in FastMCP</h4>
+<p class="text-sm text-neutral-400">Enabling HTTP transport</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">FastMCP supports HTTP natively. Just change the run method to expose the server on an HTTP port. The framework automatically handles routing, JSON-RPC serialization, and connection management.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Configuring HTTP is the step that turns your local server into a service accessible over the network. It’s the bridge between development and production.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">FastMCP HTTP, host and port, ASGI, uvicorn, routing, JSON-RPC over HTTP.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📡 Server-Sent Events</h4>
+<p class="text-sm text-neutral-400">Real-time data streaming</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Server-Sent Events (SSE) is an HTTP protocol that lets the server continuously send data to the client over a persistent connection. In MCP, SSE enables real-time notifications and streaming of long responses.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">SSE is essential for MCP Servers that need to send progressive updates, such as progress on long-running operations or real-time monitoring.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">SSE, EventSource, persistent connection, streaming, text/event-stream, reconnection.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔒 Security in HTTP</h4>
+<p class="text-sm text-neutral-400">Protecting your exposed server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">When exposing an MCP Server over HTTP, security becomes critical. This includes HTTPS/TLS for encryption, authentication via tokens or API keys, rate limiting to prevent abuse, and CORS to control allowed origins.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">An unsecured HTTP server is an invitation to attacks. Implementing the right layers of protection is mandatory before any production deployment.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">HTTPS, TLS, authentication, API keys, rate limiting, CORS, firewall, reverse proxy.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">☁️ Cloud deployment</h4>
+<p class="text-sm text-neutral-400">Running your server in the cloud</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Cloud deployment involves hosting your MCP Server on platforms like Railway, Fly.io, AWS, or Google Cloud. This ensures 24/7 availability, automatic scaling, and global access to your server.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Cloud deployment turns your server from a local project into a real service. It’s the final step toward letting anyone in the world use your MCP Server.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Cloud deployment, Docker, Railway, Fly.io, environment variables, health checks, logging.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing remotely</h4>
+<p class="text-sm text-neutral-400">Verifying the server in production</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing remotely involves connecting an MCP Client to the deployed server over HTTP, verifying that all tools respond correctly, measuring latency, and confirming that SSE works over the network.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Remote testing reveals problems that don't appear locally: network latency, timeouts, firewall issues, and CORS configurations. This is the final deployment validation.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Remote integration testing, curl, MCP Inspector, latency, health endpoint, monitoring.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-3')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-3.html">View Full</a>
+</div>
+</div>
+<!-- Module 5.4 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.4</span>
+<span class="text-sm text-neutral-400">~35 min · Hands-on</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📘 MCP with TypeScript</h3>
+<p class="text-neutral-300 mb-6">Create an equivalent MCP Server using the official TypeScript SDK.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📘 TypeScript SDK vs. Python</h4>
+<p class="text-sm text-neutral-400">Comparing the two implementations</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">MCP has official SDKs in Python and TypeScript. Both implement the same protocol, but with idiomatic APIs for each language. The TypeScript SDK uses classes and decorators, while Python uses FastMCP with function decorators.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing both SDKs expands your development options. In full-stack teams, being able to create servers in Python or TypeScript as needed is a competitive advantage.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Python SDK, TypeScript SDK, @modelcontextprotocol/sdk, FastMCP, feature parity, trade-offs.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🏗️ Project Structure</h4>
+<p class="text-sm text-neutral-400">Configuring a TypeScript project</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The structure of a TypeScript MCP Server includes package.json, tsconfig.json, a src/ folder for source code, and a build/ folder for compiled JavaScript. Setup includes npm init, installing the SDK, and configuring the compiler.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Properly configuring a TypeScript project prevents headaches with compilation, modules, and typing. A well-structured foundation speeds up the entire development process.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">package.json, tsconfig.json, npm, node_modules, ESM vs CommonJS, TypeScript compilation.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💻 Implementing Tools</h4>
+<p class="text-sm text-neutral-400">Creating tools with the TypeScript SDK</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">In the TypeScript SDK, tools are registered using the server.setRequestHandler method with Zod schemas for parameter validation. TypeScript’s strong typing ensures compile-time safety for inputs and outputs.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Implementing tools is the core functionality of any MCP Server. Knowing how to do this in TypeScript lets you create type-safe servers with automatic parameter validation.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">setRequestHandler, Zod schemas, CallToolRequest, strong typing, validation, async/await.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Resources and Prompts</h4>
+<p class="text-sm text-neutral-400">Resources and templates in TypeScript</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">In addition to tools, the TypeScript SDK lets you expose Resources (data the model can read, such as files or configs) and Prompts (reusable prompt templates). The API follows the same pattern of strongly typed handlers.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Resources and Prompts complete MCP’s three primitives. Mastering all of them in TypeScript lets you create complete, feature-rich servers.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">ListResourcesRequest, ReadResourceRequest, ListPromptsRequest, GetPromptRequest, URI schemes.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Build and configuration</h4>
+<p class="text-sm text-neutral-400">Compiling and configuring in Claude</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The build involves compiling TypeScript to JavaScript with tsc, configuring the start script in package.json, and registering the server in Claude Desktop by pointing to the compiled JavaScript file via node.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">The build process differs from Python, where there's no compilation. Understanding how TypeScript compiles and how to configure Claude Desktop for Node.js servers is essential.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">tsc, npm run build, node dist/index.js, claude_desktop_config.json, shebang, npx.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Testing the TS server</h4>
+<p class="text-sm text-neutral-400">Validating the TypeScript server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Testing the TypeScript server involves using the MCP Inspector to verify tools, resources, and prompts, running unit tests with Jest or Vitest, and comparing its behavior with the equivalent Python server to ensure parity.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Tests ensure that the TypeScript server works correctly and maintains parity with Python implementations. This is the final validation before publishing.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP Inspector, Jest, Vitest, unit tests, implementation parity, Node.js debugging.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-4')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-4.html">View Full</a>
+</div>
+</div>
+<!-- Module 5.5 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.5</span>
+<span class="text-sm text-neutral-400">~25 min · Theory</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🗺️ Exploring Community Servers</h3>
+<p class="text-neutral-300 mb-6">A tour of the best open-source MCP Servers and how to integrate them into your workflow.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🗺️ The Current Ecosystem</h4>
+<p class="text-sm text-neutral-400">Overview of available servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The MCP ecosystem already has hundreds of servers covering categories such as development, productivity, data, communication, and infrastructure. Repositories like awesome-mcp-servers catalog the best projects available.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing the ecosystem helps you avoid reinventing the wheel. Often, the server you need already exists—you just need to install and configure it.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP ecosystem, awesome-mcp-servers, server categories, ecosystem maturity, growth.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⭐ Top official servers</h4>
+<p class="text-sm text-neutral-400">Servers maintained by Anthropic</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Anthropic maintains official reference servers such as filesystem (file access), fetch (HTTP requests), and GitHub (repository integration). They serve as implementation examples and are used in production.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Official servers are the ecosystem’s quality benchmark. Studying their code is the best way to learn MCP implementation best practices.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Official servers, filesystem, fetch, GitHub, PostgreSQL, implementation reference, quality.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌟 Top Community Servers</h4>
+<p class="text-sm text-neutral-400">Popular open-source projects</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The community has created servers for practically everything: Slack, Notion, Google Calendar, Docker, Kubernetes, databases, web scraping, and much more. Many have hundreds of stars and are actively maintained.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing the community's top servers greatly expands your setup's capabilities. Combining multiple servers creates powerful, automated workflows.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Community servers, Slack MCP, Notion MCP, Docker MCP, web scraping, automation.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 How to Evaluate a Server</h4>
+<p class="text-sm text-neutral-400">Criteria for choosing servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Evaluating an MCP Server involves checking for active maintenance (recent commits), README quality, automated tests, the number of open issues, code security, and compatibility with your environment.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Not every open-source server is trustworthy. Knowing how to assess quality and security protects your environment and helps ensure you choose projects that will be maintained over the long term.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Due diligence, code review, active maintenance, security, license, community, documentation.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ Installing third-party servers</h4>
+<p class="text-sm text-neutral-400">Installation and configuration process</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Installing third-party servers generally involves: cloning the repository or installing via pip/npm, configuring environment variables (API keys, tokens), adding the entry to claude_desktop_config.json, and testing the connection.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing how to install third-party servers correctly expands your capabilities without writing code. It’s the fastest way to add features to your setup.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">pip install, npx, claude_desktop_config.json, environment variables, API keys, troubleshooting.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧩 Creating Powerful Combinations</h4>
+<p class="text-sm text-neutral-400">Workflows with multiple servers</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">MCP's power multiplies when you combine multiple servers. For example, filesystem + GitHub + Slack lets Claude read code, create PRs, and automatically notify the team. The combinations are unlimited.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Combining servers is where MCP really shines. It’s composability in action—each server adds complementary capabilities, creating workflows that are impossible with isolated tools.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Composability, multi-server workflows, automation, orchestration, tool synergy, productivity.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-5')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-5.html">View Full</a>
+</div>
+</div>
+<!-- Module 5.6 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-5-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-teal-400">Module 5.6</span>
+<span class="text-sm text-neutral-400">~20 min · Theory</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🔮 The Future of MCP</h3>
+<p class="text-neutral-300 mb-6">Protocol roadmap, emerging trends, and professional opportunities.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔮 Official Roadmap</h4>
+<p class="text-sm text-neutral-400">What comes next in the protocol</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The official MCP roadmap includes improvements such as native protocol authentication, support for bidirectional streaming, server discovery, and deeper integration with autonomous agents. The specification evolves in regular cycles.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Knowing the roadmap lets you anticipate changes and prepare your servers for future protocol versions. Early adopters benefit from each new feature.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP roadmap, native authentication, bidirectional streaming, discovery, protocol evolution, breaking changes.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📈 Emerging trends</h4>
+<p class="text-sm text-neutral-400">Where the ecosystem is headed</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">Emerging trends include: MCP on mobile devices, IoT integration, industry-specific servers (healthcare, finance, education), and convergence with other AI protocols such as A2A (Agent-to-Agent).</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Identifying trends early lets you position yourself strategically. Creating servers for emerging niches before the competition is a significant advantage.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP mobile, IoT, vertical servers, A2A protocol, protocol convergence, edge computing.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🏪 Tool Marketplaces</h4>
+<p class="text-sm text-neutral-400">Distribution and monetization</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">MCP tool marketplaces are platforms where developers publish servers and users discover them. Similar to app stores, they make distribution, reviews, one-click installation, and potentially monetization of premium servers easier.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Marketplaces represent a monetization opportunity for MCP Server creators. Understanding how they work prepares you to publish and potentially sell your servers.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Marketplace, distribution, discovery, monetization, reviews, automated installation, certification.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🤖 MCP and AI Agents</h4>
+<p class="text-sm text-neutral-400">The role of MCP in autonomous agents</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">AI Agents are systems that autonomously perform tasks using multiple tools in sequence. MCP is the natural infrastructure for agents, providing standardized access to the tools, data, and services they need to operate.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">AI Agents are the future of applied AI. Understanding how MCP enables agents puts you at the intersection of two transformative technologies.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">AI Agents, autonomy, tool use, orchestration, action loops, MCP as infrastructure, multi-agent systems.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💼 Career Opportunities</h4>
+<p class="text-sm text-neutral-400">Careers and the job market</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">The MCP market is just emerging and offers unique opportunities: integration consulting, custom server development, open source contributions that build visibility, and positions at companies adopting the protocol.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Being an MCP specialist now is like being a React specialist in 2015. Demand is growing exponentially, and few professionals have mastered the technology.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">MCP market, consulting, freelance work, open source, portfolio, networking, early adopter advantage.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-teal-500/20 text-teal-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎓 Next Steps</h4>
+<p class="text-sm text-neutral-400">How to continue your journey</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-teal-400 font-semibold text-sm">What it is:</span><p class="text-neutral-300 text-sm mt-1">After completing the 5 tracks, your next steps include: publishing your first open-source server, contributing to the ecosystem, exploring community servers, creating servers for your professional niche, and following the protocol’s evolution.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Why learn:</span><p class="text-neutral-300 text-sm mt-1">Having a clear action plan after the course ensures that the knowledge you've gained turns into practical results and ongoing professional growth.</p></div>
+<div><span class="text-teal-400 font-semibold text-sm">Key concepts:</span><p class="text-neutral-300 text-sm mt-1">Action plan, publishing, contribution, community, ongoing learning, specialization, portfolio.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-teal-500/20 text-teal-400 rounded-lg hover:bg-teal-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-5-6')">View in Modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-5-6.html">View Full</a>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex items-center justify-between mt-12 pt-8 border-t border-dark-700">
+<a class="flex items-center gap-2 text-neutral-400 hover:text-teal-400 transition-colors font-medium" href="../trilha4/index.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        ← Previous Track
+      </a>
+<a class="flex items-center gap-2 text-neutral-400 hover:text-teal-400 transition-colors font-medium" href="../../index.html">
+        Back to Home
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0h4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</main>
+<!-- Modals -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-1">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.1 — Packaging Your MCP Server</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-1.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-2">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.2 — Publishing on GitHub</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-2.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-3">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.3 — HTTP/SSE Transport</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-3.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-4">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.4 — MCP with TypeScript</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-4.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-5">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.5 — Exploring Community Servers</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-5.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-5-6">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Module 5.6 — The Future of MCP</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-5-6.html"></iframe>
+</div>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-neutral-400 text-sm">
+<span>🔌 MCP — From Zero to Server</span>
+<span>·</span>
+<a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<p class="text-neutral-500 text-sm">Track 5 — Advanced: Publishing and Ecosystem</p>
+</div>
+</div>
+</footer>
+<script>
+    // Toggle topics
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

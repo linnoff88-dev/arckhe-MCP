@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 5.6 — El futuro de MCP | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-6.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-6.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-6.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-6.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha5/modulo-5-6.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-5-6.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Ruta 5</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 5.6</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 5.6</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🔮 El futuro de MCP
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Roadmap del protocolo, tendencias emergentes y cómo posicionarte profesionalmente en el ecosistema MCP.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">20</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Avanzado</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Teoría</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔮 Hoja de ruta oficial</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Anthropic sigue evolucionando la especificación de MCP de forma abierta. El protocolo aún es joven y hay mucho espacio para mejoras fundamentales que harán que el ecosistema sea más sólido, seguro y fácil de usar. Seguir la hoja de ruta oficial es esencial para quienes quieren mantenerse a la vanguardia del desarrollo de MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">hoja de ruta de MCP</strong> se centra en cuatro pilares principales de evolución: <strong class="text-neutral-100">mejor autenticación</strong> — mecanismos de permisos más granulares y OAuth nativo para servers que acceden a APIs externas; <strong class="text-neutral-100">descubrimiento de servers</strong> — formas estandarizadas de descubrir, listar y conectar servers automáticamente, sin configuración manual; <strong class="text-neutral-100">estandarización de errores</strong> — códigos de error coherentes y mensajes estructurados que permiten al client reaccionar de forma inteligente ante fallos; y <strong class="text-neutral-100">mejor compatibilidad con streaming</strong> — streams bidireccionales más eficientes para tools que producen datos en tiempo real, como logs, monitoreo y procesamiento de grandes volúmenes.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Próximos pasos del spec</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Corto plazo</span>
+<p class="text-neutral-300 text-sm mt-1">Estandarización de errores y mejoras en el protocolo de autenticación. Compatibilidad nativa con OAuth 2.0 para servers que necesitan acceder a APIs autenticadas.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Mediano plazo</span>
+<p class="text-neutral-300 text-sm mt-1">Protocolo de discovery para localizar servers automáticamente. Registry centralizado de servers disponibles. Mejoras en streaming bidireccional.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Largo plazo</span>
+<p class="text-neutral-300 text-sm mt-1">Ecosistema maduro con marketplaces, certificación de servers y MCP como estándar universal de comunicación entre la IA y las herramientas externas.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Desde el lanzamiento de MCP, la spec ya ha pasado por múltiples revisiones con aportes de la comunidad de código abierto. El repositorio oficial en GitHub acumula miles de stars y cientos de colaboradores. La adopción de herramientas de desarrollo con IA crece de forma exponencial — <strong class="text-neutral-100">Claude Desktop, Cursor, Windsurf, Continue.dev</strong> y otros IDE ya son compatibles con MCP de forma nativa, lo que indica que el protocolo se está consolidando como estándar de la industria.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📈 Tendencias emergentes</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        MCP se está posicionando como la <strong class="text-neutral-100">capa de integración universal</strong> entre los modelos de AI y el mundo externo. Las tendencias apuntan a una adopción masiva en múltiples contextos: desde IDEs hasta asistentes empresariales, y desde la automatización personal hasta la infraestructura de producción. Entender estas tendencias es fundamental para adelantarte.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las principales tendencias emergentes del ecosistema MCP incluyen: <strong class="text-neutral-100">MCP como base para AI Agents autónomos</strong> — agents que orquestan múltiples servers para completar flujos de trabajo complejos; <strong class="text-neutral-100">integración con más IDE y herramientas</strong> — además de Claude Desktop, cada vez más editores de código y plataformas de desarrollo adoptan el protocolo; <strong class="text-neutral-100">creciente adopción empresarial</strong> — empresas que crean servers internos para conectar sus sistemas heredados con asistentes de AI; y <strong class="text-neutral-100">servidores especializados por industria</strong> — salud, finanzas, educación, ingeniería: cada sector crea sus propios MCP Servers con lógica de dominio específica.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El mercado de AI Agents debe superar <strong class="text-neutral-100">US$ 65 mil millones hasta 2030</strong>, según las proyecciones de los analistas. Los protocolos de integración como MCP son piezas fundamentales de esta arquitectura: sin una capa estandarizada de comunicación, los agents no pueden acceder a herramientas externas de forma confiable. Las empresas que adoptan AI tooling con MCP reportan <strong class="text-neutral-100">reducción del 40-60%</strong> en el tiempo de integración en comparación con soluciones ad hoc.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Mantente atento a las <strong class="text-neutral-100">releases del spec MCP en GitHub</strong> y en los anuncios de Anthropic. Participa en comunidades como Discord y foros de desarrolladores. Cuando se agrega una nueva función al spec, quienes la implementan primero en servidores públicos ganan visibilidad y se posicionan como referentes en el ecosistema.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🏪 Marketplaces de tools</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Así como los smartphones llegaron a tener tiendas de apps, el ecosistema MCP se encamina a tener <strong class="text-neutral-100">marketplaces de servers</strong> — plataformas donde los desarrolladores publican, descubren e instalan MCP Servers con facilidad. Esto democratizará el acceso a herramientas de AI y creará un mercado completamente nuevo.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El futuro de los <strong class="text-neutral-100">marketplaces de MCP Tools</strong> involucra varios componentes: <strong class="text-neutral-100">descubrimiento automático</strong> — clients que encuentran servers relevantes según el contexto de la conversación o de la tarea, sin configuración manual; <strong class="text-neutral-100">instalación con un clic</strong> — al igual que instalar una app en el celular, agregar un MCP Server a tu entorno será muy sencillo; <strong class="text-neutral-100">posibilidad de monetización</strong> — los desarrolladores podrán cobrar por servers premium con funcionalidades avanzadas, creando un modelo de negocio sostenible; y <strong class="text-neutral-100">reviews y ratings</strong> — comunidad que evalúa los servers por su calidad, confiabilidad y seguridad.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Evolución de los marketplaces</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Fase 1 — Actual</span>
+<p class="text-neutral-300 text-sm mt-1">Listas seleccionadas en GitHub, awesome-lists y repositorios comunitarios. Instalación manual mediante configuración JSON.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Fase 2 — Registries</span>
+<p class="text-neutral-300 text-sm mt-1">Registries centralizados con búsqueda, categorías y metadatos estandarizados. Instalación semiautomática mediante CLI.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Fase 3 — App Stores</span>
+<p class="text-neutral-300 text-sm mt-1">Marketplaces completos con UI, reviews, monetización, instalación con un clic y discovery contextual mediante IA.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Crear servers sin documentación: nadie los usará en el marketplace</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar patrones de nomenclatura y metadatos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Publicar sin pruebas — las reseñas negativas son permanentes</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Esperar a que el marketplace esté listo para empezar a crear</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Empezar a publicar servers ahora en GitHub</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Seguir estándares de calidad desde el inicio</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Documentar con un README claro y ejemplos de uso</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Construir un portafolio de servers para cuando surjan los marketplaces</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🤖 MCP y AI Agents</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los AI Agents autónomos representan la próxima frontera de la inteligencia artificial aplicada. Estos agents no solo conversan: <strong class="text-neutral-100">planean, ejecutan acciones y se adaptan</strong> usando herramientas externas. MCP es la capa que lo hace posible y funciona como el «sistema nervioso» que conecta el cerebro del agente (el modelo de lenguaje) con sus manos (las herramientas del mundo real).
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Un <strong class="text-neutral-100">AI Agent basado en MCP</strong> combina tres capacidades fundamentales: <strong class="text-neutral-100">Planning</strong> — el modelo analiza la tarea y crea un plan de acción con varios pasos; <strong class="text-neutral-100">Uso de tools</strong> — mediante MCP, el agent invoca tools de varios servers para ejecutar cada paso (buscar datos, crear archivos, enviar mensajes, consultar APIs); y <strong class="text-neutral-100">Memory</strong> — el agent mantiene el contexto entre acciones, aprende de los resultados y ajusta su estrategia. MCP actúa como <strong class="text-neutral-100">"sistema nervioso"</strong> de los agents: sin él, el modelo es un cerebro sin cuerpo, capaz de pensar pero incapaz de actuar en el mundo real. Con MCP, cada server es como un nuevo miembro que el agent puede usar.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las investigaciones muestran que los agents con acceso a <strong class="text-neutral-100">Más de 5 herramientas vía MCP</strong> pueden completar tareas complejas con una tasa de éxito significativamente mayor que los agentes limitados a una o dos herramientas. La arquitectura multiservidor permite que los agentes aborden problemas que ninguna herramienta individual podría resolver, como buscar información en una API, procesarla con código y enviar el resultado por correo electrónico, todo en una única cadena de acciones autónomas.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Al crear MCP Servers, piensa en ellos como <strong class="text-neutral-100">bloques de construcción para agentes</strong>. Cada tool debe ser atómica, estar bien descrita y ser predecible: los agents necesitan entender qué hace la tool solo por su descripción. Las tools con efectos secundarios claros, manejo de errores robusto y respuestas estructuradas son mucho más útiles para los agents que las tools genéricas y mal documentadas.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">💼 Oportunidades profesionales</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El ecosistema MCP está creando una nueva categoría profesional. La demanda de personas que saben cómo conectar la IA con sistemas reales crece rápidamente, y quienes dominan MCP hoy se están posicionando para oportunidades que la mayoría del mercado todavía ni conoce.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las principales oportunidades profesionales en el ecosistema MCP incluyen: <strong class="text-neutral-100">Desarrollador de MCP</strong> — creación de servers personalizados para empresas que quieren conectar sus sistemas con asistentes de AI; <strong class="text-neutral-100">Integrador de AI Tooling</strong> — profesional que diseña e implementa la capa de integración entre AI y la infraestructura existente; <strong class="text-neutral-100">Consultor de AI</strong> — ayudar a las empresas a identificar qué procesos se pueden automatizar con MCP y cómo implementarlos; y <strong class="text-neutral-100">Contribuidor de Open Source</strong> — construir una reputación publicando servers de calidad, contribuyendo a la spec y ayudando a la comunidad. Saber de MCP es una <strong class="text-neutral-100">habilidad diferencial</strong> — pocos profesionales del mercado dominan esta tecnología.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Esperar a que el mercado madure para empezar a aprender</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Centrarse solo en la teoría sin crear proyectos reales</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar a la comunidad y trabajar de forma aislada</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Subestimar el impacto de las herramientas de IA en el mercado laboral</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Construir un portafolio de MCP Servers en GitHub</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Compartir aprendizajes en blogs y redes sociales</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Participar en comunidades y contribuir al código abierto</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Proponer integraciones MCP en tu trabajo actual</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La demanda de profesionales con habilidades en AI tooling e integración creció más de <strong class="text-neutral-100">300% en los últimos dos años</strong>, según datos de plataformas de empleo. Puestos como "AI Engineer", "AI Integration Specialist" y "AI Tooling Developer" aparecen cada vez más en las vacantes de empresas tecnológicas. Los profesionales que demuestran experiencia práctica con MCP —mediante repositorios públicos y contribuciones— tienen una ventaja competitiva significativa.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎓 Próximos pasos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Llegaste al final del curso, pero tu recorrido con MCP apenas comienza. El conocimiento que construiste a lo largo de las 5 rutas es una base sólida; ahora es hora de <strong class="text-neutral-100">aplicar, probar y evolucionar</strong>. Aquí tienes tu plan de acción para seguir creciendo en el ecosistema MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Los próximos pasos para consolidar y ampliar tus conocimientos sobre MCP son: <strong class="text-neutral-100">crear más servidores</strong> — cada nuevo server refuerza lo que sabes y amplía tu portafolio; <strong class="text-neutral-100">contribuir al código abierto</strong> — envía PRs a servers existentes, reporta errores y mejora la documentación; <strong class="text-neutral-100">seguir la spec</strong> — sigue el repositorio oficial de MCP en GitHub y lee cada release; <strong class="text-neutral-100">participar en la comunidad</strong> — únete a Discords, foros y grupos de desarrolladores de MCP; y <strong class="text-neutral-100">experimentar con nuevos patterns</strong> — combina múltiples servers, explora resources y prompts, y crea arquitecturas innovadoras que nadie haya probado todavía.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Plan de acción después del curso</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Semana 1-2</span>
+<p class="text-neutral-300 text-sm mt-1">Crea un MCP Server para un problema real de tu día a día. Publícalo en GitHub con un README completo y pyproject.toml configurado.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Semana 3-4</span>
+<p class="text-neutral-300 text-sm mt-1">Contribuye a un server open source existente. Encuentra un issue abierto y envía un PR. Participa en una comunidad de desarrolladores de MCP.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Mes 2-3</span>
+<p class="text-neutral-300 text-sm mt-1">Crea un servidor más complejo con resources, prompts y varias tools. Prueba el deploy con Docker y la integración con CI/CD.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Mes 4+</span>
+<p class="text-neutral-300 text-sm mt-1">Propón integraciones MCP en tu trabajo. Comparte tus conocimientos en artículos o charlas. Sigue al tanto de la evolución de la spec.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La mejor forma de aprender es <strong class="text-neutral-100">haciendo</strong>. No esperes a sentirte "listo" para crear tu próximo server: empieza con algo sencillo, itera y mejora. Cada server que publicas es una tarjeta de presentación profesional. Y recuerda: la comunidad MCP aún es pequeña, así que tus contribuciones tienen un impacto desproporcionado. Quienes construyan ahora serán referentes cuando el ecosistema explote.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-4">🎉 ¡Felicitaciones! ¡Completaste el curso MCP — De cero a servidor!</h2>
+<p class="text-neutral-300 leading-relaxed mb-8">
+          Este fue el último módulo de todo el curso. A lo largo de 5 rutas, construiste una base sólida de conocimientos sobre el Model Context Protocol: de la teoría a la práctica, del primer server al deploy en producción.
+        </p>
+<h3 class="text-lg font-bold text-neutral-100 mb-4">Rutas completadas:</h3>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span><strong class="text-neutral-100">Ruta 1 — Fundamentos:</strong> Entendiste qué es MCP, por qué existe y cómo funciona la arquitectura client-server.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span><strong class="text-neutral-100">Ruta 2 — Primer Server:</strong> Creaste tu primer MCP Server desde cero e implementaste tools, resources y prompts.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span><strong class="text-neutral-100">Ruta 3 — Servers avanzados:</strong> Construiste servers complejos con APIs externas, bases de datos y patterns avanzados.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span><strong class="text-neutral-100">Ruta 4 — Producción:</strong> Aprendiste sobre pruebas, seguridad, rendimiento y las mejores prácticas para servers de producción.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span><strong class="text-neutral-100">Ruta 5 — Deploy y futuro:</strong> Empaquetaste, publicaste, hiciste deploy y ahora entiendes el futuro del ecosistema MCP.</span>
+</li>
+</ul>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="../../index.html">
+            Volver al inicio
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

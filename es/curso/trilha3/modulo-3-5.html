@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 3.5 — Servidor de consulta del clima | MCP — De cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-purple-400 { color: #7c3aed; }
+    html:not(.dark) .bg-purple-500\/20 { background-color: rgba(124, 58, 237, 0.12); }
+    html:not(.dark) .bg-purple-500\/10 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .border-purple-500\/30 { border-color: rgba(124, 58, 237, 0.25); }
+    html:not(.dark) .hover\:bg-purple-500\/30:hover { background-color: rgba(124, 58, 237, 0.18); }
+    html:not(.dark) .bg-purple-900\/20 { background-color: rgba(124, 58, 237, 0.08); }
+    html:not(.dark) .bg-purple-900\/30 { background-color: rgba(124, 58, 237, 0.10); }
+    html:not(.dark) .bg-purple-900\/40 { background-color: rgba(124, 58, 237, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha3/modulo-3-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha3/modulo-3-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha3/modulo-3-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha3/modulo-3-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha3/modulo-3-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-3-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded bg-purple-500/20 text-purple-400" href="index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-purple-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-purple-400 transition-colors" href="index.html">Ruta 3</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 3.5</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-purple-900/30 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-purple-500/20 text-purple-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 3.5</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🌤️ Server de consulta del clima
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Crea una tool que consulta una API externa real: aprende a hacer solicitudes HTTP dentro de un MCP Server.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">35</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Intermedio</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-purple-400">Práctico</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 Eligiendo la API</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Para nuestro server del clima, vamos a usar la <strong class="text-neutral-100">wttr.in</strong> — una API meteorológica gratuita, sin necesidad de registrarse ni de una clave de autenticación. Devuelve datos meteorológicos en texto simple o JSON, es muy fácil de usar y perfecta para aprender. Solo tienes que hacer una solicitud GET y los datos llegan listos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          A <strong class="text-neutral-100">wttr.in</strong> se accede mediante una URL simple. Para obtener datos en JSON, basta con agregar el parámetro <code class="text-purple-400">?format=j1</code>:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p class="text-neutral-500"># Ejemplos de URL:</p>
+<p>https://wttr.in/São Paulo?format=j1</p>
+<p>https://wttr.in/Tokyo?format=j1</p>
+<p>https://wttr.in/London?format=j1</p>
+</div>
+<p class="text-neutral-300 leading-relaxed mt-4">
+          El JSON devuelto contiene la temperatura, las condiciones climáticas, la humedad, la sensación térmica, la velocidad del viento y mucho más. Vamos a extraer los datos más relevantes para crear una respuesta útil.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          wttr.in es un proyecto open source alojado en GitHub. Admite <strong class="text-neutral-100">más de 50 idiomas</strong>, acepta nombres de ciudades en cualquier idioma y también funciona con coordenadas geográficas. La usan millones de desarrolladores y no requiere autenticación — ideal para crear prototipos rápidamente y para proyectos de aprendizaje como el nuestro.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Antes de implementar la tool, prueba la API directamente en el navegador o en la terminal. Accede a <code class="text-purple-400">https://wttr.in/São Paulo?format=j1</code> y revisa la estructura del JSON. Esto ayuda a entender qué campos están disponibles y cómo extraer los datos que queremos. También puedes probarlo en la terminal con <code class="text-purple-400">curl "wttr.in/São Paulo?format=j1"</code>.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📡 Solicitudes HTTP en Python</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Para hacer solicitudes HTTP dentro de nuestro server MCP, necesitamos una biblioteca HTTP. En Python, las dos opciones principales son <strong class="text-neutral-100">requests</strong> (síncrona) y <strong class="text-neutral-100">httpx</strong> (con soporte async). Para los servers MCP, el <code class="text-purple-400">httpx</code> es la opción preferida porque admite llamadas asíncronas de forma nativa, lo que encaja mejor con la arquitectura de MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Instala httpx en tu proyecto usando el gestor de paquetes <code class="text-purple-400">uv</code>:
+        </p>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
+<p><span class="text-neutral-500"># Agregar httpx como dependencia</span></p>
+<p>uv add httpx</p>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Con el <code class="text-purple-400">httpx</code>, podemos usar <code class="text-purple-400">async with httpx.AsyncClient()</code> para hacer solicitudes HTTP asíncronas dentro de tools MCP. La función de la tool se declarará como <code class="text-purple-400">async def</code>, lo que permite que el server siga respondiendo mientras espera la respuesta de la API externa.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar requests (síncrono) en tools async</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Hacer solicitudes bloqueantes en el event loop</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar los timeouts en las solicitudes HTTP</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Crear clientes HTTP en cada llamada</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar httpx con AsyncClient para async</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Declarar las tools como async def cuando realizan I/O</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Siempre define un timeout en las solicitudes</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar un administrador de contexto (async with) para el client</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">💻 Implementando la tool</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Ahora implementaremos la tool para consultar el clima. Recibirá el nombre de una ciudad como string, hará una solicitud HTTP a wttr.in, analizará el JSON de respuesta y extraerá la información más relevante: temperatura, condición climática, humedad y sensación térmica.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p><span class="text-purple-400">from</span> mcp.server.fastmcp <span class="text-purple-400">import</span> FastMCP</p>
+<p><span class="text-purple-400">import</span> httpx</p>
+<br/>
+<p>mcp = FastMCP(<span class="text-green-400">"Clima"</span>)</p>
+<br/>
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">async def</span> <span class="text-blue-400">consultar_clima</span>(ciudad: <span class="text-yellow-400">str</span>) -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Consulta el clima actual de una ciudad."""</span></p>
+<p> <span class="text-purple-400">async with</span> httpx.AsyncClient() <span class="text-purple-400">las</span> client:</p>
+<p>        url = <span class="text-green-400">f"https://wttr.in/</span>{cidade}<span class="text-green-400">?format=j1"</span></p>
+<p>        response = <span class="text-purple-400">await</span> client.get(url, timeout=<span class="text-yellow-400">10.0</span>)</p>
+<p>        response.raise_for_status()</p>
+<p>        dados = response.json()</p>
+<br/>
+<p>    current = dados[<span class="text-green-400">"current_condition"</span>][<span class="text-yellow-400">0</span>]</p>
+<p>    temp = current[<span class="text-green-400">"temp_C"</span>]</p>
+<p>    sensacao = current[<span class="text-green-400">"FeelsLikeC"</span>]</p>
+<p>    humedad = current[<span class="text-green-400">"humidity"</span>]</p>
+<p>    descricao = current[<span class="text-green-400">"weatherDesc"</span>][<span class="text-yellow-400">0</span>][<span class="text-green-400">"value"</span>]</p>
+<br/>
+<p> <span class="text-purple-400">return</span> (</p>
+<p> <span class="text-green-400">f"Clima en </span>{cidade}<span class="text-green-400">:\n"</span></p>
+<p> <span class="text-green-400">f"Temperatura: </span>{temp}<span class="text-green-400">°C\n"</span></p>
+<p> <span class="text-green-400">f"Sensación térmica: </span>{sensacao}<span class="text-green-400">°C\n"</span></p>
+<p> <span class="text-green-400">f"Humedad: </span>{umidade}<span class="text-green-400">%\n"</span></p>
+<p> <span class="text-green-400">f"Condición: </span>{descricao}<span class="text-green-400">"</span></p>
+<p>    )</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Observa que usamos <code class="text-purple-400">async def</code> e <code class="text-purple-400">await</code> en la tool. FastMCP admite tools asíncronas de forma nativa: basta con declarar la función como <code class="text-purple-400">async</code>. O <code class="text-purple-400">timeout=10.0</code> garantiza que la solicitud no quede pendiente para siempre si la API no responde. Siempre define timeouts en las solicitudes HTTP externas.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📊 Formateo de la respuesta</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La forma en que devuelves los datos de la tool influye directamente en la calidad de la respuesta que el modelo dará al usuario. Devolver una cadena formateada y legible es mucho mejor que devolver el JSON sin procesar de la API. El modelo recibe esta cadena y se la presenta al usuario de forma natural y conversacional.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          La respuesta de la tool debe ser una <strong class="text-neutral-100">cadena estructurada pero legible</strong>. El modelo lee esta cadena y la transforma en lenguaje natural para el usuario. Compara los dos enfoques:
+        </p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-red-400 text-xs mb-2 font-semibold">JSON sin procesar (malo)</div>
+<p class="text-neutral-300 font-mono text-xs">{"temp_C": "25", "humidity": "60", "weatherDesc": [{"value": "Clear"}], ...}</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-purple-400 text-xs mb-2 font-semibold">Cadena con formato (buena)</div>
+<p class="text-neutral-300 font-mono text-xs">Clima en São Paulo:<br/>Temperatura: 25°C<br/>Humedad: 60%<br/>Condición: Clear</p>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver el JSON sin procesar de la API</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Incluir campos irrelevantes en la respuesta</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar códigos o abreviaturas técnicas</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Devolver datos sin unidades de medida</li>
+</ul>
+</div>
+<div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Formatear una cadena con datos seleccionados</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Incluir solo información útil para el usuario</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar etiquetas claras: "Temperatura:", "Humedad:"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Siempre incluye unidades (°C, %, km/h)</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚠️ Manejo de errores</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Cuando tu tool depende de una API externa, muchas cosas pueden salir mal: la ciudad puede no existir, la conexión a internet puede fallar, la API puede estar fuera de servicio o la solicitud puede tardar demasiado. Cada uno de estos escenarios debe manejarse por separado para que el server siga funcionando y el modelo reciba un mensaje de error útil.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
+<p><span class="text-purple-400">@mcp.tool()</span></p>
+<p><span class="text-purple-400">async def</span> <span class="text-blue-400">consultar_clima</span>(ciudad: <span class="text-yellow-400">str</span>) -&gt; <span class="text-yellow-400">str</span>:</p>
+<p> <span class="text-green-400">"""Consulta el clima actual de una ciudad."""</span></p>
+<p> <span class="text-purple-400">try</span>:</p>
+<p> <span class="text-purple-400">async with</span> httpx.AsyncClient() <span class="text-purple-400">las</span> client:</p>
+<p>            url = <span class="text-green-400">f"https://wttr.in/</span>{cidade}<span class="text-green-400">?format=j1"</span></p>
+<p>            response = <span class="text-purple-400">await</span> client.get(url, timeout=<span class="text-yellow-400">10.0</span>)</p>
+<p>            response.raise_for_status()</p>
+<p>            dados = response.json()</p>
+<p> <span class="text-neutral-500"># ... extraer y devolver datos</span></p>
+<p> <span class="text-purple-400">except</span> httpx.HTTPStatusError:</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Error: ciudad '</span>{cidade}<span class="text-green-400">' no encontrada."</span></p>
+<p> <span class="text-purple-400">except</span> httpx.ConnectError:</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Error: no hay conexión a Internet."</span></p>
+<p> <span class="text-purple-400">except</span> httpx.TimeoutException:</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Error: la API tardó demasiado en responder."</span></p>
+<p> <span class="text-purple-400">except</span> Exception <span class="text-purple-400">las</span> e:</p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Error inesperado: </span>{str(e)}<span class="text-green-400">"</span></p>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">¡Nunca confíes en APIs externas!</strong> Toda solicitud HTTP puede fallar. Una tool que funciona perfectamente en tu prueba local puede fallar en producción porque la API dejó de funcionar, cambió el formato de la respuesta o alcanzó el rate limit. El manejo de errores no es opcional: es obligatorio para cualquier tool que haga solicitudes externas.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-purple-400 font-semibold text-sm">📋 Tipos de errores y cómo tratarlos</span>
+</div>
+<div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">HTTPStatusError (404, 500, etc.)</span>
+<p class="text-neutral-300 text-sm mt-1">La API respondió con un código de error. Ciudad no encontrada (404) o error interno de la API (500). Devuelve un mensaje claro que indique el problema.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">ConnectError</span>
+<p class="text-neutral-300 text-sm mt-1">No fue posible conectarse a la API; generalmente significa que no hay internet o que no se resolvió el DNS. Informa al usuario que la conexión falló.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">TimeoutException</span>
+<p class="text-neutral-300 text-sm mt-1">La API tardó más que el timeout definido (10 segundos). Puede deberse a una sobrecarga del servidor. Indica que la API no respondió a tiempo.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-purple-400 font-bold text-sm">Exception genérica</span>
+<p class="text-neutral-300 text-sm mt-1">Cualquier error inesperado — JSON mal formado, campo ausente, etc. El except genérico al final garantiza que ningún error quede sin manejar.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Probando con Claude</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Con la tool implementada y el manejo de errores listo, configura el server en Claude Desktop y prueba distintas ciudades y escenarios. El objetivo es verificar que la tool devuelva datos correctos y que los errores se manejen correctamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-purple-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Prueba con preguntas naturales para verificar que Claude use la tool correctamente:
+        </p>
+<ul class="space-y-2 text-neutral-300 text-sm">
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">1.</span>
+<span>"¿Cómo está el clima en São Paulo?" — debe devolver la temperatura, la humedad y las condiciones.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">2.</span>
+<span>"¿Cuál es la temperatura en Tokyo?" — prueba con una ciudad en otro idioma.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">3.</span>
+<span>"¿Necesito paraguas en Londres hoy?" — Claude debe inferirlo a partir de las condiciones climáticas.</span>
+</li>
+<li class="flex items-start gap-3">
+<span class="text-purple-400 font-bold shrink-0">4.</span>
+<span>"Clima en XyzCidadeInexistente" — debe devolver un mensaje de error controlado.</span>
+</li>
+</ul>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Observa cómo Claude <strong class="text-neutral-100">interpreta los datos</strong> devueltos por la tool. No solo repite los números: los contextualiza. Si la temperatura es de 35°C, puede decir «hace bastante calor». Si la humedad es del 90%, puede advertir que el ambiente se siente bochornoso. Cuanto más clara sea la respuesta de la tool, mejor será la interpretación del modelo.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Este server del clima es un ejemplo clásico de <strong class="text-neutral-100">"API bridge"</strong> — un patrón muy común en servers MCP. El server actúa como puente entre el modelo y una API externa: traduce la solicitud del modelo en una llamada HTTP y la respuesta HTTP en texto para el modelo. Este mismo patrón se puede aplicar a cualquier API: pronóstico del tiempo, cotizaciones, noticias, datos financieros, estado de servicios y mucho más.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-purple-900/40 to-dark-800 border border-purple-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Elegimos la API wttr.in, gratuita y sin autenticación, ideal para aprender.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Usamos httpx (async) para realizar solicitudes HTTP dentro del server MCP.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Implementamos la tool consultar_clima con async def y await.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Formateamos la respuesta con datos seleccionados y unidades de medida claras.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Manejamos errores específicos: ciudad no encontrada, falta de conexión a Internet, timeout y errores inesperados.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-purple-400 mt-0.5">✓</span>
+<span>Probamos con diferentes ciudades y escenarios de error en Claude Desktop.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 3.6 — Añadiendo recursos
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-purple-500/20 hover:bg-purple-500/30 text-purple-400 border border-purple-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-3-6.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

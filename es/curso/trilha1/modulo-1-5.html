@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 1.5 — Tipos de recursos: Tools, Resources, Prompts | MCP — Desde cero hasta el servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha1/modulo-1-5.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha1/modulo-1-5.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha1/modulo-1-5.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-5.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-5.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-5.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400" href="index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-emerald-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400 transition-colors" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 1.5</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 1.5</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🧰 Tipos de recursos: herramientas, recursos, prompts
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Entiende los tres tipos de recursos que puede exponer un MCP Server y cuándo usar cada uno para crear integraciones potentes.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">25</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Teoría</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧰 Herramientas: acciones que el modelo puede ejecutar</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Las tools son el tipo de recurso más poderoso y más utilizado en el ecosistema MCP. Representan <strong class="text-neutral-100">acciones concretas</strong> que el modelo de IA puede ejecutar — funciones con parámetros bien definidos que permiten consultar APIs, ejecutar scripts, enviar mensajes, procesar datos e interactuar con sistemas externos. El modelo analiza el contexto de la conversación, decide cuándo se necesita una tool, selecciona la más adecuada y define los parámetros correctos para la llamada.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          Una <strong class="text-neutral-100">Tool</strong> en MCP es una función ejecutable que el servidor expone al modelo de IA. Cada tool tiene un nombre, una descripción y un esquema de parámetros (JSON Schema) que define exactamente qué datos espera recibir. El modelo decide <strong class="text-neutral-100">cuándo y cómo</strong> llamarlas según el contexto de la conversación, sin que sea obligatoria la intervención humana.
+        </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-bold mb-1">read_file</div>
+<div class="text-neutral-400">Lee el contenido de un archivo en el sistema de archivos local o remoto.</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-bold mb-1">query_database</div>
+<div class="text-neutral-400">Ejecuta una consulta SQL en una base de datos conectada.</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-bold mb-1">send_email</div>
+<div class="text-neutral-400">Envía un correo electrónico con destinatario, asunto y cuerpo definidos.</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Las tools son, por mucho, el tipo de recurso más utilizado en el ecosistema MCP. Se estima que <strong class="text-neutral-100">cerca del 80 % de los servidores MCP</strong> publicados exponen al menos una tool; muchos exponen exclusivamente tools. Esto refleja el caso de uso más común: permitir que el modelo de IA <strong class="text-neutral-100">ejecuta acciones</strong> en el mundo real, desde consultas sencillas hasta operaciones complejas en varios sistemas.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Resources — Datos a los que puede acceder el modelo</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los Resources representan <strong class="text-neutral-100">datos y contenidos</strong> que el servidor MCP pone a disposición del modelo para que las consulte. A diferencia de las tools, los resources no ejecutan acciones: funcionan como archivos virtuales que el modelo puede leer cuando necesita información. Documentos, registros de bases de datos, configuraciones del sistema, logs, esquemas: todo puede exponerse como resource. Cada resource se identifica mediante un URI único que sigue un esquema estandarizado.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Una <strong class="text-neutral-100">Resource</strong> en MCP es un dato o contenido que el servidor expone para su lectura. Cada resource tiene un <strong class="text-neutral-100">URI</strong> (Uniform Resource Identifier) que la identifica de forma única; por ejemplo, <code class="text-emerald-400 bg-dark-800 px-1.5 py-0.5 rounded text-xs">file:///config/settings.json</code> o <code class="text-emerald-400 bg-dark-800 px-1.5 py-0.5 rounded text-xs">db://users/schema</code>. El modelo lee el resource cuando necesita contexto adicional, pero <strong class="text-neutral-100">no ejecuta acciones</strong> a través de ella. Los Resources son pasivos: informan, no transforman.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piensa en Resources como una <strong class="text-neutral-100">biblioteca</strong> — el modelo va hasta el estante, consulta el libro que necesita, asimila la información y vuelve a la conversación con más contexto. No modifica los libros, no reorganiza el estante ni escribe páginas nuevas. Solo <strong class="text-neutral-100">lee y consulta</strong>. Si necesitas que el modelo haga algo con los datos (modificarlos, enviarlos, procesarlos), esa tarea corresponde a una Tool, no a un Resource.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Prompts — plantillas reutilizables de instrucciones</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Los prompts son el tercer tipo de recurso en MCP, y el más sutil. Permiten que el servidor proporcione <strong class="text-neutral-100">plantillas reutilizables de instrucciones</strong> estructuradas que guían el comportamiento del modelo en tareas específicas. En lugar de que el usuario escriba manualmente "analiza este código y encuentra bugs", el servidor puede ofrecer un prompt predefinido como <code class="text-emerald-400 bg-dark-800 px-1.5 py-0.5 rounded text-xs">code_review</code> que ya contiene todas las instrucciones necesarias. El usuario o el modelo puede invocar estos prompts.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Un <strong class="text-neutral-100">Prompt</strong> en MCP es una plantilla de instrucciones que el servidor expone para que el usuario o el modelo la invoque. Cada prompt tiene un nombre, una descripción y puede aceptar parámetros (argumentos) que personalizan las instrucciones. Ejemplos: <strong class="text-neutral-100">"analiza este código"</strong> (con parámetro de idioma), <strong class="text-neutral-100">"genera un informe de ventas"</strong> (con parámetro de período), <strong class="text-neutral-100">"resume este documento"</strong> (con parámetro de formato). Los prompts encapsulan experiencia y buenas prácticas en instrucciones reutilizables.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">✅ Prompts bien construidos</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Específicos: "Revisa este código Python para detectar vulnerabilidades de seguridad"</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Con parámetros claros: lenguaje, formato de salida, nivel de detalle</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Bien descritos: el nombre y la descripción explican exactamente qué hacen</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Consistentes: formato de salida predecible y estructurado</li>
+</ul>
+</div>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Prompts que debes evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Genéricos: "Haz algo con este código"</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sin parámetros: instrucciones fijas que no se adaptan al contexto</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Vagos: el nombre y la descripción no explican el propósito</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Redundantes: duplican funcionalidades que ya están disponibles en las tools</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔀 Diferencias entre los tres</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La clave para dominar MCP es entender claramente la distinción entre los tres tipos de recursos. Las tools son <strong class="text-neutral-100">acciones (verbos)</strong> — hacen cosas. Los Resources son <strong class="text-neutral-100">datos (sustantivos)</strong> — informan. Los Prompts son <strong class="text-neutral-100">instrucciones (plantillas)</strong> — guían. Las Tools pueden alterar el estado del mundo real, los Resources son estrictamente de solo lectura y los Prompts moldean el comportamiento del modelo sin ejecutar ni leer directamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<div class="overflow-x-auto">
+<table class="w-full text-sm mt-2">
+<thead>
+<tr class="border-b border-dark-600">
+<th class="text-left py-3 pr-4 text-neutral-100 font-semibold">Aspecto</th>
+<th class="text-left py-3 pr-4 text-emerald-400 font-semibold">Tools</th>
+<th class="text-left py-3 pr-4 text-blue-400 font-semibold">Resources</th>
+<th class="text-left py-3 text-primary font-semibold">Prompts</th>
+</tr>
+</thead>
+<tbody class="text-neutral-300">
+<tr class="border-b border-dark-700">
+<td class="py-3 pr-4 text-neutral-100 font-medium">Naturaleza</td>
+<td class="py-3 pr-4">Acciones (verbos)</td>
+<td class="py-3 pr-4">Datos (sustantivos)</td>
+<td class="py-3">Instrucciones (plantillas)</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-3 pr-4 text-neutral-100 font-medium">Función</td>
+<td class="py-3 pr-4">Ejecutar operaciones</td>
+<td class="py-3 pr-4">Proporcionar información</td>
+<td class="py-3">Guiar el comportamiento</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-3 pr-4 text-neutral-100 font-medium">¿Cambia el estado?</td>
+<td class="py-3 pr-4">Sí</td>
+<td class="py-3 pr-4">No (lectura)</td>
+<td class="py-3">No (orientación)</td>
+</tr>
+<tr class="border-b border-dark-700">
+<td class="py-3 pr-4 text-neutral-100 font-medium">¿Quién invoca?</td>
+<td class="py-3 pr-4">El modelo decide</td>
+<td class="py-3 pr-4">El modelo consulta</td>
+<td class="py-3">Usuario o modelo</td>
+</tr>
+<tr>
+<td class="py-3 pr-4 text-neutral-100 font-medium">Ejemplo</td>
+<td class="py-3 pr-4">send_email()</td>
+<td class="py-3 pr-4">file:///readme.md</td>
+<td class="py-3">code_review</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piénsalo así: <strong class="text-neutral-100">Las tools hacen, los Resources informan, los Prompts guían.</strong> Cuando quieres que el modelo <em>haz</em> algo (enviar, crear, eliminar, procesar), usa una Tool. Cuando quieres que <em>sepa</em> algo (leer datos, consultar configuraciones, acceder a documentos), usa una Resource. Cuando quieres que <em>sigue</em> un patrón (analizar código de cierta manera, generar un informe en un formato específico), usa un Prompt.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎯 Ejemplos en el mundo real</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La mejor forma de entender la distinción entre Tools, Resources y Prompts es ver cómo se manifiestan en servidores MCP reales. Cada servidor combina los tres tipos según su dominio: un server de GitHub usa tools diferentes a las de un server de base de datos, pero ambos siguen la misma lógica de separación entre acciones, datos e instrucciones.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Mira cómo se aplican los tres tipos de recursos en servidores MCP del mundo real:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-emerald-400 font-bold mb-2">🐙 Servidor GitHub</div>
+<div class="space-y-1 text-neutral-400">
+<div><span class="text-emerald-400">Tools:</span> crear issue, hacer merge de PR, crear branch</div>
+<div><span class="text-blue-400">Resources:</span> contenido de archivos, lista de repos</div>
+<div><span class="text-primary">Prompts:</span> revisar código, analizar PR</div>
+</div>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<div class="text-emerald-400 font-bold mb-2">🗄️ Server Database</div>
+<div class="space-y-1 text-neutral-400">
+<div><span class="text-emerald-400">Tools:</span> INSERT, UPDATE, DELETE</div>
+<div><span class="text-blue-400">Resources:</span> esquema de tablas, registros</div>
+<div><span class="text-primary">Prompts:</span> generar informe, optimizar query</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Servidores MCP y sus recursos</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Server de archivos</span>
+<p class="text-neutral-300 text-sm mt-1">Tools para crear, mover y eliminar archivos. Resources para leer contenido y listar directorios. Prompts para organizar proyectos y analizar la estructura de las carpetas.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Server de correo electrónico</span>
+<p class="text-neutral-300 text-sm mt-1">Tools para enviar y responder correos electrónicos. Resources para acceder a la bandeja de entrada y los contactos. Prompts para redactar mensajes profesionales y resumir conversaciones.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Server de monitoreo</span>
+<p class="text-neutral-300 text-sm mt-1">Tools para crear alertas y escalar incidentes. Resources para acceder a métricas y registros en tiempo real. Prompts para diagnosticar problemas y generar informes post mortem.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧩 Combinando recursos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Un servidor MCP verdaderamente potente no se limita a un solo tipo de recurso: combina Tools, Resources y Prompts de forma inteligente para crear una experiencia completa. La sinergia entre los tres tipos es lo que transforma un servidor simple en una integración robusta y versátil, capaz de atender escenarios complejos del mundo real.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Imagina un <strong class="text-neutral-100">servidor MCP de comercio electrónico</strong> completo:</p>
+<div class="space-y-3 text-sm">
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<span class="text-emerald-400 font-bold">🧰 Herramientas:</span>
+<span class="text-neutral-300"> procesar pedido, actualizar inventario, aplicar cupón de descuento, generar factura, calcular envío.</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<span class="text-blue-400 font-bold">📦 Resources:</span>
+<span class="text-neutral-300"> catálogo de productos, historial de pedidos del cliente, tabla de precios, política de devoluciones, preguntas frecuentes.</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
+<span class="text-primary font-bold">📝 Prompts:</span>
+<span class="text-neutral-300"> atención al cliente, recomendación de productos, análisis de carritos abandonados, respuesta a reclamos.</span>
+</div>
+</div>
+<p class="mt-4">Los tres tipos trabajan juntos: el Prompt de atención <strong class="text-neutral-100">guía</strong> el modelo, las Resources <strong class="text-neutral-100">informan</strong> sobre productos y pedidos, y las Tools <strong class="text-neutral-100">ejecutan</strong> acciones como procesar devoluciones o aplicar descuentos.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Al diseñar tu servidor MCP, comienza por identificar los <strong class="text-neutral-100">tres pilares</strong>: qué acciones debe ejecutar el modelo (Tools), qué datos debe consultar (Resources) y qué patrones de comportamiento deben poder reutilizarse (Prompts). No todos los servidores necesitan los tres: muchos funcionan perfectamente solo con Tools, pero los más completos y útiles combinan los tres tipos de forma coherente.
+        </p>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          En la práctica, la distribución del uso de los tipos de recursos en el ecosistema MCP sigue un patrón claro: <strong class="text-neutral-100">~80% de los servers</strong> exponen Tools, <strong class="text-neutral-100">~40% exponen Resources</strong>, e <strong class="text-neutral-100">~20% exponen Prompts</strong>. Los servidores que combinan los tres tipos suelen ser los más completos y mejor valorados por la comunidad: ofrecen una experiencia integrada en la que el modelo puede actuar, consultar y seguir patrones, todo dentro del mismo servidor.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-emerald-900/40 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Las tools son acciones ejecutables (verbos): funciones con parámetros que el modelo invoca para interactuar con sistemas externos.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Los Resources son datos accesibles (sustantivos): contenidos identificados por URI que el modelo consulta para obtener información.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Los prompts son plantillas reutilizables (instrucciones): patrones estructurados que guían el comportamiento del modelo en tareas específicas.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Las tools modifican el estado, los Resources son de lectura y los Prompts orientan: cada tipo tiene una función distinta y complementaria.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Los servidores reales, como GitHub y Database, combinan los tres tipos para crear integraciones completas.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Los mejores servidores MCP combinan Tools, Resources y Prompts de forma coherente para ofrecer una experiencia integrada.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 1.6 — Transportes de comunicación
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-1-6.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

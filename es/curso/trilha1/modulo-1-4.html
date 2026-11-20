@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 1.4 — Viendo el MCP en acción | MCP — Desde cero hasta el servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha1/modulo-1-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha1/modulo-1-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha1/modulo-1-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400" href="index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-emerald-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400 transition-colors" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 1.4</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 1.4</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🎬 Viendo el MCP en acción
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Ponte manos a la obra: instala Claude Desktop, conecta tu primer MCP Server y observa el protocolo en funcionamiento en vivo.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">35</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Práctica</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">💻 Instalando Claude Desktop</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        El primer paso para ver MCP en funcionamiento es instalar <strong class="text-neutral-100">Claude Desktop</strong> — la aplicación oficial de Anthropic que funciona como Host MCP. A diferencia de Claude en la web, Desktop admite la conexión directa con MCP Servers locales, lo que permite que el modelo acceda a herramientas en tu computadora. La descarga está disponible en <strong class="text-neutral-100">claude.ai/download</strong>, con versiones para Windows, Mac y Linux.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">Claude Desktop</strong> es la aplicación nativa de Anthropic que funciona como un <strong class="text-neutral-100">Host MCP</strong>. No es solo una interfaz para conversar con Claude: es el entorno que gestiona la conexión entre el modelo de IA y los MCP Servers instalados en tu máquina. Al usar Claude Desktop, tienes acceso a un Client MCP integrado que se comunica con servidores locales, lo que permite que Claude interactúe con archivos, bases de datos, APIs y cualquier otra herramienta que tenga un MCP Server disponible.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Accede <strong class="text-neutral-100">claude.ai/download</strong> en tu navegador. Elige la versión correspondiente a tu sistema operativo (Windows, macOS o Linux). Descarga el instalador, ejecútalo y sigue las instrucciones en pantalla. Cuando abras Claude Desktop por primera vez, inicia sesión con tu cuenta de Anthropic. Listo: ya tienes un Host MCP funcional en tu computadora.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Pasos de la instalación</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 1 — Descarga</span>
+<p class="text-neutral-300 text-sm mt-1">Accede a claude.ai/download y descarga el instalador para tu sistema operativo (Windows, macOS o Linux).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 2 — Instalar</span>
+<p class="text-neutral-300 text-sm mt-1">Ejecuta el instalador y sigue las instrucciones predeterminadas de tu sistema. En macOS, arrástralo a la carpeta Applications. En Windows, sigue el asistente. En Linux, usa el paquete .deb o .rpm.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 3 — Abrir e iniciar sesión</span>
+<p class="text-neutral-300 text-sm mt-1">Abre Claude Desktop, inicia sesión con tu cuenta de Anthropic y verifica que la interfaz se cargue correctamente. Ya puedes configurar MCP Servers.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ El archivo de configuración</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Para que Claude Desktop sepa qué MCP Servers están disponibles, debes registrarlos en un archivo de configuración llamado <strong class="text-neutral-100">claude_desktop_config.json</strong>. Este archivo es el corazón de la integración: aquí declaras a qué servidores puede acceder Claude, cómo ejecutarlos y qué argumentos pasarles. Sin este archivo configurado correctamente, Claude Desktop no sabrá que hay herramientas MCP disponibles.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">claude_desktop_config.json</strong> es el archivo donde registras todos los MCP Servers que quieres poner a disposición de Claude Desktop. Se encuentra en un directorio específico del sistema: en el <strong class="text-neutral-100">macOS</strong>, en <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">~/Library/Application Support/Claude/</code>; en el <strong class="text-neutral-100">Windows</strong>, en <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">%APPDATA%/Claude/</code>. La estructura principal es un objeto JSON con el campo <strong class="text-neutral-100">"mcpServers"</strong>, donde cada clave es el nombre del servidor y el valor contiene el comando de ejecución y sus argumentos.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">La estructura básica del archivo es sencilla. Mira el esqueleto:</p>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4 font-mono text-sm">
+<pre class="text-neutral-300">{
+  "mcpServers": {
+    "nome-do-server": {
+      "command": "comando-para-executar",
+      "args": ["argumento1", "argumento2"]
+    }
+  }
+}</pre>
+</div>
+<p class="mt-3">Cada servidor es una entrada dentro de <strong class="text-neutral-100">"mcpServers"</strong>. El campo <strong class="text-neutral-100">"command"</strong> define cómo ejecutar el servidor (por ejemplo: <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">npx</code>) e <strong class="text-neutral-100">"args"</strong> son los argumentos que se pasan al comando.</p>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Ten cuidado al editar el JSON manualmente: <strong class="text-neutral-100">las comas y las comillas importan</strong>! Un error común es olvidar una coma entre servidores o dejar una coma sobrante después del último elemento. Otro error frecuente es usar comillas simples en lugar de comillas dobles (JSON exige comillas dobles). Si Claude Desktop no reconoce tus servidores, lo primero que debes verificar es la sintaxis del JSON. Usa un validador en línea como <strong class="text-neutral-100">jsonlint.com</strong> para comprobar que el archivo esté correcto antes de reiniciar la aplicación.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📁 Conectando el servidor filesystem</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">@modelcontextprotocol/server-filesystem</strong> es uno de los MCP Servers oficiales más populares. Permite que Claude acceda a los archivos de tu computadora, los lea, cree y edite, pero solo en los directorios que autorices explícitamente. Es el servidor perfecto para empezar porque es fácil de configurar y demuestra claramente el poder de MCP: Claude empieza a «ver» tus archivos locales.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">Filesystem Server</strong> es un MCP Server que expone operaciones del sistema de archivos como tools MCP. Ofrece herramientas como <strong class="text-neutral-100">read_file</strong> (leer el contenido de un archivo), <strong class="text-neutral-100">write_file</strong> (crear o sobrescribir archivos), <strong class="text-neutral-100">list_directory</strong> (listar los archivos de una carpeta) y otras. El servidor solo permite el acceso a los directorios especificados en los argumentos de configuración, lo que garantiza que Claude no acceda a datos fuera del alcance autorizado.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Agrega esta configuración a tu <strong class="text-neutral-100">claude_desktop_config.json</strong>:</p>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4 font-mono text-sm">
+<pre class="text-neutral-300">{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/seu-usuario/Documents"
+      ]
+    }
+  }
+}</pre>
+</div>
+<p class="mt-3">Reemplaza <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/Users/seu-usuario/Documents</code> por la ruta del directorio al que quieres que Claude acceda. Puedes especificar varios directorios agregando más rutas a la lista de <strong class="text-neutral-100">args</strong>. Requisito previo: tener el <strong class="text-neutral-100">Node.js</strong> instalado (npx viene con Node).</p>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Dar acceso al directorio raíz (/ o C:\)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Incluir carpetas con datos confidenciales (.ssh, .env)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Autorizar todo el directorio del usuario (~)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Olvidar restringir el alcance del acceso</li>
+</ul>
+</div>
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">✅ Hacer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Restringir el acceso a directorios de trabajo específicos</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Crear una carpeta dedicada a las pruebas con MCP</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Revisar qué carpetas están autorizadas</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Empezar con los permisos mínimos necesarios</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Probando la conexión</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Después de configurar el archivo JSON, es hora de probar si todo funciona. Claude Desktop debe estar <strong class="text-neutral-100">reiniciado</strong> para leer las nuevas configuraciones. Cuando el servidor MCP se carga correctamente, aparece un ícono de herramientas (martillo) en la interfaz, lo que indica que hay tools disponibles. Si el ícono no aparece, hay un problema en la configuración que debes investigar.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Claude Desktop lee el archivo de configuración <strong class="text-neutral-100">solo al inicio</strong>. Esto significa que, después de cualquier cambio en el <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">claude_desktop_config.json</code>, tienes que cerrar la aplicación por completo y volver a abrirla. Cuando los MCP Servers se cargan correctamente, Claude Desktop muestra un <strong class="text-neutral-100">ícono de martillo</strong> en el área de entrada, lo que indica que hay herramientas externas disponibles. Al hacer clic en este ícono, puedes ver la lista completa de tools que ofrecen los servidores conectados.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Pasos de verificación</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 1 — Reiniciar</span>
+<p class="text-neutral-300 text-sm mt-1">Cierra completamente Claude Desktop (no solo lo minimices: finaliza el proceso) y vuelve a abrirlo.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 2 — Verificar el ícono</span>
+<p class="text-neutral-300 text-sm mt-1">Mira el área de entrada de mensajes. Debe aparecer un ícono de martillo (🔨), que indica que se cargaron los MCP Servers.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 3 — Listar tools</span>
+<p class="text-neutral-300 text-sm mt-1">Haz clic en el ícono del martillo para ver la lista de tools disponibles. Deberías ver herramientas como read_file, write_file, list_directory, etc.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3"><strong class="text-neutral-100">Problemas comunes y cómo resolverlos:</strong></p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">El ícono no aparece:</strong> el JSON tiene un error de sintaxis. Valídalo en jsonlint.com.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">Error al cargar el servidor:</strong> es posible que Node.js no esté instalado. Verifica con <code class="bg-dark-700 px-1 py-0.5 rounded text-xs">node --version</code> en la terminal.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">El servidor aparece, pero muestra un error:</strong> es posible que la ruta del directorio no exista. Confirma que el directorio especificado en args sea válido.</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><strong class="text-neutral-100">La aplicación no se vuelve a cargar:</strong> verifica si realmente cerraste el proceso y no solo minimizaste la ventana.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🎯 Usando tools en la práctica</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Con el Filesystem Server conectado, es hora de probar las tools en la práctica. Lo más interesante es que tú <strong class="text-neutral-100">no hace falta decirle a Claude qué tool usar</strong> — basta con hacer preguntas en lenguaje natural y el modelo decide de forma autónoma cuándo y qué herramienta usar. Es la inteligencia del modelo combinada con las capacidades de las tools MCP.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Cuando Claude Desktop tiene MCP Servers conectados, el modelo recibe la <strong class="text-neutral-100">descripción de todas las tools disponibles</strong> en tu contexto. A partir de ahí, el modelo analiza cada prompt del usuario y decide de forma autónoma si necesita alguna tool para responder. No tienes que usar comandos especiales ni una sintaxis específica: basta con escribir en lenguaje natural. Claude elige la tool adecuada, la ejecuta a través del Client MCP, recibe el resultado y formula la respuesta final.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3"><strong class="text-neutral-100">Prueba estos prompts</strong> para probar las tools del Filesystem Server:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">1.</span><code class="bg-dark-700 px-2 py-0.5 rounded">"Liste os arquivos na pasta Documents"</code> — usa list_directory</li>
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">2.</span><code class="bg-dark-700 px-2 py-0.5 rounded">"Leia o conteúdo do arquivo notas.txt"</code> — usa read_file</li>
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">3.</span><code class="bg-dark-700 px-2 py-0.5 rounded">"Crie um arquivo teste-mcp.txt com a frase: MCP está funcionando!"</code> — usa write_file</li>
+<li class="flex items-start gap-2"><span class="text-primary mt-0.5">4.</span><code class="bg-dark-700 px-2 py-0.5 rounded">"Quantos arquivos .json existem na pasta do projeto?"</code> — combina list_directory + razonamiento</li>
+</ul>
+<p class="mt-3">Observa cómo Claude solicita tu <strong class="text-neutral-100">permiso</strong> antes de ejecutar cada tool: un mecanismo de seguridad del protocolo.</p>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El modelo decide <strong class="text-neutral-100">de forma autónoma</strong> cuándo usar tools — este es uno de los pilares de MCP. El proceso funciona así: Claude recibe la lista de tools disponibles con sus descripciones y parámetros. Cuando el usuario hace una pregunta, el modelo evalúa si alguna tool ayudaría a responder. Si es así, genera una <strong class="text-neutral-100">tool call</strong> (llamada a una herramienta) con los parámetros adecuados. No hay reglas fijas: es el modelo el que decide gracias a su inteligencia. Esto es fundamentalmente distinto de los chatbots tradicionales, que dependen de comandos explícitos como "/buscar" o "/crear".
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Qué pasó por debajo</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Cuando le pediste a Claude que enumerara archivos y respondió con el contenido real de tu directorio, ocurrió una sofisticada secuencia de eventos entre bastidores. Entender este flujo es esencial para dominar MCP, porque es exactamente el mecanismo que vas a construir y personalizar en los próximos módulos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Lo que parece mágico en la superficie sigue un flujo preciso y estandarizado por debajo. Cada interacción con una tool MCP pasa por <strong class="text-neutral-100">6 etapas bien definidas</strong>: el prompt del usuario llega al Host (Claude Desktop), el modelo identifica que necesita usar una tool, el Client MCP envía una solicitud al Server, el Server ejecuta la operación, el resultado vuelve por el mismo camino y Claude formula la respuesta final incorporando los datos obtenidos. Todo este flujo ocurre en segundos, de forma transparente para el usuario.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 El flujo real — paso a paso</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">1. Prompt del usuario</span>
+<p class="text-neutral-300 text-sm mt-1">Escribes «Enumera los archivos de la carpeta Documents» en Claude Desktop. El prompt se envía al modelo junto con la lista de tools disponibles.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">2. Claude identifica la necesidad</span>
+<p class="text-neutral-300 text-sm mt-1">El modelo (Host) analiza el prompt y decide que necesita la tool "list_directory" para responder. Genera una tool call con el parámetro del directorio.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">3. El cliente MCP envía una solicitud</span>
+<p class="text-neutral-300 text-sm mt-1">El Client MCP integrado en Claude Desktop recibe la llamada a la tool y la convierte en una solicitud JSON-RPC, que envía al Filesystem Server.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">4. El servidor ejecuta la operación</span>
+<p class="text-neutral-300 text-sm mt-1">El Filesystem Server recibe la solicitud, valida que el directorio esté en la lista de permitidos, lista los archivos en el sistema operativo y recopila los resultados.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">5. El resultado vuelve</span>
+<p class="text-neutral-300 text-sm mt-1">El Server envía la respuesta (lista de archivos) al Client MCP, que se la pasa al modelo. Ahora, los datos reales de tu computadora están en el contexto de Claude.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">6. Claude responde</span>
+<p class="text-neutral-300 text-sm mt-1">El modelo procesa los datos recibidos, da formato a la respuesta en lenguaje natural y te la muestra, como si hubiera mirado la carpeta por sí mismo.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Observa que, durante la ejecución, Claude Desktop muestra <strong class="text-neutral-100">exactamente qué tool se está invocando</strong> y con qué parámetros, antes de pedirte permiso. Esta transparencia es intencional: el protocolo MCP se diseñó para que las personas siempre sepan qué está pasando y puedan aprobar o rechazar cada acción. Presta atención a estos detalles durante tus pruebas: revelan el flujo real del protocolo en acción.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-emerald-900/40 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Claude Desktop es el Host MCP oficial de Anthropic; descárgalo en claude.ai/download para Windows, Mac o Linux.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El archivo claude_desktop_config.json es donde registras MCP Servers, con la estructura "mcpServers", que incluye el comando y los argumentos.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El Filesystem Server (@modelcontextprotocol/server-filesystem) permite que Claude acceda a archivos locales en los directorios autorizados.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>Después de configurar el JSON, reinicia Claude Desktop y verifica el ícono de martillo para confirmar que los servidores se hayan cargado.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El modelo decide de forma autónoma cuándo usar tools — basta con escribir en lenguaje natural y Claude elige la herramienta adecuada.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El flujo real consta de 6 etapas: prompt → el modelo identifica la necesidad → el Client envía la solicitud → el Server ejecuta → el resultado vuelve → Claude responde.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 1.5 — Tipos de recursos: Tools, Resources, Prompts
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-1-5.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

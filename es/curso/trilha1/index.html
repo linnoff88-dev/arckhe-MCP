@@ -1,0 +1,993 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ruta 1: Fundamentos | MCP — Del cero al servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+    .topic-explanation { display: none; }
+    .topic-explanation.active { display: block; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha1/" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha1/" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha1/" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="./" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Navigation -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<div class="flex items-center justify-between h-16">
+<div class="flex items-center space-x-4">
+<a class="text-yellow-400 font-bold text-lg hover:text-yellow-300 transition-colors" href="../../index.html">🔌 MCP — De cero al servidor</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center space-x-2">
+<a class="text-emerald-400 bg-emerald-500/10 px-3 py-1.5 rounded-lg text-sm font-medium" href="../trilha1/index.html">T1</a>
+<a class="text-neutral-400 hover:text-blue-400 hover:bg-blue-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha2/index.html">T2</a>
+<a class="text-neutral-400 hover:text-purple-400 hover:bg-purple-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha3/index.html">T3</a>
+<a class="text-neutral-400 hover:text-amber-400 hover:bg-amber-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha4/index.html">T4</a>
+<a class="text-neutral-400 hover:text-teal-400 hover:bg-teal-500/10 px-3 py-1.5 rounded-lg text-sm font-medium transition-colors" href="../trilha5/index.html">T5</a>
+<button class="ml-4 p-2 rounded-lg bg-dark-700 hover:bg-dark-600 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 text-neutral-400 hidden" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 text-yellow-400 hidden" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</div>
+</nav>
+<!-- Header -->
+<header class="bg-gradient-to-r from-emerald-900/30 via-dark-800 to-dark-800 border-b border-dark-700">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+<div class="text-center">
+<span class="inline-block px-4 py-1.5 bg-emerald-500/20 text-emerald-400 text-sm font-bold rounded-full mb-6 tracking-wider">RUTA 1</span>
+<h1 class="text-4xl md:text-5xl font-extrabold text-neutral-100 mb-6">🧠 Fundamentos: Qué es MCP y por qué existe</h1>
+<p class="text-xl text-neutral-300 max-w-3xl mx-auto mb-10">Entiende el problema que resuelve MCP, su arquitectura Host → Client → Server y observa el protocolo en funcionamiento.</p>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-emerald-400">6</div>
+<div class="text-sm text-neutral-400">Módulos</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-emerald-400">36</div>
+<div class="text-sm text-neutral-400">Temas</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-emerald-400">~3h</div>
+<div class="text-sm text-neutral-400">Duración</div>
+</div>
+<div class="bg-dark-700 rounded-xl p-4 text-center">
+<div class="text-2xl font-bold text-emerald-400">Básico</div>
+<div class="text-sm text-neutral-400">Nivel</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<!-- Navegação Rápida -->
+<section class="mb-16">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">Navegación rápida</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-1">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.1</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">📡 El problema de las integraciones</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-2">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.2</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">🔌 MCP como estándar universal</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-3">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.3</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">🏗️ Arquitectura Host → Client → Server</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-4">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.4</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">🎬 Viendo el MCP en acción</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-5">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.5</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">🧰 Tipos de recursos: herramientas, recursos, prompts</h3>
+</a>
+<a class="block bg-dark-800 border border-dark-700 rounded-xl p-5 hover:border-emerald-500/30 transition-colors group" href="#modulo-1-6">
+<span class="text-sm text-emerald-400 font-bold">Módulo 1.6</span>
+<h3 class="text-lg font-semibold text-neutral-100 group-hover:text-emerald-400 transition-colors mt-1">📡 Transportes de comunicación</h3>
+</a>
+</div>
+</section>
+<!-- Divider -->
+<div class="flex items-center mb-12">
+<div class="flex-1 border-t border-dark-700"></div>
+<span class="px-4 text-neutral-400 text-sm font-medium">Contenido detallado</span>
+<div class="flex-1 border-t border-dark-700"></div>
+</div>
+<!-- Module 1.1 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-1">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.1</span>
+<span class="text-sm text-neutral-400">~25 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📡 El problema de las integraciones</h3>
+<p class="text-neutral-300 mb-6">Entiende por qué conectar modelos de IA con herramientas externas se convirtió en un problema creciente e insostenible.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🤖 Qué son las integraciones de IA</h4>
+<p class="text-sm text-neutral-400">Cómo se conectan los modelos con los sistemas</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Las integraciones de IA son puentes que permiten que los modelos de lenguaje se conecten a sistemas externos: bases de datos, API, herramientas de productividad y cualquier otro software. Sin integraciones, un modelo está limitado a lo que ya sabe.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Comprender el concepto de integraciones es el primer paso para entender por qué existe MCP. Necesitas conocer el problema antes de apreciar la solución.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Modelo de lenguaje, sistemas externos, APIs, herramientas, datos en tiempo real, acciones automatizadas.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔀 El escenario antes de MCP</h4>
+<p class="text-sm text-neutral-400">Cada conexión se hacía desde cero</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Antes de MCP, cada integración entre un modelo de IA y una herramienta externa se construía de forma individual. Cada desarrollador creaba su propio puente, con su propio formato, autenticación y lógica de comunicación.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender el escenario anterior a MCP revela el problema que motivó su creación. Verás cómo el trabajo repetitivo y fragmentado consumía enormes recursos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Integración ad hoc, código repetitivo, falta de estandarización, trabajo duplicado, fuerte acoplamiento.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">❌ El problema N×M</h4>
+<p class="text-sm text-neutral-400">N modelos × M herramientas = caos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El problema N×M ocurre cuando cada uno de los N modelos de IA necesita una integración específica para cada una de las M herramientas disponibles. El número total de integraciones necesarias crece de forma multiplicativa, lo que vuelve insostenible el ecosistema.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este es el problema central que resuelve MCP. Comprenderlo es fundamental para apreciar la elegancia de la solución N+M que ofrece el protocolo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Complejidad combinatoria, crecimiento exponencial, N×M vs. N+M, escalabilidad, mantenimiento.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💰 Costos de la fragmentación</h4>
+<p class="text-sm text-neutral-400">Tiempo, dinero y complejidad desperdiciados</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">La fragmentación de las integraciones genera costos enormes: tiempo de desarrollo desperdiciado al recrear soluciones, dinero gastado en mantener código duplicado y una complejidad creciente que dificulta la evolución de los sistemas.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Cuantificar los costos de la fragmentación ayuda a justificar la adopción de MCP en cualquier organización. Ese es el argumento de negocio detrás de la decisión técnica.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Costo de mantenimiento, deuda técnica, tiempo de salida al mercado, duplicación de esfuerzos, escalabilidad organizacional.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Intentos anteriores</h4>
+<p class="text-sm text-neutral-400">APIs REST, SDKs, plugins propietarios</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Antes de MCP, varios enfoques intentaron resolver el problema de las integraciones: APIs REST genéricas, SDKs específicos de cada plataforma, plugins propietarios como los de ChatGPT y frameworks de function calling. Cada uno resolvió parte del problema, pero creó otros nuevos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Conocer los intentos anteriores muestra por qué no lograron ser universales y cómo el MCP aprendió de cada uno para crear algo mejor.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">APIs REST, SDKs, plugins, function calling, dependencia de plataforma, interoperabilidad.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💡 La necesidad de un estándar</h4>
+<p class="text-sm text-neutral-400">Por qué un protocolo universal era inevitable</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Así como USB estandarizó las conexiones físicas y HTTP estandarizó la web, la integración de la IA con herramientas externas necesitaba un protocolo universal. La necesidad de un estándar abierto, extensible e independiente de la plataforma era inevitable.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender por qué un estándar era inevitable ayuda a ver MCP no como una tecnología pasajera, sino como una pieza fundamental de la infraestructura de IA del futuro.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Protocolo abierto, estandarización, interoperabilidad, efecto de red, ecosistema, adopción universal.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-1')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-1.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 1.2 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-2">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.2</span>
+<span class="text-sm text-neutral-400">~25 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🔌 MCP como estándar universal</h3>
+<p class="text-neutral-300 mb-6">Conoce el Model Context Protocol, su origen, propósito y cómo transforma la forma en que los modelos de IA se conectan con el mundo.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 Qué es el MCP</h4>
+<p class="text-sm text-neutral-400">Definición y propósito del protocolo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Model Context Protocol (MCP) es un protocolo abierto que estandariza cómo se comunican los modelos de IA con herramientas, datos y servicios externos. Define una interfaz universal que cualquier modelo puede usar para acceder a cualquier herramienta compatible.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Esta es la definición fundamental de lo que vas a construir a lo largo del curso. Tener claro qué es MCP garantiza que entiendas cada concepto posterior.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Model Context Protocol, protocolo abierto, interfaz universal, estandarización de integraciones, JSON-RPC.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔌 La analogía del USB</h4>
+<p class="text-sm text-neutral-400">Un conector, infinitas posibilidades</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Así como USB creó un conector universal para los dispositivos físicos, MCP crea un «conector universal» para las integraciones de IA. Antes de USB, cada fabricante tenía su propio cable. MCP hace lo mismo para el mundo de los modelos de lenguaje.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">La analogía del USB es la forma más intuitiva de explicar MCP a cualquier persona. Dominarla te permite comunicar el valor del protocolo a desarrolladores y a quienes no lo son.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Analogía con USB, conector universal, plug-and-play, compatibilidad, ecosistema abierto.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📜 Quién lo creó y por qué</h4>
+<p class="text-sm text-neutral-400">Anthropic y la motivación detrás de</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">MCP fue creado por Anthropic, la empresa detrás de Claude. La motivación surgió de la necesidad de permitir que Claude y otros modelos se conectaran a herramientas externas de forma segura, estandarizada y extensible, sin depender de soluciones propietarias.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Conocer el origen y la motivación del MCP ayuda a entender sus decisiones de diseño y por qué es un protocolo abierto, no un producto propietario.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Anthropic, protocolo abierto, open source, diseño centrado en la seguridad, extensibilidad.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">✅ Qué resuelve MCP</h4>
+<p class="text-sm text-neutral-400">De N×M a N+M</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">MCP transforma el problema N×M en N+M. En vez de que cada modelo necesite una integración específica para cada herramienta, cada modelo implementa MCP una vez y cada herramienta implementa MCP una vez. Todos se conectan automáticamente.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Esta es la propuesta de valor central de MCP. Entender la transformación de N×M a N+M es esencial para comunicar por qué importa el protocolo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">N+M vs N×M, reducción de la complejidad, interfaz estandarizada, reutilización, composabilidad.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🏢 Quiénes lo están adoptando</h4>
+<p class="text-sm text-neutral-400">Empresas y herramientas del ecosistema</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El ecosistema MCP está creciendo rápidamente. Empresas como Anthropic, herramientas como Cursor y Windsurf, y diversos proyectos open source ya adoptaron el protocolo. La cantidad de MCP Servers disponibles crece cada semana.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Saber quién está adoptando MCP valida la tecnología y muestra que no es solo una especificación teórica: es una realidad en producción.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Ecosistema MCP, adopción empresarial, Cursor, Claude Desktop, MCP Servers, comunidad open source.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔮 Visión de futuro</h4>
+<p class="text-sm text-neutral-400">Hacia dónde se dirige MCP</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">MCP avanza para convertirse en el estándar de facto para las integraciones de IA. El roadmap del protocolo incluye nuevas capacidades, como autenticación nativa, un marketplace de servers e integración con agentes autónomos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender el futuro de MCP te posiciona como early adopter. Quienes dominen el protocolo ahora estarán preparados para las oportunidades que surgirán con su adopción masiva.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Roadmap de MCP, marketplace de servers, autenticación, agentes autónomos, estándar de facto, evolución del protocolo.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-2')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-2.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 1.3 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-3">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.3</span>
+<span class="text-sm text-neutral-400">~30 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🏗️ Arquitectura Host → Client → Server</h3>
+<p class="text-neutral-300 mb-6">Explora los tres pilares de la arquitectura MCP y entiende cómo se conecta cada componente para crear el flujo completo.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🏠 Qué es el Host</h4>
+<p class="text-sm text-neutral-400">La aplicación donde se ejecuta el modelo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El Host es la aplicación que aloja el modelo de IA, como Claude Desktop, Cursor o cualquier IDE que integre un LLM. Es el entorno donde interactúas y desde donde se originan las solicitudes de herramientas.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender el papel del Host es fundamental para saber dónde encaja MCP en el stack. Todo flujo de MCP comienza y termina en el Host.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Aplicación host, entorno de ejecución, Claude Desktop, Cursor, interfaz de usuario, ciclo de vida.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📨 Qué es el Client</h4>
+<p class="text-sm text-neutral-400">El mensajero entre el modelo y las herramientas</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El Client es el componente dentro del Host que administra la comunicación con los MCP Servers. Envía solicitudes, recibe respuestas y traduce entre el formato del modelo y el protocolo MCP. Cada conexión a un Server tiene su propio Client.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">El Client es el intermediario que hace que todo funcione. Entender su función te ayuda a depurar problemas y crear integraciones más sólidas.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">MCP Client, intermediario, gestión de conexión, traducción de protocolo, sesión, estado.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🖥️ Qué es el Server</h4>
+<p class="text-sm text-neutral-400">Quién expone herramientas y datos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El Server es el componente que expone herramientas, datos y prompts al modelo de IA. Implementa el protocolo MCP y responde a las solicitudes del Client. Es lo que vas a crear en este curso.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">El Server es el protagonista de este curso. Todo lo que aprendas aquí te prepara para crear tus propios MCP Servers que amplíen las capacidades de cualquier modelo de IA.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">MCP Server, exposición de herramientas, recursos, prompts, implementación de protocolo, endpoints.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔄 El flujo completo</h4>
+<p class="text-sm text-neutral-400">De la pregunta del usuario a la respuesta final</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El flujo completo de MCP sigue este recorrido: Usuario → Host → Client → Server → Herramienta → Server → Client → Host → Usuario. Cada etapa cumple una función específica y el protocolo garantiza que la comunicación esté estandarizada en todo el recorrido.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Visualizar el flujo completo de extremo a extremo es esencial para depurar, optimizar y crear integraciones que funcionen correctamente en producción.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Flujo de solicitudes, ciclo request-response, pipeline de comunicación, encadenamiento de componentes.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🗺️ Diagrama mental</h4>
+<p class="text-sm text-neutral-400">Visualización de la arquitectura completa</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Un diagrama mental de la arquitectura MCP muestra visualmente cómo se relacionan Host, Client y Server. El Host contiene uno o más Clients, cada Client se conecta a exactamente un Server y cada Server puede exponer múltiples tools, resources y prompts.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Tener un modelo mental claro de la arquitectura te permite razonar sobre problemas complejos y diseñar soluciones elegantes.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Diagrama de arquitectura, relación 1:N, modelo mental, composición de componentes, visión sistémica.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚡ Ejemplos prácticos</h4>
+<p class="text-sm text-neutral-400">Escenarios reales de Host, Client y Server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Ejemplos prácticos de arquitecturas MCP en el mundo real: Claude Desktop (Host) usa un filesystem server para acceder a archivos, Cursor (Host) usa un database server para consultar bases de datos y aplicaciones personalizadas usan varios servers simultáneamente.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Ver ejemplos concretos transforma conceptos abstractos en conocimiento práctico. Reconocerás patrones que usarás en tus propios proyectos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Filesystem server, database server, GitHub server, configuración multiservidor, escenarios de producción.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-3')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-3.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 1.4 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-4">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.4</span>
+<span class="text-sm text-neutral-400">~35 min · Práctico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🎬 Viendo el MCP en acción</h3>
+<p class="text-neutral-300 mb-6">Ponte manos a la obra por primera vez: instala, configura y observa MCP en funcionamiento en vivo con Claude Desktop.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">💻 Instalando Claude Desktop</h4>
+<p class="text-sm text-neutral-400">Descarga y configuración inicial</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop es la aplicación oficial de Anthropic que sirve como Host para Claude. Es compatible con MCP de forma nativa, lo que te permite conectar herramientas externas al modelo sin tener que escribir código de integración.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop será tu entorno de pruebas durante todo el curso. Instalarlo y configurarlo correctamente es el primer paso práctico para usar MCP.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Claude Desktop, instalación, plataformas compatibles, versión mínima, requisitos del sistema.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚙️ El archivo de configuración</h4>
+<p class="text-sm text-neutral-400">Entender claude_desktop_config.json</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json es el archivo donde indicas qué MCP Servers debe iniciar Claude Desktop. Cada entrada define el comando para ejecutar el server, sus argumentos y variables de entorno.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este archivo es la puerta de entrada para cualquier integración MCP en Claude Desktop. Lo editarás con frecuencia a lo largo del curso para agregar nuevos servers.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">claude_desktop_config.json, mcpServers, command, args, env, ubicación del archivo.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📁 Conectando el servidor filesystem</h4>
+<p class="text-sm text-neutral-400">Tu primer MCP Server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El filesystem server es un MCP Server oficial que permite a Claude acceder a archivos y directorios de tu computadora. Conectarlo es tan sencillo como agregar unas líneas al archivo de configuración.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Este es tu primer contacto real con un MCP Server en funcionamiento. Ver a Claude acceder a tus archivos es el momento «¡ajá!» que consolida la comprensión del protocolo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">@modelcontextprotocol/server-filesystem, npx, directorios permitidos, permisos, sandboxing.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧪 Probando la conexión</h4>
+<p class="text-sm text-neutral-400">Verificación de que todo funciona</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Después de configurar el filesystem server, debes verificar que la conexión funcione. Claude Desktop muestra indicadores visuales de los servers conectados y puedes probar enviando mensajes que requieran acceso a archivos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Saber validar una conexión MCP es una habilidad fundamental de debugging. Cuando algo falle en tus propios servers, sabrás cómo diagnosticarlo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Comprobación de la conexión, indicadores visuales, logs de errores, troubleshooting y handshake MCP.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎯 Usando tools en la práctica</h4>
+<p class="text-sm text-neutral-400">Pedirle a Claude que acceda a archivos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Con el filesystem server conectado, puedes pedirle a Claude que liste archivos, lea contenido, cree directorios y más. El modelo identifica automáticamente cuándo necesita usar una tool y solicita permiso al usuario.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Usar tools en la práctica muestra el verdadero poder de MCP. Verás cómo el modelo decide cuándo y cómo usar herramientas, incluido el mecanismo de permisos del usuario.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Llamada a tools, aprobación del usuario, read_file, list_directory, write_file, flujo de uso de tools.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔍 Qué pasó por debajo</h4>
+<p class="text-sm text-neutral-400">Entender el flujo que acaba de ocurrir</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Detrás de cada interacción con el filesystem server, ocurre un flujo completo de JSON-RPC: Claude identifica la necesidad de una tool, el Client envía la solicitud al Server, el Server ejecuta la acción y devuelve el resultado, que se incorpora a la respuesta del modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Entender lo que ocurre detrás de la interfaz es lo que distingue a un usuario de un desarrollador. Este conocimiento es esencial para crear tus propios MCP Servers.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">JSON-RPC, mensajes de protocolo, initialize, tools/list, tools/call, request-response cycle.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-4')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-4.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 1.5 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-5">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.5</span>
+<span class="text-sm text-neutral-400">~25 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">🧰 Tipos de recursos: herramientas, recursos, prompts</h3>
+<p class="text-neutral-300 mb-6">Descubre los tres tipos de recursos que puede exponer un MCP Server y cuándo usar cada uno.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧰 Herramientas</h4>
+<p class="text-sm text-neutral-400">Acciones que el modelo puede ejecutar</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Las tools son funciones que el modelo puede llamar para ejecutar acciones, como leer un archivo, consultar la base de datos o enviar un correo electrónico. Reciben parámetros y devuelven resultados, de forma similar a las llamadas a funciones.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Las tools son el recurso más usado de MCP. La mayoría de los servers que crearás exponen tools. Entender sus características es fundamental para diseñar interfaces eficaces.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Definición de tool, esquema de entrada, formato de salida, llamada a tools, efectos secundarios, idempotencia.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📦 Resources</h4>
+<p class="text-sm text-neutral-400">Datos a los que puede acceder el modelo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los Resources son datos estáticos o dinámicos a los que el modelo puede acceder para enriquecer su contexto, como documentos, configuraciones, logs o datos de una API. A diferencia de las tools, los Resources son pasivos: proporcionan información sin ejecutar acciones.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Los Resources te permiten proporcionar contexto enriquecido al modelo sin necesidad de tool calls. Son ideales para datos que el modelo necesita consultar con frecuencia.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Resource URI, MIME type, contenido estático vs. dinámico, resource templates, lectura bajo demanda.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📝 Prompts</h4>
+<p class="text-sm text-neutral-400">Plantillas reutilizables de instrucciones</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los prompts son plantillas de instrucciones que el Server puede ofrecer al Host. Permiten crear workflows predefinidos, con argumentos parametrizables, que guían al modelo para realizar tareas complejas de forma coherente.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Los prompts son el recurso menos aprovechado de MCP, pero ofrecen un enorme potencial. Permiten crear experiencias guiadas que transforman el modelo en un asistente especializado.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Plantilla de prompt, argumentos, mensajes predefinidos, workflows, personalización, coherencia.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🔀 Diferencias entre los tres</h4>
+<p class="text-sm text-neutral-400">Cuándo usar cada tipo</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Las tools ejecutan acciones, los Resources proporcionan datos y los Prompts guían el comportamiento. La elección entre ellos depende de si quieres que el modelo haga algo (tool), sepa algo (resource) o siga un patrón (prompt).</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Elegir el tipo de recurso adecuado para cada situación es una decisión de diseño fundamental. Usar el tipo incorrecto da lugar a experiencias confusas e ineficientes.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Acción vs. dato vs. instrucción, decisión de diseño, controlado por el modelo vs. controlado por el usuario, efectos secundarios.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🎯 Ejemplos en el mundo real</h4>
+<p class="text-sm text-neutral-400">Tools, Resources y Prompts en acción</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Ejemplos reales de los tres tipos: una tool que crea issues en GitHub, un resource que expone la documentación de la API y un prompt que guía al modelo para hacer code review siguiendo estándares específicos de la empresa.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Los ejemplos concretos consolidan la comprensión teórica e inspiran ideas para tus propios servers. Empezarás a ver oportunidades de MCP en todos tus proyectos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Herramientas de GitHub, documentación como resource, prompts para revisión de código, automatización de workflows, escenarios de negocio.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🧩 Combinando recursos</h4>
+<p class="text-sm text-neutral-400">Cómo trabajan juntos los tres tipos</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El verdadero poder de MCP aparece cuando combinas tools, resources y prompts en un mismo server. Por ejemplo: un resource proporciona contexto, un prompt guía el razonamiento y una tool ejecuta la acción resultante; todo orquestado por el modelo.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Combinar los tres tipos de recursos es clave para crear MCP Servers sofisticados que ofrecen experiencias ricas y completas a los modelos de IA.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Composición de recursos, diseño de server, experiencia integrada, orquestación por el modelo, patrones de diseño.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-5')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-5.html">Ver completo</a>
+</div>
+</div>
+<!-- Module 1.6 -->
+<div class="bg-dark-800 border border-dark-700 rounded-2xl p-8 mb-8" id="modulo-1-6">
+<div class="flex items-center justify-between mb-2">
+<span class="text-sm font-bold text-emerald-400">Módulo 1.6</span>
+<span class="text-sm text-neutral-400">~20 min · Teórico</span>
+</div>
+<h3 class="text-2xl font-bold text-neutral-100 mb-3">📡 Transportes de comunicación</h3>
+<p class="text-neutral-300 mb-6">Entiende cómo viajan los datos entre el Client y el Server mediante los distintos mecanismos de transporte disponibles en MCP.</p>
+<div class="space-y-3">
+<!-- Topic 1 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">1</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📡 Qué son los transportes</h4>
+<p class="text-sm text-neutral-400">Cómo viajan los datos entre Client y Server</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Los transportes son los mecanismos que definen cómo viajan los mensajes MCP entre el Client y el Server. Son la capa de comunicación del protocolo, responsable de enviar y recibir mensajes JSON-RPC de forma confiable.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Elegir el transporte adecuado influye en el rendimiento, la seguridad y la arquitectura de tu solución. Es una decisión fundamental en el diseño de cualquier MCP Server.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Capa de transporte, JSON-RPC, mecanismo de comunicación, confiabilidad, latencia.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 2 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">2</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🖥️ STDIO</h4>
+<p class="text-sm text-neutral-400">Comunicación local por terminal</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">STDIO (Standard Input/Output) es el transporte más sencillo de MCP. El Client inicia el Server como un proceso hijo y se comunica mediante stdin y stdout. Es ideal para servers que se ejecutan localmente en la misma máquina que el Host.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">STDIO es el transporte que usarás durante la mayor parte del curso. Es simple, confiable y no requiere configuración de red. La mayoría de los servers de desarrollo usan STDIO.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">stdin, stdout, proceso hijo, comunicación local, simplicidad, sin red.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 3 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">3</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🌐 HTTP</h4>
+<p class="text-sm text-neutral-400">Comunicación por web</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">El transporte HTTP permite que el MCP Server funcione como un servicio web accesible de forma remota. El Client envía solicitudes HTTP POST con mensajes JSON-RPC y recibe respuestas. Es ideal para servers a los que deben acceder varios clients o que deben funcionar en servidores remotos.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">HTTP es el transporte que se usa en entornos de producción y para servers compartidos. Entenderlo te prepara para hacer deploy de MCP Servers que atienden a múltiples usuarios.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">HTTP POST, endpoints, servidor web, autenticación, CORS, deployment remoto.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 4 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">4</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">📢 Server-Sent Events (SSE)</h4>
+<p class="text-sm text-neutral-400">Streaming de datos en tiempo real</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Server-Sent Events (SSE) es un transporte que permite el streaming unidireccional del Server al Client. Combinado con HTTP POST para enviar mensajes al Server, crea un canal de comunicación bidireccional ideal para operaciones de larga duración y notificaciones en tiempo real.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">SSE es importante en situaciones que requieren comentarios en tiempo real, como el monitoreo de procesos largos o el streaming de resultados parciales.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Server-Sent Events, streaming, EventSource, conexión persistente, notificaciones push, tiempo real.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 5 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">5</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">⚖️ Comparación de transportes</h4>
+<p class="text-sm text-neutral-400">Cuándo usar cada uno</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Cada transporte tiene sus ventajas y desventajas: STDIO es el más simple, pero solo funciona localmente. HTTP es versátil y funciona de forma remota, pero no admite streaming nativo. SSE agrega streaming, pero requiere más infraestructura. La elección depende del escenario de uso.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Comparar transportes te da criterios claros para tomar decisiones de arquitectura. Sabrás justificar la elección del transporte en cualquier proyecto.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Compromisos, latencia frente a simplicidad, local frente a remoto, escalabilidad, requisitos de infraestructura.</p></div>
+</div>
+</div>
+</div>
+<!-- Topic 6 -->
+<div class="topic-item border border-dark-700 rounded-xl overflow-hidden">
+<button class="w-full flex items-center gap-4 p-4 hover:bg-dark-700 transition-colors text-left" onclick="toggleTopic(this)">
+<span class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 text-sm font-bold flex items-center justify-center flex-shrink-0">6</span>
+<div>
+<h4 class="text-neutral-100 font-semibold">🏗️ Eligiendo el transporte adecuado</h4>
+<p class="text-sm text-neutral-400">Guía práctica de decisión</p>
+</div>
+</button>
+<div class="topic-explanation px-4 pb-4 pl-14">
+<div class="bg-dark-700 rounded-lg p-4 space-y-3">
+<div><span class="text-emerald-400 font-semibold text-sm">Qué es:</span><p class="text-neutral-300 text-sm mt-1">Una guía práctica para elegir el transporte: usa STDIO para desarrollo y servers personales, HTTP para producción y servers compartidos, y SSE cuando necesites streaming o notificaciones en tiempo real. Considera también la seguridad, la complejidad y el mantenimiento.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Por qué aprender:</span><p class="text-neutral-300 text-sm mt-1">Tener un marco de decisión claro ahorra tiempo y evita refactorizaciones futuras. Sabrás elegir el transporte adecuado desde el inicio de cada proyecto.</p></div>
+<div><span class="text-emerald-400 font-semibold text-sm">Conceptos clave:</span><p class="text-neutral-300 text-sm mt-1">Marco de decisión, escenarios de uso, desarrollo vs. producción, checklist de requisitos, migración entre transportes.</p></div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex justify-start gap-3 mt-6">
+<button class="px-4 py-2 bg-emerald-500/20 text-emerald-400 rounded-lg hover:bg-emerald-500/30 transition-colors text-sm font-medium" onclick="openModal('modal-1-6')">Ver en modal</button>
+<a class="px-4 py-2 border border-dark-600 text-neutral-300 rounded-lg hover:bg-dark-700 transition-colors text-sm font-medium" href="modulo-1-6.html">Ver completo</a>
+</div>
+</div>
+<!-- Navigation -->
+<div class="flex items-center justify-between mt-12 pt-8 border-t border-dark-700">
+<a class="flex items-center gap-2 text-neutral-400 hover:text-emerald-400 transition-colors font-medium" href="../../index.html">
+<svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M15 19l-7-7 7-7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+        Volver al inicio
+      </a>
+<a class="flex items-center gap-2 text-neutral-400 hover:text-blue-400 transition-colors font-medium" href="../trilha2/index.html">
+        Siguiente Ruta
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</a>
+</div>
+</main>
+<!-- Modals -->
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-1">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.1 — El problema de las integraciones</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-1.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-2">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.2 — MCP como estándar universal</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-2.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-3">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.3 — Arquitectura Host → Client → Server</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-3.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-4">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.4 — Viendo el MCP en acción</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-4.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-5">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.5 — Tipos de recursos: Tools, Resources, Prompts</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-5.html"></iframe>
+</div>
+</div>
+<div class="modal hidden fixed inset-0 z-50 flex items-center justify-center p-4" id="modal-1-6">
+<div class="absolute inset-0 bg-black/70" onclick="closeModal()"></div>
+<div class="relative bg-dark-800 rounded-2xl w-full max-w-5xl h-[85vh] border border-dark-700 flex flex-col">
+<div class="flex items-center justify-between p-4 border-b border-dark-700">
+<h3 class="text-lg font-bold text-neutral-100">Módulo 1.6 — Transportes de comunicación</h3>
+<button class="text-neutral-400 hover:text-neutral-100 transition-colors" onclick="closeModal()">
+<svg class="w-6 h-6" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M6 18L18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+</button>
+</div>
+<iframe class="flex-1 w-full rounded-b-2xl" src="modulo-1-6.html"></iframe>
+</div>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 mt-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="flex flex-col md:flex-row items-center justify-between gap-4">
+<div class="flex items-center gap-2 text-neutral-400 text-sm">
+<span>🔌 MCP — De cero al servidor</span>
+<span>·</span>
+<a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<p class="text-neutral-500 text-sm">Ruta 1 — Fundamentos: qué es MCP y por qué existe</p>
+</div>
+</div>
+</footer>
+<script>
+    // Toggle topics
+    function toggleTopic(button) {
+      const topicItem = button.closest('.topic-item');
+      const explanation = topicItem.querySelector('.topic-explanation');
+      const moduleCard = button.closest('.bg-dark-800');
+      moduleCard.querySelectorAll('.topic-explanation.active').forEach(exp => {
+        if (exp !== explanation) exp.classList.remove('active');
+      });
+      explanation.classList.toggle('active');
+    }
+
+    // Modal
+    function openModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal) { modal.classList.remove('hidden'); document.body.style.overflow = 'hidden'; }
+    }
+    function closeModal() {
+      document.querySelectorAll('.modal').forEach(modal => modal.classList.add('hidden'));
+      document.body.style.overflow = 'auto';
+    }
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+
+    // Theme toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

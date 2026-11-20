@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 2.3 — Getting to Know the Terminal | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-500\/20 { background-color: rgba(37, 99, 235, 0.12); }
+    html:not(.dark) .bg-blue-500\/10 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+    html:not(.dark) .hover\:bg-blue-500\/30:hover { background-color: rgba(37, 99, 235, 0.18); }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .bg-blue-900\/40 { background-color: rgba(37, 99, 235, 0.12); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha2/modulo-2-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha2/modulo-2-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha2/modulo-2-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha2/modulo-2-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-2-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha2/modulo-2-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded bg-blue-500/20 text-blue-400" href="index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-blue-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-blue-400 transition-colors" href="index.html">Track 2</a>
+<span>/</span>
+<span class="text-neutral-300">Module 2.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-blue-900/30 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-blue-500/20 text-blue-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 2.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          💻 Getting to Know the Terminal
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Master the essential terminal commands — the indispensable tool for working with MCP Servers.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">30</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Basic</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-blue-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">💻 What Is the Terminal</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        The terminal is a text interface that lets you control your computer by typing commands instead of clicking icons. Although it may seem intimidating at first, the terminal is the most powerful tool available to a developer. All MCP Servers are started, tested, and debugged from the terminal — mastering it is essential for this course.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">terminal</strong> (also called a console, shell, or command line) is a text-based interface for interacting with the operating system. While a graphical interface limits you to the options visible on the screen, the terminal gives you direct access to <strong class="text-neutral-100">everything</strong> that the system can do. In the <strong class="text-neutral-100">macOS</strong>, use Terminal or iTerm2. On <strong class="text-neutral-100">Windows</strong>, use PowerShell or WSL (Windows Subsystem for Linux). On <strong class="text-neutral-100">Linux</strong>, any terminal emulator works (GNOME Terminal, Konsole, Alacritty, etc.).
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Think of the terminal as the <strong class="text-neutral-100">more powerful remote control of your computer</strong>. The graphical interface is like the buttons on a TV remote—it limits you to a few predefined functions. The terminal is like having access to the TV's engineering menu: you can do absolutely anything, as long as you know the right command. And in the world of MCP, everything happens in the terminal.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📂 Navigating Between Folders</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Navigating the file system is the most fundamental terminal skill. Just as you click folders in a file explorer, in the terminal you use commands to enter directories, list their contents, and find where you are. You’ll use these commands <strong class="text-neutral-100">constantly</strong> when working with MCP Servers.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">The essential navigation commands are:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">cd pasta</code> — Enters a directory (Change Directory)</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">ls</code> — Lists files and folders (Mac/Linux). On Windows: <code class="bg-dark-700 px-1.5 py-0.5 rounded">dir</code></li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">pwd</code> — Shows the current directory (Print Working Directory)</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">cd ~</code> — Goes to the user's home directory</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">cd ..</code> — Goes up one level (parent directory)</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-blue-400 font-semibold text-sm">📋 Step-by-Step Navigation</span>
+</div>
+<div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 1 — Find out where you are</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded">pwd</code> to see your current directory. You usually start in the home folder: <code class="bg-dark-700 px-1.5 py-0.5 rounded">/home/seuusuario</code> (Linux) or <code class="bg-dark-700 px-1.5 py-0.5 rounded">/Users/seuusuario</code> (Mac).</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 2 — See what's here</span>
+<p class="text-neutral-300 text-sm mt-1">Execute <code class="bg-dark-700 px-1.5 py-0.5 rounded">ls</code> to list files and folders. Use <code class="bg-dark-700 px-1.5 py-0.5 rounded">ls -la</code> to see hidden files and details such as size and modification date.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-blue-400 font-bold text-sm">Step 3 — Navigate and explore</span>
+<p class="text-neutral-300 text-sm mt-1">Use <code class="bg-dark-700 px-1.5 py-0.5 rounded">cd Documents</code> to enter the Documents folder. Use <code class="bg-dark-700 px-1.5 py-0.5 rounded">cd ..</code> to go back. Combine: <code class="bg-dark-700 px-1.5 py-0.5 rounded">cd ../outra-pasta</code> go back and enter another folder in one go.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Manually typing long paths</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use spaces in folder names without quotes</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Run commands without knowing where you are</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore error messages</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use Tab to autocomplete paths</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Always verify with <code class="text-xs">pwd</code> before acting</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use <code class="text-xs">cd ~</code> to quickly return to home</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Practice navigation daily</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📄 Working with Files</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        In addition to navigating, you need to know how to create, copy, move, and delete files and folders from the terminal. These operations are essential for organizing your MCP projects, creating configuration files, and managing your servers’ source code.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">The essential file manipulation commands are:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">mkdir pasta</code> — Creates a new folder (Make Directory)</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">touch arquivo</code> — Creates an empty file (Mac/Linux). Windows: <code class="bg-dark-700 px-1.5 py-0.5 rounded">echo. &gt; arquivo</code></li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">cp origem destino</code> — Copies a file</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">mv origem destino</code> — Moves or renames a file</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">rm arquivo</code> — Deletes a file (permanently!)</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Practice by creating the structure of an MCP project:</p>
+<div class="space-y-2">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-sm text-neutral-100">mkdir meu-mcp-server</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-sm text-neutral-100">cd meu-mcp-server</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-sm text-neutral-100">touch server.py README.md</code>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-sm text-neutral-100">mkdir src tests</code>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Use extreme caution with <code class="bg-dark-700 px-1.5 py-0.5 rounded">rm -rf</code>!</strong> This command permanently deletes folders and all their contents, without a trash bin, confirmation, or any possibility of recovery. Never run <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">rm -rf /</code> or <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">rm -rf ~</code> — this can destroy your entire system. Always check the path with <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">pwd</code> e <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">ls</code> before deleting anything.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📝 Editing Files</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        To create and modify MCP Servers, you need to edit code files. There are text editors in the terminal (such as nano and vim) and graphical editors with terminal integration (such as VS Code). For this course, we recommend <strong class="text-neutral-100">VS Code</strong> as the main editor and the <strong class="text-neutral-100">nano</strong> as a quick alternative in the terminal.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">The three most useful editing tools for the course:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">nano arquivo</code> — A simple terminal editor. Ctrl+O to save, Ctrl+X to exit. Ideal for quick edits.</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">code arquivo</code> — Opens in VS Code. Requires VS Code to be installed and the command <code class="bg-dark-700 px-1 py-0.5 rounded">code</code> configured in the PATH.</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">cat arquivo</code> — Displays a file's contents in the terminal without editing it. Useful for quickly checking settings.</li>
+</ul>
+</div>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use vim without knowing how to exit (type <code class="text-xs">:q!</code>)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Edit system files without sudo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use Notepad for code (Windows)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Saving files with the wrong extension</li>
+</ul>
+</div>
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use VS Code with the Python/TS extension</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use nano for quick terminal edits</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Use cat to check contents</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span>Install syntax highlighting extensions</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔍 Searching and Filtering</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        As your projects grow, finding files and searching for specific text in your code becomes essential. The terminal offers powerful search tools that are much faster than any graphical interface — especially useful for debugging MCP Servers and finding configurations.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">The three essential search tools:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">find . -name "*.py"</code> — Searches for files by name. The dot (.) means "starting from the current directory".</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">grep "texto" arquivo</code> — Searches for text inside files. Use <code class="bg-dark-700 px-1 py-0.5 rounded">-r</code> to search recursively through folders.</li>
+<li class="flex items-start gap-2"><code class="bg-dark-700 px-1.5 py-0.5 rounded text-blue-400 shrink-0">|</code> — The pipe chains commands: the output of one becomes the input of the next. Example: <code class="bg-dark-700 px-1 py-0.5 rounded">ls | grep "server"</code>.</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Practical examples for MCP projects:</p>
+<div class="space-y-2 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-neutral-100">grep -r "fastmcp" . </code>
+<span class="text-neutral-500 text-xs ml-2">— Finds all references to FastMCP in the project</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-neutral-100">find . -name "*.json" </code>
+<span class="text-neutral-500 text-xs ml-2">— Lists all JSON files (MCP configuration)</span>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<code class="text-neutral-100">cat config.json | grep "server" </code>
+<span class="text-neutral-500 text-xs ml-2">— Shows lines containing "server" in the configuration</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Developers who master the terminal are, on average <strong class="text-neutral-100">30% more productive</strong> than those that rely exclusively on graphical interfaces, according to Stack Overflow research. The command <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">grep</code> is used alone <strong class="text-neutral-100">billions of times per day</strong> around the world. Modern tools like <code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">ripgrep</code> (<code class="bg-dark-700 px-1.5 py-0.5 rounded text-sm">rg</code>) are even faster — searching projects with millions of lines in milliseconds.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚡ Essential Shortcuts</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Mastering terminal keyboard shortcuts transforms your work speed. Instead of typing every character in a long path, you can autocomplete with Tab. Instead of retyping a command, you can retrieve it from your history. These shortcuts may seem small, but they save hours over the course of a project.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">The four shortcuts every MCP developer needs to know:</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 font-bold">Tab</span>
+<p class="text-neutral-400 text-xs mt-1">Autocompletes file, folder, and command names. Press twice to see all options.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 font-bold">↑ / ↓</span>
+<p class="text-neutral-400 text-xs mt-1">Browse command history. Retrieve any previous command without retyping it.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 font-bold">Ctrl + C</span>
+<p class="text-neutral-400 text-xs mt-1">Cancels the current command. Essential for stopping running MCP Servers.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<span class="text-blue-400 font-bold">Ctrl + L</span>
+<p class="text-neutral-400 text-xs mt-1">Clears the terminal screen. Equivalent to the command <code class="bg-dark-700 px-1 py-0.5 rounded">clear</code>.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-3">Bonus shortcuts that make your workflow even faster:</p>
+<ul class="space-y-2 text-sm">
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><strong class="text-neutral-100">Ctrl + R</strong> — Searches command history. Type part of an old command and it appears automatically.</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><strong class="text-neutral-100">Ctrl + A / Ctrl + E</strong> — Goes to the beginning/end of the line. Useful for correcting long commands.</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><strong class="text-neutral-100">Ctrl + W</strong> — Deletes the previous word. Faster than holding Backspace.</li>
+<li class="flex items-start gap-2"><span class="text-blue-400 mt-0.5">•</span><strong class="text-neutral-100">!!</strong> — Repeats the last command. <code class="bg-dark-700 px-1 py-0.5 rounded">sudo !!</code> reruns the last command with sudo.</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-blue-900/40 to-dark-800 border border-blue-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>The terminal is the text interface for controlling the computer — essential for working with MCP Servers.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Navigation with cd, ls, and pwd lets you move between directories and understand project structure.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Using mkdir, touch, cp, mv, and rm lets you create and organize the structure of your MCP projects.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Editors like nano and VS Code are enough to write all the MCP Server code in the course.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>find, grep, and pipe (|) let you search files and text quickly and efficiently.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-blue-400 mt-0.5">✓</span>
+<span>Shortcuts like Tab, arrow keys, Ctrl+C, and Ctrl+L dramatically speed up your work in the terminal.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 2.4 — Installing Claude Desktop
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-blue-500/20 hover:bg-blue-500/30 text-blue-400 border border-blue-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-2-4.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

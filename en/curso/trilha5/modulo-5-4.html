@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Module 5.4 — MCP with TypeScript | MCP — From Zero to Server</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-4.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-4.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-4.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha5/modulo-5-4.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="modulo-5-4.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">EN</a><a href="../../../es/curso/trilha5/modulo-5-4.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — From Zero to Server</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Start</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Track 5</a>
+<span>/</span>
+<span class="text-neutral-300">Module 5.4</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MODULE 5.4</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          📘 MCP with TypeScript
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Create an MCP Server using the official TypeScript SDK—the alternative for JavaScript developers.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Topics</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">35</div>
+<div class="text-neutral-500 text-xs">Minutes</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Advanced</div>
+<div class="text-neutral-500 text-xs">Level</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Practical</div>
+<div class="text-neutral-500 text-xs">Type</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📘 TypeScript SDK vs. Python</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        MCP has two official SDKs maintained by Anthropic: the <strong class="text-neutral-100">@modelcontextprotocol/sdk</strong> for TypeScript and the <strong class="text-neutral-100">fastmcp</strong> for Python. Both implement the same specification and produce servers that are fully compatible with each other. Choosing between them depends on your stack and personal preference — the end result is identical for the client.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The TypeScript SDK (<strong class="text-neutral-100">@modelcontextprotocol/sdk</strong>) is more verbose than Python, but offers <strong class="text-neutral-100">strong typing</strong> with interfaces and types defined for each request and response. The Python SDK (<strong class="text-neutral-100">fastmcp</strong>) uses decorators and is more concise, making it ideal for rapid prototyping. Both communicate via JSON-RPC over stdio or SSE, producing servers that are 100% compatible with any MCP client. The choice is purely a matter of preference — the protocol is the same.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Assuming one SDK is “better” than the other</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Mixing Python conventions into TS code</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore TypeScript's strong typing</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use any instead of SDK-specific types</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Choose the SDK for your primary stack</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Take advantage of TypeScript's strong typing for validation</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Following idiomatic patterns for each language</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Test compatibility with multiple clients</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The MCP ecosystem is split between the two SDKs: approximately <strong class="text-neutral-100">55% of servers</strong> from the community are written in Python (for its simplicity) and <strong class="text-neutral-100">45% in TypeScript</strong> (for type robustness). Official servers such as <strong class="text-neutral-100">filesystem</strong>, <strong class="text-neutral-100">fetch</strong> e <strong class="text-neutral-100">memory</strong> are written in TypeScript. Both SDKs receive updates simultaneously when the spec evolves.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🏗️ TS Project Structure</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Creating an MCP Server in TypeScript follows the standard workflow for any Node.js/TS project: initialize with npm, configure TypeScript, install the SDK, and write the code in the directory <strong class="text-neutral-100">src/</strong>. The structure is simple and familiar to anyone who already works with TypeScript.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The minimum structure of a TypeScript MCP Server consists of: <strong class="text-neutral-100">package.json</strong> with the dependency <code class="text-teal-400">@modelcontextprotocol/sdk</code>, <strong class="text-neutral-100">tsconfig.json</strong> configured for ESModules and target ES2020+, and <strong class="text-neutral-100">src/index.ts</strong> with the server code. The entry point creates an instance of <code class="text-teal-400">Server</code>, registers the handlers, and connects to the stdio transport with <code class="text-teal-400">StdioServerTransport</code>.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Project Setup Step by Step</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 1</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-teal-400">mkdir meu-mcp-server &amp;&amp; cd meu-mcp-server &amp;&amp; npm init -y</code> — Creates the project directory and initializes package.json.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 2</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-teal-400">npm install @modelcontextprotocol/sdk</code> — Installs the official MCP SDK for TypeScript.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 3</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-teal-400">npx tsc --init</code> — Generates tsconfig.json. Configure <code class="text-teal-400">"module": "ESNext"</code>, <code class="text-teal-400">"target": "ES2020"</code> e <code class="text-teal-400">"outDir": "./dist"</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Step 4</span>
+<p class="text-neutral-300 text-sm mt-1"><code class="text-teal-400">mkdir src &amp;&amp; touch src/index.ts</code> — Creates the main file where the server will be implemented.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Add <code class="text-teal-400">"type": "module"</code> in your package.json to use ES modules natively. In tsconfig.json, set <code class="text-teal-400">"moduleResolution": "node16"</code> for compatibility. Also add a script <code class="text-teal-400">"build": "tsc"</code> e <code class="text-teal-400">"start": "node dist/index.js"</code> in package.json to make the workflow easier.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">💻 Implementing Tools in TS</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        In the TypeScript SDK, tools are registered using <strong class="text-neutral-100">request handlers</strong>. Unlike Python, where decorators simplify the syntax, in TS you explicitly define the handler for <code class="text-teal-400">CallToolRequestSchema</code> and declares the inputs using JSON Schema. It’s more verbose, but each type is explicit and validated at compile time.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          To implement tools in TypeScript, you use <code class="text-teal-400">server.setRequestHandler(ListToolsRequestSchema, ...)</code> to list the available tools (returning name, description, and inputSchema) and <code class="text-teal-400">server.setRequestHandler(CallToolRequestSchema, ...)</code> to run them. The <strong class="text-neutral-100">inputSchema</strong> is defined as standard JSON Schema with type, properties, and required. Inside the CallTool handler, you switch on the <code class="text-teal-400">request.params.name</code> to dispatch the correct logic.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Forgetting to list the tool in ListToolsHandler</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Define an incorrect or incomplete inputSchema</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't handle errors inside the handler</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Use any types in tool parameters</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Define TypeScript interfaces for the arguments</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Validate inputs before processing</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Return isError: true on failure</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Document each tool with clear descriptions</li>
+</ul>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The pattern in TS is to return <code class="text-teal-400">{ content: [{ type: "text", text: resultado }] }</code> from the CallTool handler. For errors, add <code class="text-teal-400">isError: true</code> in the response. Create a helper function <code class="text-teal-400">makeTextResponse(text: string)</code> to avoid repetition — a common pattern in well-structured TS servers.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📦 Resources and Prompts in TS</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        In addition to Tools, the TypeScript SDK supports <strong class="text-neutral-100">Resources</strong> e <strong class="text-neutral-100">Prompts</strong> using the same request handler pattern. Resources expose data for the model to read, while Prompts provide reusable templates. The API follows the same philosophy: register a handler for the corresponding schema.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          For Resources, use <code class="text-teal-400">server.setRequestHandler(ListResourcesRequestSchema, ...)</code> to list resources and <code class="text-teal-400">server.setRequestHandler(ReadResourceRequestSchema, ...)</code> to serve the content. Each resource has a <strong class="text-neutral-100">URI</strong> single (e.g., <code class="text-teal-400">file:///config.json</code>) and returns content as text or a blob. For Prompts, the pattern is identical: <code class="text-teal-400">ListPromptsRequestSchema</code> e <code class="text-teal-400">GetPromptRequestSchema</code>. Same architecture, different schemas.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Resource Implementation Flow</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Set</span>
+<p class="text-neutral-300 text-sm mt-1">Implement the ListResources handler to return the list of resources with uri, name, and description.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Implement</span>
+<p class="text-neutral-300 text-sm mt-1">Implement the ReadResource handler to receive the URI and return the content with the appropriate mimeType.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Test</span>
+<p class="text-neutral-300 text-sm mt-1">Check in MCP Inspector whether the resources appear and return content correctly.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Data and Research</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          In practice, <strong class="text-neutral-100">Tools are the most used feature</strong> (present in ~95% of servers), followed by Resources (~40%) and Prompts (~15%). However, Resources are especially valuable in enterprise scenarios where the model needs to access documentation, configs, or data without performing actions. Prompts are ideal for standardizing recurring interactions with the model.
+        </p>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Build and Configuration</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Unlike Python, where you run the file directly, in TypeScript you need to <strong class="text-neutral-100">compile before running</strong>. The command <code class="text-teal-400">tsc</code> compiles the TypeScript to JavaScript in the <code class="text-teal-400">dist/</code>, and then you run it with <code class="text-teal-400">node dist/index.js</code>. The Claude Desktop configuration points to the compiled JavaScript file.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          The build workflow is: <code class="text-teal-400">npm run build</code> (which runs <code class="text-teal-400">tsc</code>) to compile, then <code class="text-teal-400">node dist/index.js</code> to run. In the <strong class="text-neutral-100">Claude Desktop</strong>, the configuration looks like this: <code class="text-teal-400">"command": "node"</code>, <code class="text-teal-400">"args": ["/caminho/absoluto/dist/index.js"]</code>. Always use absolute paths in the config to avoid problems. Alternatively, use <code class="text-teal-400">npx ts-node src/index.ts</code> during development to skip the build.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Practical Tip</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Add <code class="text-teal-400">"build": "tsc"</code> e <code class="text-teal-400">"watch": "tsc --watch"</code> in the package.json scripts. During development, use <code class="text-teal-400">npm run watch</code> in a terminal to automatically recompile after every change. For production, always run <code class="text-teal-400">npm run build</code> and test with <code class="text-teal-400">node dist/index.js</code> before configuring it in Claude Desktop.
+        </p>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alert</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">Always compile before running!</strong> A common mistake is editing the file <code class="text-teal-400">.ts</code> and forget to recompile, running the old version of <code class="text-teal-400">.js</code>. If your changes don't seem to take effect, check whether you ran <code class="text-teal-400">tsc</code> before restarting the server. Tip: configure a script <code class="text-teal-400">"dev": "tsc &amp;&amp; node dist/index.js"</code> that compiles and runs in sequence.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testing the TS Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Testing an MCP Server in TypeScript follows the same workflow as Python: use the <strong class="text-neutral-100">MCP Inspector</strong> for interactive debugging and the <strong class="text-neutral-100">Claude Desktop</strong> for real-world usage testing. The result should be identical to that of an equivalent Python server—if both implement the same tool, the output to the client is the same.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Core Concept</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          O <strong class="text-neutral-100">MCP Inspector</strong> (<code class="text-teal-400">npx @modelcontextprotocol/inspector node dist/index.js</code>) connects to your server and lets you test each tool, resource, and prompt individually. You can see the JSON-RPC requests sent and responses received in real time. For production testing, configure the server in <strong class="text-neutral-100">Claude Desktop</strong> and use it in real conversations. Compare the result with an equivalent Python server to ensure compatibility.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Avoid</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Test only in the Inspector without using Claude Desktop</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignore stderr error logs</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Skip edge case validation for inputs</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Don't test with malformed inputs</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Do</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Test each tool individually in the Inspector</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Validate behavior with Claude Desktop</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Compare output with the equivalent Python server</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Test error scenarios and invalid inputs</li>
+</ul>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Recommended Testing Flow</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">1. Compile</span>
+<p class="text-neutral-300 text-sm mt-1">Run <code class="text-teal-400">npm run build</code> and verify that there are no TypeScript compilation errors.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">2. Inspector</span>
+<p class="text-neutral-300 text-sm mt-1">Test in the MCP Inspector — verify that tools, resources, and prompts appear and respond correctly.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">3. Claude Desktop</span>
+<p class="text-neutral-300 text-sm mt-1">Configure it in Claude Desktop and test it in real conversations to validate the user experience.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">4. Compare</span>
+<p class="text-neutral-300 text-sm mt-1">If you have an equivalent Python server, compare the outputs to ensure identical behavior.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Module Summary</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>The TypeScript SDK (@modelcontextprotocol/sdk) and Python SDK (fastmcp) produce 100% compatible servers—the choice comes down to preference.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>The TS project structure is familiar: package.json, tsconfig.json, and src/index.ts with the SDK installed via npm.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Tools use setRequestHandler with CallToolRequestSchema—more verbose than Python, but with explicit typing.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Resources and Prompts follow the same request-handler pattern, with their own specific schemas.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Always compile with tsc before running—the Claude Desktop executes the compiled .js, not the .ts.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Use MCP Inspector for debugging and Claude Desktop for real-world testing—the output should be identical to Python.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Next Module:</strong> 5.5 — Exploring Community Servers
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Back to Track
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-5-5.html">
+            Next Module →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — From Zero to Server · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

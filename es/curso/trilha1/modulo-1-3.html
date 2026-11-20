@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 1.3 — Arquitectura Host → Client → Server | MCP — Desde cero hasta el servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-emerald-400 { color: #059669; }
+    html:not(.dark) .bg-emerald-500\/20 { background-color: rgba(5, 150, 105, 0.12); }
+    html:not(.dark) .bg-emerald-500\/10 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .border-emerald-500\/30 { border-color: rgba(5, 150, 105, 0.25); }
+    html:not(.dark) .hover\:bg-emerald-500\/30:hover { background-color: rgba(5, 150, 105, 0.18); }
+    html:not(.dark) .bg-emerald-900\/20 { background-color: rgba(5, 150, 105, 0.08); }
+    html:not(.dark) .bg-emerald-900\/40 { background-color: rgba(5, 150, 105, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha1/modulo-1-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha1/modulo-1-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha1/modulo-1-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="../../../curso/trilha1/modulo-1-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">PT</a><a href="../../../en/curso/trilha1/modulo-1-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="modulo-1-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Del cero al servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded bg-emerald-500/20 text-emerald-400" href="index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-teal-400 transition-colors" href="../trilha5/index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-emerald-400 transition-colors" href="../../index.html">Inicio</a>
+<span>/</span>
+<a class="hover:text-emerald-400 transition-colors" href="index.html">Ruta 1</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 1.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-emerald-900/30 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-emerald-500/20 text-emerald-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 1.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🏗️ Arquitectura Host → Client → Server
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Conoce los tres pilares de la arquitectura MCP y entiende cómo Host, Client y Server trabajan juntos para conectar la IA con el mundo real.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">6</div>
+<div class="text-neutral-500 text-xs">Temas</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">30</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Básico</div>
+<div class="text-neutral-500 text-xs">Nivel</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-emerald-400">Teoría</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🏠 Qué es el Host</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">Host</strong> es la aplicación donde se ejecuta realmente el modelo de IA. Es el punto de partida de todo: la interfaz que ve el usuario, el entorno que contiene el modelo y el lugar donde se inicia la comunicación con el mundo externo. Sin el Host, el modelo no tiene dónde existir: es la «casa» de la IA.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-4">
+          El Host es la <strong class="text-neutral-100">aplicación anfitriona</strong> que aloja el modelo de IA y gestiona todo el ciclo de vida de la interacción. Es responsable de iniciar la comunicación, mostrar los resultados al usuario y coordinar los Clients que se conectan a los Servers. Algunos ejemplos concretos de Hosts son:
+        </p>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-semibold mb-1">Claude Desktop</div>
+<p class="text-neutral-400 text-xs">Aplicación oficial de Anthropic que ejecuta Claude localmente con compatibilidad nativa con MCP.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-semibold mb-1">VS Code con Copilot</div>
+<p class="text-neutral-400 text-xs">IDE que integra modelos de IA para ayudar en la programación y que puede funcionar como Host MCP.</p>
+</div>
+<div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
+<div class="text-emerald-400 font-semibold mb-1">App empresarial</div>
+<p class="text-neutral-400 text-xs">Aplicación interna personalizada que incorpora un modelo de IA para automatizar procesos.</p>
+</div>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Datos e investigación</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El concepto de Host en MCP se inspiró en la arquitectura de <strong class="text-neutral-100">Language Server Protocol (LSP)</strong>, creado por Microsoft para editores de código. Al igual que con LSP, donde el editor (VS Code, Neovim, etc.) es el host que se comunica con servidores de lenguaje, en MCP el Host es la aplicación que contiene el modelo y orquesta la comunicación. Esta decisión arquitectónica permite que <strong class="text-neutral-100">cualquier aplicación</strong> se convierta en un Host MCP, desde asistentes personales hasta plataformas empresariales de gran escala.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📨 Qué es el Client</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">Client</strong> es el mensajero de la arquitectura MCP. Vive dentro del Host y se encarga de traducir las necesidades del modelo en solicitudes estandarizadas que los Servers pueden entender. Cada Client mantiene una conexión dedicada con un Server específico, y un único Host puede contener <strong class="text-neutral-100">múltiples Clients</strong> — cada uno conectado a un Server diferente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El Client administra el <strong class="text-neutral-100">ciclo de vida de la conexión</strong> entre el Host y un Server. Sus responsabilidades incluyen: iniciar y cerrar conexiones, enviar solicitudes en formato MCP, recibir y procesar respuestas, manejar errores y timeouts, y mantener el estado de la sesión. El Client abstrae toda la complejidad de la comunicación: el modelo no necesita saber cómo comunicarse con cada herramienta, solo pide lo que necesita y el Client lo traduce. Un Host como Claude Desktop puede tener al mismo tiempo un Client conectado a GitHub, otro a PostgreSQL y otro al sistema de archivos local.
+        </p>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El Client es como un <strong class="text-neutral-100">traductor simultáneo</strong> entre el modelo y las herramientas. Imagina que el modelo habla "portugués" y cada herramienta habla un idioma diferente: la base de datos habla "SQL", GitHub habla "API REST" y el sistema de archivos habla "comandos del SO". El Client lo traduce todo al formato estandarizado MCP, para que la comunicación fluya perfectamente sin que ninguna de las partes tenga que aprender el idioma de la otra.
+        </p>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🖥️ Qué es el Server</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O <strong class="text-neutral-100">Server</strong> es el componente que expone capacidades al modelo de IA. Pone a disposición <strong class="text-neutral-100">Tools</strong> (herramientas que ejecutan acciones), <strong class="text-neutral-100">Resources</strong> (datos que se pueden leer) y <strong class="text-neutral-100">Prompts</strong> (plantillas de interacción reutilizables). Cada Server está especializado en un dominio específico: hay un Server para GitHub, otro para bases de datos, otro para correo electrónico, y así sucesivamente.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El Server MCP es un programa que <strong class="text-neutral-100">expone capacidades estandarizadas</strong> para que los Clients las consuman. Sirve de puente entre el protocolo MCP y los sistemas externos reales. Por ejemplo, un Server de GitHub recibe una solicitud MCP del tipo "lista los pull requests abiertos" y la traduce en llamadas a la API de GitHub; luego devuelve el resultado en el formato estandarizado. La filosofía es que cada Server sea <strong class="text-neutral-100">enfocado y especializado</strong> — un Server por cada dominio, cada uno haciendo bien una sola cosa.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-emerald-900/20 border border-emerald-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">✅ Servidor enfocado</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Un Server para GitHub con tools de repos, PRs e issues</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Un Server para PostgreSQL con tools de consulta y escritura</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Un Server para Slack con tools de mensajes y canales</li>
+<li class="flex items-start gap-2"><span class="text-emerald-400 mt-0.5">•</span>Fácil de mantener, probar y reemplazar individualmente</li>
+</ul>
+</div>
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Servidor que lo hace todo</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Un único Server con GitHub + base de datos + correo electrónico + archivos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Difícil de mantener: un cambio puede romperlo todo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Permisos mezclados entre dominios diferentes</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Imposibilidad de reutilizar partes en otros proyectos</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 El flujo completo</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Ahora que conoces los tres pilares —Host, Client y Server—, es hora de ver cómo trabajan juntos en un flujo real de principio a fin. Desde el momento en que el usuario hace una pregunta hasta la respuesta final, cada componente cumple un papel preciso en esta orquestación.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          El flujo MCP sigue una cadena bien definida: el <strong class="text-neutral-100">usuario</strong> hace una solicitud al Host, el <strong class="text-neutral-100">modelo</strong> dentro del Host identifica que necesita datos o acciones externas, el <strong class="text-neutral-100">Client</strong> traduce esa necesidad en una solicitud MCP estandarizada, el <strong class="text-neutral-100">Server</strong> ejecuta la acción en el sistema externo y el resultado vuelve al modelo, que formula la respuesta final para el usuario. Todo esto sucede de forma transparente: el usuario no necesita saber que se consultaron varios sistemas en segundo plano.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Los 6 pasos del flujo MCP</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 1 — El usuario pregunta</span>
+<p class="text-neutral-300 text-sm mt-1">El usuario envía un mensaje al Host. Ejemplo: "¿Cuáles son los pull requests abiertos en mi repositorio?"</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 2 — El modelo identifica la necesidad</span>
+<p class="text-neutral-300 text-sm mt-1">El modelo de IA dentro del Host analiza la pregunta y determina que necesita acceder a GitHub para responderla. Identifica qué tool del Server MCP debe llamarse.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 3 — El cliente envía una solicitud</span>
+<p class="text-neutral-300 text-sm mt-1">El Client del Host convierte la necesidad del modelo en una solicitud MCP estandarizada y la envía al Server de GitHub.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 4 — El servidor ejecuta</span>
+<p class="text-neutral-300 text-sm mt-1">El Server de GitHub recibe la solicitud, llama a la API de GitHub, obtiene la lista de pull requests abiertos y da formato al resultado.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 5 — Se devuelve el resultado</span>
+<p class="text-neutral-300 text-sm mt-1">El Server envía la respuesta estandarizada al Client, que se la pasa al modelo dentro del Host.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Paso 6 — El modelo responde</span>
+<p class="text-neutral-300 text-sm mt-1">El modelo procesa los datos recibidos y formula una respuesta natural para el usuario: "Tienes 3 PRs abiertos: #42 (fix login), #38 (add tests), #35 (update docs)."</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🗺️ Diagrama mental</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Para consolidar la arquitectura en tu mente, vamos a construir un <strong class="text-neutral-100">mapa mental</strong> de la estructura MCP. Visualizar cómo encajan las piezas es fundamental para entender dónde empieza y termina cada componente, y cómo fluye la información entre ellos.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">La arquitectura MCP sigue una jerarquía clara de contención y conexión:</p>
+<div class="bg-dark-800 rounded-lg p-5 border border-dark-700 text-sm space-y-3">
+<div class="text-neutral-100 font-semibold">🏠 HOST (aplicación anfitriona)</div>
+<div class="pl-4 border-l-2 border-emerald-500/30 space-y-3">
+<div class="text-neutral-300">🤖 Modelo de IA (Claude, GPT, Gemini...)</div>
+<div class="space-y-2">
+<div class="text-neutral-300">📨 Cliente A → 🖥️ Servidor GitHub → <span class="text-neutral-500">API de GitHub</span></div>
+<div class="text-neutral-300">📨 Cliente B → 🖥️ Servidor PostgreSQL → <span class="text-neutral-500">Base de datos</span></div>
+<div class="text-neutral-300">📨 Cliente C → 🖥️ Servidor FileSystem → <span class="text-neutral-500">Sistema de archivos</span></div>
+</div>
+</div>
+</div>
+<p class="mt-4">El Host <strong class="text-neutral-100">contiene</strong> el modelo y los Clients. Cada Client <strong class="text-neutral-100">se conecta</strong> a exactamente un Server. Cada Server <strong class="text-neutral-100">se conecta</strong> a uno o más sistemas externos. Esta separación garantiza modularidad, seguridad y escalabilidad.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Consejo práctico</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Piensa en la arquitectura MCP como un <strong class="text-neutral-100">oficina moderna</strong>. El Host es el edificio de la oficina donde ocurre todo. El modelo de IA es el director que toma decisiones. Los Clients son los asistentes ejecutivos: cada uno está especializado en tratar con un proveedor diferente. Y los Servers son los proveedores externos (banco, correo, TI) que ejecutan los servicios solicitados. El director no llama directamente a cada proveedor: le pide ayuda al asistente adecuado, que sabe exactamente cómo comunicarse con ese proveedor.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">⚡ Ejemplos prácticos</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        La teoría cobra vida con ejemplos concretos. Analicemos dos escenarios reales de uso de la arquitectura MCP —uno para desarrolladores y otro para equipos de negocio— para ver cómo se articulan Host, Client y Server en la práctica.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-emerald-400 font-semibold text-sm">💎 Concepto principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          La belleza de la arquitectura MCP es que funciona de la <strong class="text-neutral-100">de la misma forma</strong> independiente del escenario. Ya seas un programador que solicita un análisis de código o un equipo de ventas que consulta métricas, el flujo Host → Client → Server permanece idéntico. Lo que cambia son los <strong class="text-neutral-100">Servers</strong> conectados y las <strong class="text-neutral-100">Tools</strong> disponibles, pero la arquitectura, el protocolo y el estándar de comunicación son siempre los mismos. Esta consistencia es lo que hace que MCP sea tan poderoso.
+        </p>
+</div>
+<!-- Timeline - Cenários -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-emerald-400 font-semibold text-sm">📋 Escenarios detallados</span>
+</div>
+<div class="relative pl-8 border-l-2 border-emerald-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Escenario 1 — Un programador analiza un repositorio</span>
+<p class="text-neutral-300 text-sm mt-1 mb-2">Un desarrollador abre Claude Desktop y pide: «Analiza los últimos commits de mi repo y sugiere mejoras».</p>
+<div class="text-sm space-y-1 text-neutral-400">
+<p><strong class="text-neutral-300">Host:</strong> Claude Desktop (aplicación con el modelo Claude)</p>
+<p><strong class="text-neutral-300">Client:</strong> Client MCP interno de Claude Desktop</p>
+<p><strong class="text-neutral-300">Server:</strong> Server MCP de GitHub (accede a la API de GitHub)</p>
+<p><strong class="text-neutral-300">Flujo:</strong> Claude identifica la necesidad → Client envía una solicitud al Server GitHub → Server consulta los commits mediante la API → vuelve el resultado → Claude presenta un análisis con sugerencias</p>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-emerald-400 font-bold text-sm">Escenario 2 — Una empresa consulta las ventas</span>
+<p class="text-neutral-300 text-sm mt-1 mb-2">Un gerente de ventas usa la plataforma interna de la empresa y pregunta: «¿Cuáles fueron los ingresos del último trimestre por región?»</p>
+<div class="text-sm space-y-1 text-neutral-400">
+<p><strong class="text-neutral-300">Host:</strong> Aplicación interna de la empresa (con un modelo de IA integrado)</p>
+<p><strong class="text-neutral-300">Client:</strong> Client MCP configurado en la aplicación</p>
+<p><strong class="text-neutral-300">Server:</strong> Server MCP de PostgreSQL (se conecta a la base de datos)</p>
+<p><strong class="text-neutral-300">Flujo:</strong> El modelo identifica la necesidad de datos → el Client envía una solicitud al Server PostgreSQL → el Server ejecuta una query SQL → se devuelve el resultado → el modelo presenta un informe con formato y datos por región</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">¡Ten cuidado con los permisos!</strong> El hecho de que un Server MCP pueda ejecutar acciones en sistemas externos hace que el control de acceso sea fundamental. Cada Server debe tener solo los permisos mínimos necesarios: el Server de GitHub no necesita acceso a la base de datos, y el Server de PostgreSQL no necesita acceso a GitHub. Aplica siempre el <strong class="text-neutral-100">principio de privilegio mínimo</strong>: concede solo los permisos estrictamente necesarios para que cada Server cumpla su función.
+        </p>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-emerald-900/40 to-dark-800 border border-emerald-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumen del módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El Host es la aplicación anfitriona que contiene el modelo de IA e inicia toda la comunicación. Algunos ejemplos son Claude Desktop, los IDE y las aplicaciones empresariales.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El Client es el mensajero que traduce las necesidades del modelo en solicitudes MCP estandarizadas: un Host puede tener varios Clients.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El Server expone Tools, Resources y Prompts al modelo: cada Server está especializado en un dominio específico.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El flujo completo sigue 6 pasos: el usuario pregunta → el modelo identifica → el Client envía → el Server ejecuta → el resultado vuelve → el modelo responde.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>La arquitectura es jerárquica: el Host contiene el modelo y los Clients; cada Client se conecta a un Server; cada Server se conecta a sistemas externos.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-emerald-400 mt-0.5">✓</span>
+<span>El patrón se aplica a cualquier escenario, desde el desarrollo hasta los negocios, siempre con un control estricto de los permisos.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Siguiente Módulo:</strong> 1.4 — Viendo el MCP en acción
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Volver a la trilha
+          </a>
+<a class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-1-4.html">
+            Siguiente Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — De cero al servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>

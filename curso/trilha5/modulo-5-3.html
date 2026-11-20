@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Módulo 5.3 — Transporte HTTP/SSE | MCP — Do Zero ao Servidor</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            primary: '#FACC15',
+            dark: { 900: '#111827', 800: '#1f2937', 700: '#374151', 600: '#4b5563' }
+          }
+        }
+      }
+    }
+  </script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .dark body { background-color: #111827; }
+
+    html:not(.dark) body { background-color: #f8fafc; }
+    html:not(.dark) .bg-dark-900 { background-color: #ffffff; }
+    html:not(.dark) .bg-dark-800 { background-color: #f9fafb; }
+    html:not(.dark) .bg-dark-700 { background-color: #f3f4f6; }
+    html:not(.dark) .bg-dark-600 { background-color: #e5e7eb; }
+    html:not(.dark) .text-neutral-100 { color: #111827; }
+    html:not(.dark) .text-neutral-300 { color: #4b5563; }
+    html:not(.dark) .text-neutral-400 { color: #6b7280; }
+    html:not(.dark) .text-neutral-500 { color: #9ca3af; }
+    html:not(.dark) .border-dark-600 { border-color: #d1d5db; }
+    html:not(.dark) .border-dark-700 { border-color: #e5e7eb; }
+
+    html:not(.dark) .text-teal-400 { color: #0d9488; }
+    html:not(.dark) .bg-teal-500\/20 { background-color: rgba(13, 148, 136, 0.12); }
+    html:not(.dark) .bg-teal-500\/10 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .border-teal-500\/30 { border-color: rgba(13, 148, 136, 0.25); }
+    html:not(.dark) .hover\:bg-teal-500\/30:hover { background-color: rgba(13, 148, 136, 0.18); }
+    html:not(.dark) .bg-teal-900\/20 { background-color: rgba(13, 148, 136, 0.08); }
+    html:not(.dark) .bg-teal-900\/40 { background-color: rgba(13, 148, 136, 0.12); }
+
+    html:not(.dark) .text-blue-400 { color: #2563eb; }
+    html:not(.dark) .bg-blue-900\/20 { background-color: rgba(37, 99, 235, 0.08); }
+    html:not(.dark) .border-blue-500\/30 { border-color: rgba(37, 99, 235, 0.25); }
+
+    html:not(.dark) .text-red-400 { color: #dc2626; }
+    html:not(.dark) .bg-red-900\/20 { background-color: rgba(220, 38, 38, 0.08); }
+    html:not(.dark) .border-red-500\/30 { border-color: rgba(220, 38, 38, 0.25); }
+
+    html:not(.dark) [class*="bg-gradient-to"] { background-image: none !important; }
+    html:not(.dark) .text-primary { color: #a16207; }
+    html:not(.dark) .bg-primary\/10 { background-color: rgba(161, 98, 7, 0.08); }
+    html:not(.dark) .border-primary\/30 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .border-primary\/40 { border-color: rgba(161, 98, 7, 0.25); }
+    html:not(.dark) .text-sky-400 { color: #0369a1; }
+    html:not(.dark) .text-yellow-400 { color: #a16207; }
+    html:not(.dark) .hover\:text-sky-300:hover { color: #0284c7; }
+    html:not(.dark) .hover\:text-yellow-300:hover { color: #854d0e; }
+    html:not(.dark) .bg-dark-900\/95 { background-color: rgba(255, 255, 255, 0.95); }
+  </style>
+<link href="https://inematds.github.io/MCP/curso/trilha5/modulo-5-3.html" hreflang="pt-BR" rel="alternate"/><link href="https://inematds.github.io/MCP/en/curso/trilha5/modulo-5-3.html" hreflang="en" rel="alternate"/><link href="https://inematds.github.io/MCP/es/curso/trilha5/modulo-5-3.html" hreflang="es" rel="alternate"/></head>
+<body class="bg-dark-900 text-neutral-100 min-h-screen"><div class="inema-lang" style="position:fixed;right:14px;bottom:14px;z-index:9999;display:flex;gap:2px;padding:4px;border-radius:10px;background:rgba(12,12,16,.82);border:1px solid rgba(226,162,59,.45);font:600 12px/1 Sora,Inter,system-ui,sans-serif;backdrop-filter:blur(8px)" translate="no"><a href="modulo-5-3.html" hreflang="pt-BR" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#1a1206;background:#E2A23B">PT</a><a href="../../en/curso/trilha5/modulo-5-3.html" hreflang="en" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">EN</a><a href="../../es/curso/trilha5/modulo-5-3.html" hreflang="es" style="padding:6px 8px;border-radius:7px;text-decoration:none;color:#e9e9ee">ES</a></div>
+<!-- Sticky Nav -->
+<nav class="sticky top-0 z-50 bg-dark-900/95 backdrop-blur-sm border-b border-dark-700">
+<div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<a class="flex items-center gap-2 hover:text-yellow-300 transition-colors" href="../../index.html">
+<span class="text-lg">🔌</span>
+<span class="text-yellow-400 font-semibold text-sm">MCP — Do Zero ao Servidor</span>
+</a>
+<span class="text-neutral-500">|</span>
+<a class="text-sky-400 hover:text-sky-300 text-sm font-medium transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex items-center gap-1 text-xs font-medium">
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-emerald-400 transition-colors" href="../trilha1/index.html">T1</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-blue-400 transition-colors" href="../trilha2/index.html">T2</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-purple-400 transition-colors" href="../trilha3/index.html">T3</a>
+<a class="px-2 py-1 rounded text-neutral-500 hover:text-amber-400 transition-colors" href="../trilha4/index.html">T4</a>
+<a class="px-2 py-1 rounded bg-teal-500/20 text-teal-400" href="index.html">T5</a>
+</div>
+<button class="p-2 rounded-lg hover:bg-dark-700 transition-colors" id="theme-toggle">
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-dark-icon" viewbox="0 0 20 20">
+<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+</svg>
+<svg class="w-5 h-5 hidden text-neutral-400" fill="currentColor" id="theme-toggle-light-icon" viewbox="0 0 20 20">
+<path clip-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd"></path>
+</svg>
+</button>
+</div>
+</div>
+</nav>
+<!-- Breadcrumb -->
+<div class="max-w-4xl mx-auto px-6 py-4">
+<nav class="flex items-center gap-2 text-sm text-neutral-500">
+<a class="hover:text-teal-400 transition-colors" href="../../index.html">Início</a>
+<span>/</span>
+<a class="hover:text-teal-400 transition-colors" href="index.html">Trilha 5</a>
+<span>/</span>
+<span class="text-neutral-300">Módulo 5.3</span>
+</nav>
+</div>
+<!-- Header -->
+<section class="px-6 pb-12">
+<div class="max-w-4xl mx-auto">
+<div class="bg-gradient-to-br from-teal-900/30 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-12">
+<span class="bg-teal-500/20 text-teal-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 5.3</span>
+<h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
+          🌐 Transporte HTTP/SSE
+        </h1>
+<p class="text-neutral-400 text-lg leading-relaxed mb-8">
+          Converta seu MCP Server de STDIO para HTTP — permitindo acesso remoto e deploy em nuvem.
+        </p>
+<div class="flex flex-wrap gap-4 text-sm">
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">6</div>
+<div class="text-neutral-500 text-xs">Tópicos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">35</div>
+<div class="text-neutral-500 text-xs">Minutos</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Avançado</div>
+<div class="text-neutral-500 text-xs">Nível</div>
+</div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
+<div class="text-lg font-bold text-teal-400">Prática</div>
+<div class="text-neutral-500 text-xs">Tipo</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Content -->
+<div class="max-w-4xl mx-auto px-6 pb-20">
+<!-- Tópico 1 -->
+<section class="mb-16" id="topico-1">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔄 STDIO vs HTTP</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O MCP suporta dois modelos de transporte: <strong class="text-neutral-100">STDIO</strong> (entrada/saída padrão) e <strong class="text-neutral-100">HTTP</strong> (via rede). STDIO é local, simples e rápido — ideal para desenvolvimento e uso pessoal. HTTP é remoto, acessível pela rede e perfeito para deploy em cloud. A pergunta-chave é: <strong class="text-neutral-100">quando migrar?</strong> Quando outros precisam acessar seu server — seja sua equipe, seus clientes ou sua infraestrutura de produção.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">STDIO</strong> funciona como um pipe Unix: o client lança o server como processo filho e se comunica via stdin/stdout. É zero-config e instantâneo, mas limitado à máquina local. <strong class="text-neutral-100">HTTP</strong> expõe o server como um serviço web: qualquer client na rede pode se conectar via URL. Isso habilita cenários como múltiplos clients simultâneos, deploy em containers, e acesso de qualquer lugar do mundo. A troca é que HTTP exige configuração de rede, segurança e infraestrutura — mas o ganho em flexibilidade é enorme.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar HTTP para uso local quando STDIO basta</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Expor HTTP sem autenticação na internet</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Manter STDIO quando múltiplos clients precisam acessar</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar a latência de rede ao migrar para HTTP</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Começar com STDIO para desenvolvimento rápido</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Migrar para HTTP quando precisar de acesso remoto</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Manter ambos os transportes disponíveis no código</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Testar localmente em HTTP antes de fazer deploy</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          A especificação MCP define oficialmente dois transportes: <strong class="text-neutral-100">STDIO</strong> e <strong class="text-neutral-100">HTTP com SSE</strong>. Na prática, a maioria dos MCP Servers em produção utiliza HTTP/SSE para permitir integração com múltiplos clients e deploy em nuvem. O protocolo HTTP adiciona tipicamente <strong class="text-neutral-100">1-5ms de latência</strong> por requisição em redes locais, mas essa diferença é imperceptível comparada ao tempo de processamento das ferramentas. A versão mais recente do protocolo também suporta <strong class="text-neutral-100">Streamable HTTP</strong>, uma evolução do SSE com melhor suporte a reconexão.
+        </p>
+</div>
+</section>
+<!-- Tópico 2 -->
+<section class="mb-16" id="topico-2">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🌐 Configurando HTTP no FastMCP</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        O FastMCP abstrai toda a complexidade de configurar um servidor HTTP. Com uma única linha de código, você troca o transporte de STDIO para HTTP ou SSE. O framework cuida de rotas, serialização JSON-RPC, gerenciamento de conexões e streaming — você foca na lógica das suas tools.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Configurar HTTP no FastMCP é trocar um único parâmetro:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Antes — transporte STDIO (padrão)</span>
+<span class="text-teal-400">mcp.run</span>()
+
+<span class="text-neutral-500"># Depois — transporte HTTP</span>
+<span class="text-teal-400">mcp.run</span>(transport=<span class="text-primary">"http"</span>, host=<span class="text-primary">"0.0.0.0"</span>, port=<span class="text-primary">8000</span>)
+
+<span class="text-neutral-500"># Ou com SSE (Server-Sent Events)</span>
+<span class="text-teal-400">mcp.run</span>(transport=<span class="text-primary">"sse"</span>, host=<span class="text-primary">"0.0.0.0"</span>, port=<span class="text-primary">8000</span>)</pre>
+</div>
+<p>O parâmetro <code class="text-teal-400">host="0.0.0.0"</code> aceita conexões de qualquer IP (necessário para Docker/cloud). O <code class="text-teal-400">port</code> define a porta do servidor. O FastMCP usa internamente o <code class="text-teal-400">uvicorn</code> como servidor ASGI, garantindo performance e compatibilidade com o ecossistema Python.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Use uma variável de ambiente para alternar entre transportes sem modificar o código: <code class="text-teal-400">transport = os.getenv("MCP_TRANSPORT", "stdio")</code>. Em desenvolvimento local, use STDIO. Em produção, defina <code class="text-teal-400">MCP_TRANSPORT=http</code>. Assim, o mesmo código funciona em ambos os cenários sem nenhuma alteração no source.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Passos para migrar de STDIO para HTTP</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 1</span>
+<p class="text-neutral-300 text-sm mt-1">Adicionar <code class="text-teal-400">uvicorn</code> e <code class="text-teal-400">starlette</code> às dependências no <code class="text-teal-400">pyproject.toml</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 2</span>
+<p class="text-neutral-300 text-sm mt-1">Alterar <code class="text-teal-400">mcp.run()</code> para <code class="text-teal-400">mcp.run(transport="http", host="0.0.0.0", port=8000)</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Testar localmente acessando <code class="text-teal-400">http://localhost:8000</code> e verificar que as tools respondem via HTTP.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Tópico 3 -->
+<section class="mb-16" id="topico-3">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">📡 Server-Sent Events</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        SSE (Server-Sent Events) é uma tecnologia que permite o server enviar <strong class="text-neutral-100">atualizações contínuas</strong> para o client via uma conexão HTTP persistente. Diferente de WebSockets (bidirecional), SSE é unidirecional: o server envia, o client recebe. Isso é ideal para operações longas onde o client precisa acompanhar o progresso em tempo real.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          No transporte SSE do MCP, o client faz uma requisição HTTP e mantém a <strong class="text-neutral-100">conexão aberta</strong>. O server envia mensagens JSON-RPC como eventos SSE conforme processa as requisições. Isso permite streaming de resultados parciais, notificações de progresso e respostas incrementais. O MCP usa SSE como canal de resposta enquanto o client envia requisições via POST normal. Essa arquitetura é robusta e funciona bem com proxies, load balancers e CDNs — diferente de WebSockets que requerem suporte especial de infraestrutura.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar polling em vez de SSE para atualizações</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não tratar reconexão quando a conexão SSE cai</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Enviar payloads enormes via SSE sem chunking</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar timeouts em operações longas</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Usar SSE para operações que demoram mais de 1s</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Implementar heartbeat para manter a conexão viva</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Tratar reconexão automática no client</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Enviar notificações de progresso para tools lentas</li>
+</ul>
+</div>
+</div>
+<!-- Box Dados/Pesquisa -->
+<div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          SSE é suportado nativamente por todos os browsers modernos e pela maioria dos frameworks HTTP. Comparado a WebSockets, SSE usa <strong class="text-neutral-100">HTTP padrão</strong>, o que significa compatibilidade total com proxies reversos (Nginx, Cloudflare) sem configuração especial. A reconexão automática é built-in na spec SSE — se a conexão cair, o browser reconecta automaticamente usando o último <code class="text-teal-400">Last-Event-ID</code>. A evolução do SSE no MCP é o <strong class="text-neutral-100">Streamable HTTP</strong>, que combina POST para envio e SSE para recebimento em um único endpoint.
+        </p>
+</div>
+</section>
+<!-- Tópico 4 -->
+<section class="mb-16" id="topico-4">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🔒 Segurança em HTTP</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Expor um MCP Server via HTTP significa expô-lo à rede — e potencialmente à internet. Segurança não é opcional: <strong class="text-neutral-100">HTTPS obrigatório</strong> em produção, autenticação via headers, configuração de CORS e rate limiting são o mínimo. Um server MCP sem proteção é uma porta aberta para execução de código arbitrário.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Checklist de segurança para MCP Server HTTP:</p>
+<ul class="space-y-2">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">1.</span><strong class="text-neutral-100">HTTPS/TLS</strong> — criptografa o tráfego. Use Let's Encrypt ou o TLS do seu cloud provider.</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">2.</span><strong class="text-neutral-100">Autenticação</strong> — valide tokens nos headers (<code class="text-teal-400">Authorization: Bearer &lt;token&gt;</code>).</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">3.</span><strong class="text-neutral-100">CORS</strong> — restrinja origens permitidas para evitar requisições de domínios não autorizados.</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">4.</span><strong class="text-neutral-100">Rate Limiting</strong> — limite requisições por IP/token para prevenir abuso.</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">5.</span><strong class="text-neutral-100">Firewall/VPN</strong> — em ambientes corporativos, restrinja acesso à rede interna.</li>
+</ul>
+</div>
+</div>
+<!-- Box Alerta -->
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+<strong class="text-neutral-100">NUNCA use HTTP sem TLS em produção!</strong> Sem HTTPS, tokens de autenticação, dados de requisições e respostas trafegam em texto puro — qualquer pessoa na mesma rede pode interceptar. Um MCP Server expõe tools que podem executar código, acessar bancos de dados e manipular arquivos. HTTP sem TLS em produção é equivalente a deixar a porta do cofre aberta com a senha colada na parede.
+        </p>
+</div>
+<!-- Grid Fazer vs Evitar -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<div class="bg-red-900/20 border border-red-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>HTTP puro em produção (sem TLS)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tokens hardcoded no código-fonte</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>CORS com <code class="text-red-400">allow_origins=["*"]</code> em produção</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Server exposto na internet sem autenticação</li>
+</ul>
+</div>
+<div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">✅ Fazer</span>
+</div>
+<ul class="space-y-2 text-sm text-neutral-300">
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>HTTPS com certificados válidos (Let's Encrypt)</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Tokens em variáveis de ambiente</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>CORS restrito a domínios específicos</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Rate limiting + logging de acessos</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- Tópico 5 -->
+<section class="mb-16" id="topico-5">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">☁️ Deploy em Nuvem</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Com o server rodando via HTTP, o próximo passo é colocá-lo na nuvem. Existem diversas opções — desde plataformas simples como <strong class="text-neutral-100">Railway</strong> e <strong class="text-neutral-100">Fly.io</strong> até infraestrutura completa com <strong class="text-neutral-100">AWS Lambda</strong> ou <strong class="text-neutral-100">Docker em VPS</strong>. A escolha depende do seu orçamento, escala e necessidades de controle.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Um Dockerfile básico para deploy do MCP Server:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto mb-4">
+<pre class="text-neutral-300"><span class="text-teal-400">FROM</span> python:3.12-slim
+
+<span class="text-teal-400">WORKDIR</span> /app
+<span class="text-teal-400">COPY</span> . .
+
+<span class="text-teal-400">RUN</span> pip install --no-cache-dir .
+
+<span class="text-teal-400">ENV</span> MCP_TRANSPORT=http
+<span class="text-teal-400">ENV</span> PORT=8000
+<span class="text-teal-400">EXPOSE</span> 8000
+
+<span class="text-teal-400">CMD</span> [<span class="text-primary">"meu-server"</span>]</pre>
+</div>
+<p>O Dockerfile instala o pacote Python, define variáveis de ambiente e expõe a porta. Plataformas como Railway e Fly.io detectam automaticamente o Dockerfile e fazem o build. Para AWS Lambda, use um adapter como <code class="text-teal-400">mangum</code> para converter ASGI em Lambda handler.</p>
+</div>
+</div>
+<!-- Timeline -->
+<div class="space-y-4 mb-6">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Passos para deploy</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 1</span>
+<p class="text-neutral-300 text-sm mt-1">Criar o <code class="text-teal-400">Dockerfile</code> na raiz do projeto com a configuração do server HTTP.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 2</span>
+<p class="text-neutral-300 text-sm mt-1">Configurar variáveis de ambiente na plataforma: tokens de API, <code class="text-teal-400">MCP_TRANSPORT</code>, porta e secrets.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Fazer push do código para o repositório Git conectado à plataforma — o deploy é automático.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 4</span>
+<p class="text-neutral-300 text-sm mt-1">Verificar os logs de deploy, testar a URL pública e configurar domínio customizado se necessário.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Para projetos pessoais e MVPs, <strong class="text-neutral-100">Railway</strong> e <strong class="text-neutral-100">Fly.io</strong> são as opções mais rápidas — deploy direto do GitHub em minutos, com HTTPS automático e tier gratuito. Para produção com mais controle, use <strong class="text-neutral-100">Docker + VPS</strong> (Hetzner, DigitalOcean) com Nginx como reverse proxy e Let's Encrypt para TLS. Sempre use <code class="text-teal-400">.dockerignore</code> para excluir <code class="text-neutral-400">.env</code>, <code class="text-neutral-400">.git</code> e <code class="text-neutral-400">__pycache__</code>.
+        </p>
+</div>
+</section>
+<!-- Tópico 6 -->
+<section class="mb-16" id="topico-6">
+<div class="flex items-start gap-4 mb-6">
+<div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
+<div>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testando Remotamente</h2>
+</div>
+</div>
+<p class="text-neutral-300 leading-relaxed mb-6">
+        Com o server deployed, é hora de verificar que tudo funciona <strong class="text-neutral-100">de fora</strong> — de outra máquina, de outra rede, como um client real faria. Testar remotamente revela problemas que testes locais escondem: firewalls, DNS, latência de rede e configurações de CORS.
+      </p>
+<!-- Box Conceito Principal -->
+<div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
+</div>
+<div class="text-neutral-300 leading-relaxed">
+<p class="mb-4">Testando com <code class="text-teal-400">curl</code> e configurando client remoto:</p>
+<div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto mb-4">
+<pre class="text-neutral-300"><span class="text-neutral-500"># Testar se o server responde</span>
+$ <span class="text-teal-400">curl</span> https://meu-server.railway.app/sse
+
+<span class="text-neutral-500"># Configurar no Claude Desktop (claude_desktop_config.json)</span>
+{
+  <span class="text-primary">"mcpServers"</span>: {
+    <span class="text-primary">"meu-server"</span>: {
+      <span class="text-primary">"url"</span>: <span class="text-primary">"https://meu-server.railway.app/sse"</span>
+    }
+  }
+}</pre>
+</div>
+<p>Para clients HTTP/SSE, basta apontar a URL do server deployed. O client se conecta via HTTPS, mantém a conexão SSE aberta e envia requisições normalmente. Verifique latência com <code class="text-teal-400">curl -w "%{time_total}"</code> para garantir que o tempo de resposta é aceitável.</p>
+</div>
+</div>
+<!-- Box Dica Prática -->
+<div class="bg-primary/10 border border-primary/30 rounded-xl p-6 mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
+</div>
+<p class="text-neutral-300 leading-relaxed">
+          Teste a partir de <strong class="text-neutral-100">múltiplos ambientes</strong>: sua máquina local, uma VM em outra região, e o celular (via hotspot 4G). Cada ambiente revela problemas diferentes — DNS pode falhar em uma rede, CORS pode bloquear em um browser, e latência pode ser inaceitável de outra região. Use <code class="text-teal-400">mcp-cli</code> ou <code class="text-teal-400">npx @modelcontextprotocol/inspector</code> para inspecionar as mensagens JSON-RPC trocadas.
+        </p>
+</div>
+<!-- Timeline -->
+<div class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="text-teal-400 font-semibold text-sm">📋 Checklist de teste remoto</span>
+</div>
+<div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 1</span>
+<p class="text-neutral-300 text-sm mt-1">Verificar que a URL pública responde com <code class="text-teal-400">curl</code> — HTTP 200 no health check.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 2</span>
+<p class="text-neutral-300 text-sm mt-1">Conectar um MCP client remoto e listar as tools disponíveis com <code class="text-teal-400">tools/list</code>.</p>
+</div>
+</div>
+<div class="relative">
+<div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
+<div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
+<span class="text-teal-400 font-bold text-sm">Passo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Executar uma tool e medir a latência — verificar que o tempo de resposta é menor que <strong class="text-neutral-100">5 segundos</strong> para operações simples.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Resumo do Módulo -->
+<section class="mt-20">
+<div class="bg-gradient-to-br from-teal-900/40 to-dark-800 border border-teal-500/30 rounded-2xl p-8 md:p-10">
+<h2 class="text-2xl font-bold text-neutral-100 mb-6">📝 Resumo do Módulo</h2>
+<ul class="space-y-3 mb-8">
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>STDIO é local e simples; HTTP é remoto e escalável — migre quando outros precisam acessar seu server.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>FastMCP abstrai a complexidade — trocar de STDIO para HTTP é alterar um parâmetro em mcp.run().</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>SSE permite streaming e atualizações contínuas via conexão HTTP persistente.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Segurança é obrigatória: HTTPS, autenticação, CORS e rate limiting são o mínimo.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Deploy em nuvem com Docker — Railway, Fly.io ou VPS com Nginx e Let's Encrypt.</span>
+</li>
+<li class="flex items-start gap-3 text-neutral-300">
+<span class="text-teal-400 mt-0.5">✓</span>
+<span>Teste remotamente de múltiplos ambientes para garantir que o server funciona para todos.</span>
+</li>
+</ul>
+<div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
+<p class="text-neutral-400 text-sm">
+<strong class="text-neutral-100">Próximo Módulo:</strong> 5.4 — MCP com TypeScript
+          </p>
+</div>
+<div class="flex flex-wrap gap-3">
+<a class="bg-dark-700 hover:bg-dark-600 text-neutral-300 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="index.html">
+            ← Voltar para Trilha
+          </a>
+<a class="bg-teal-500/20 hover:bg-teal-500/30 text-teal-400 border border-teal-500/30 px-5 py-2.5 rounded-lg text-sm font-medium transition-colors" href="modulo-5-4.html">
+            Próximo Módulo →
+          </a>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer -->
+<footer class="border-t border-dark-700 py-8 px-6">
+<div class="max-w-6xl mx-auto text-center text-neutral-500 text-sm">
+<p>🔌 MCP — Do Zero ao Servidor · <a class="text-sky-400 hover:text-sky-300 transition-colors" href="https://inema.club" target="_blank">INEMA.CLUB</a></p>
+</div>
+</footer>
+<!-- Theme Toggle Script -->
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+    const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+    const html = document.documentElement;
+    if (localStorage.getItem('theme') === 'light') {
+      themeToggleDarkIcon.classList.remove('hidden');
+      html.classList.remove('dark');
+    } else {
+      themeToggleLightIcon.classList.remove('hidden');
+    }
+    themeToggle.addEventListener('click', () => {
+      themeToggleDarkIcon.classList.toggle('hidden');
+      themeToggleLightIcon.classList.toggle('hidden');
+      html.classList.toggle('dark');
+      localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+    });
+  </script>
+</body>
+</html>
