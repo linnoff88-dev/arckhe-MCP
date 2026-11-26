@@ -148,7 +148,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O <strong class="text-neutral-100">Host</strong> é a aplicação onde o modelo de IA efetivamente roda. É o ponto de partida de tudo: a interface que o usuário vê, o ambiente que contém o modelo e o local onde a comunicação com o mundo externo é iniciada. Sem o Host, o modelo não tem onde existir — ele é a "casa" da IA.
+        O <strong class="text-neutral-100">Host</strong> é a aplicaçêo onde o modelo de IA efetivamente roda. É o ponto de partida de tudo: a interface que o usuário vê, o ambiente que contém o modelo e o local onde a comunicaçêo com o mundo externo é iniciada. Sem o Host, o modelo nêo tem onde existir — ele é a "casa" da IA.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
@@ -156,20 +156,20 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-4">
-          O Host é a <strong class="text-neutral-100">aplicação anfitriã</strong> que hospeda o modelo de IA e gerencia todo o ciclo de vida da interação. Ele é responsável por iniciar a comunicação, exibir resultados ao usuário e coordenar os Clients que se conectam aos Servers. Exemplos concretos de Hosts incluem:
+          O Host é a <strong class="text-neutral-100">aplicaçêo anfitriê</strong> que hospeda o modelo de IA e gerencia todo o ciclo de vida da interaçêo. Ele é responsável por iniciar a comunicaçêo, exibir resultados ao usuário e coordenar os Clients que se conectam aos Servers. Exemplos concretos de Hosts incluem:
         </p>
 <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-sm">
 <div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
 <div class="text-emerald-400 font-semibold mb-1">Claude Desktop</div>
-<p class="text-neutral-400 text-xs">Aplicação oficial da Anthropic que roda o Claude localmente com suporte nativo a MCP.</p>
+<p class="text-neutral-400 text-xs">Aplicaçêo oficial da Anthropic que roda o Claude localmente com suporte nativo a MCP.</p>
 </div>
 <div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
 <div class="text-emerald-400 font-semibold mb-1">VS Code com Copilot</div>
-<p class="text-neutral-400 text-xs">IDE que integra modelos de IA para auxiliar na programação, podendo atuar como Host MCP.</p>
+<p class="text-neutral-400 text-xs">IDE que integra modelos de IA para auxiliar na programaçêo, podendo atuar como Host MCP.</p>
 </div>
 <div class="bg-dark-800 rounded-lg p-3 border border-dark-700">
 <div class="text-emerald-400 font-semibold mb-1">App Empresarial</div>
-<p class="text-neutral-400 text-xs">Aplicação interna customizada que embute um modelo de IA para automação de processos.</p>
+<p class="text-neutral-400 text-xs">Aplicaçêo interna customizada que embute um modelo de IA para automaçêo de processos.</p>
 </div>
 </div>
 </div>
@@ -179,7 +179,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O conceito de Host no MCP foi inspirado na arquitetura do <strong class="text-neutral-100">Language Server Protocol (LSP)</strong>, criado pela Microsoft para editores de código. Assim como no LSP, onde o editor (VS Code, Neovim, etc.) é o host que se comunica com servidores de linguagem, no MCP o Host é a aplicação que contém o modelo e orquestra a comunicação. Essa escolha arquitetural permite que <strong class="text-neutral-100">qualquer aplicação</strong> se torne um Host MCP — de assistentes pessoais a plataformas empresariais de larga escala.
+          O conceito de Host no MCP foi inspirado na arquitetura do <strong class="text-neutral-100">Language Server Protocol (LSP)</strong>, criado pela Microsoft para editores de código. Assim como no LSP, onde o editor (VS Code, Neovim, etc.) é o host que se comunica com servidores de linguagem, no MCP o Host é a aplicaçêo que contém o modelo e orquestra a comunicaçêo. Essa escolha arquitetural permite que <strong class="text-neutral-100">qualquer aplicaçêo</strong> se torne um Host MCP — de assistentes pessoais a plataformas empresariais de larga escala.
         </p>
 </div>
 </section>
@@ -192,7 +192,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O <strong class="text-neutral-100">Client</strong> é o mensageiro da arquitetura MCP. Ele vive dentro do Host e é responsável por traduzir as necessidades do modelo em requisições padronizadas que os Servers conseguem entender. Cada Client mantém uma conexão dedicada com um Server específico, e um único Host pode conter <strong class="text-neutral-100">múltiplos Clients</strong> — cada um conectado a um Server diferente.
+        O <strong class="text-neutral-100">Client</strong> é o mensageiro da arquitetura MCP. Ele vive dentro do Host e é responsável por traduzir as necessidades do modelo em requisições padronizadas que os Servers conseguem entender. Cada Client mantém uma conexêo dedicada com um Server específico, e um único Host pode conter <strong class="text-neutral-100">múltiplos Clients</strong> — cada um conectado a um Server diferente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
@@ -200,7 +200,7 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O Client gerencia o <strong class="text-neutral-100">ciclo de vida da conexão</strong> entre o Host e um Server. Suas responsabilidades incluem: iniciar e encerrar conexões, enviar requisições no formato MCP, receber e processar respostas, lidar com erros e timeouts, e manter o estado da sessão. O Client abstrai toda a complexidade da comunicação — o modelo não precisa saber como falar com cada ferramenta, apenas pede o que precisa e o Client traduz. Um Host como o Claude Desktop pode ter simultaneamente um Client conectado ao GitHub, outro ao PostgreSQL e outro ao sistema de arquivos local.
+          O Client gerencia o <strong class="text-neutral-100">ciclo de vida da conexêo</strong> entre o Host e um Server. Suas responsabilidades incluem: iniciar e encerrar conexões, enviar requisições no formato MCP, receber e processar respostas, lidar com erros e timeouts, e manter o estado da sessêo. O Client abstrai toda a complexidade da comunicaçêo — o modelo nêo precisa saber como falar com cada ferramenta, apenas pede o que precisa e o Client traduz. Um Host como o Claude Desktop pode ter simultaneamente um Client conectado ao GitHub, outro ao PostgreSQL e outro ao sistema de arquivos local.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -209,7 +209,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O Client é como um <strong class="text-neutral-100">tradutor simultâneo</strong> entre o modelo e as ferramentas. Imagine que o modelo fala "português" e cada ferramenta fala um idioma diferente — o banco de dados fala "SQL", o GitHub fala "API REST", o sistema de arquivos fala "comandos do SO". O Client traduz tudo para o formato padronizado MCP, garantindo que a comunicação flua perfeitamente sem que nenhum dos lados precise aprender o idioma do outro.
+          O Client é como um <strong class="text-neutral-100">tradutor simultâneo</strong> entre o modelo e as ferramentas. Imagine que o modelo fala "português" e cada ferramenta fala um idioma diferente — o banco de dados fala "SQL", o GitHub fala "API REST", o sistema de arquivos fala "comandos do SO". O Client traduz tudo para o formato padronizado MCP, garantindo que a comunicaçêo flua perfeitamente sem que nenhum dos lados precise aprender o idioma do outro.
         </p>
 </div>
 </section>
@@ -222,7 +222,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O <strong class="text-neutral-100">Server</strong> é o componente que efetivamente expõe capacidades ao modelo de IA. Ele disponibiliza <strong class="text-neutral-100">Tools</strong> (ferramentas que executam ações), <strong class="text-neutral-100">Resources</strong> (dados que podem ser lidos) e <strong class="text-neutral-100">Prompts</strong> (templates reutilizáveis de interação). Cada Server é especializado em um domínio específico: existe um Server para GitHub, outro para banco de dados, outro para e-mail, e assim por diante.
+        O <strong class="text-neutral-100">Server</strong> é o componente que efetivamente expõe capacidades ao modelo de IA. Ele disponibiliza <strong class="text-neutral-100">Tools</strong> (ferramentas que executam ações), <strong class="text-neutral-100">Resources</strong> (dados que podem ser lidos) e <strong class="text-neutral-100">Prompts</strong> (templates reutilizáveis de interaçêo). Cada Server é especializado em um domínio específico: existe um Server para GitHub, outro para banco de dados, outro para e-mail, e assim por diante.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
@@ -230,7 +230,7 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O Server MCP é um programa que <strong class="text-neutral-100">expõe capacidades padronizadas</strong> para serem consumidas por Clients. Ele faz a ponte entre o protocolo MCP e os sistemas externos reais. Por exemplo, um Server de GitHub recebe uma requisição MCP do tipo "liste os pull requests abertos" e a traduz em chamadas à API do GitHub, retornando o resultado no formato padronizado. A filosofia é que cada Server seja <strong class="text-neutral-100">focado e especializado</strong> — um Server para cada domínio, cada um fazendo bem uma única coisa.
+          O Server MCP é um programa que <strong class="text-neutral-100">expõe capacidades padronizadas</strong> para serem consumidas por Clients. Ele faz a ponte entre o protocolo MCP e os sistemas externos reais. Por exemplo, um Server de GitHub recebe uma requisiçêo MCP do tipo "liste os pull requests abertos" e a traduz em chamadas à API do GitHub, retornando o resultado no formato padronizado. A filosofia é que cada Server seja <strong class="text-neutral-100">focado e especializado</strong> — um Server para cada domínio, cada um fazendo bem uma única coisa.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -268,7 +268,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora que você conhece os três pilares — Host, Client e Server — é hora de ver como eles trabalham juntos em um fluxo real de ponta a ponta. Desde o momento em que o usuário faz uma pergunta até a resposta final, cada componente desempenha um papel preciso nessa orquestração.
+        Agora que você conhece os três pilares — Host, Client e Server — é hora de ver como eles trabalham juntos em um fluxo real de ponta a ponta. Desde o momento em que o usuário faz uma pergunta até a resposta final, cada componente desempenha um papel preciso nessa orquestraçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
@@ -276,7 +276,7 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O fluxo MCP segue uma cadeia bem definida: o <strong class="text-neutral-100">usuário</strong> faz uma solicitação ao Host, o <strong class="text-neutral-100">modelo</strong> dentro do Host identifica que precisa de dados ou ações externas, o <strong class="text-neutral-100">Client</strong> traduz essa necessidade em uma requisição MCP padronizada, o <strong class="text-neutral-100">Server</strong> executa a ação no sistema externo, e o resultado faz o caminho de volta até o modelo, que formula a resposta final ao usuário. Tudo isso acontece de forma transparente — o usuário não precisa saber que múltiplos sistemas foram consultados nos bastidores.
+          O fluxo MCP segue uma cadeia bem definida: o <strong class="text-neutral-100">usuário</strong> faz uma solicitaçêo ao Host, o <strong class="text-neutral-100">modelo</strong> dentro do Host identifica que precisa de dados ou ações externas, o <strong class="text-neutral-100">Client</strong> traduz essa necessidade em uma requisiçêo MCP padronizada, o <strong class="text-neutral-100">Server</strong> executa a açêo no sistema externo, e o resultado faz o caminho de volta até o modelo, que formula a resposta final ao usuário. Tudo isso acontece de forma transparente — o usuário nêo precisa saber que múltiplos sistemas foram consultados nos bastidores.
         </p>
 </div>
 <!-- Timeline -->
@@ -289,7 +289,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-emerald-400 font-bold text-sm">Passo 1 — Usuário pergunta</span>
-<p class="text-neutral-300 text-sm mt-1">O usuário envia uma mensagem ao Host. Exemplo: "Quais são os pull requests abertos no meu repositório?"</p>
+<p class="text-neutral-300 text-sm mt-1">O usuário envia uma mensagem ao Host. Exemplo: "Quais sêo os pull requests abertos no meu repositório?"</p>
 </div>
 </div>
 <div class="relative">
@@ -302,15 +302,15 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-emerald-400 font-bold text-sm">Passo 3 — Client envia requisição</span>
-<p class="text-neutral-300 text-sm mt-1">O Client do Host traduz a necessidade do modelo em uma requisição MCP padronizada e a envia ao Server de GitHub.</p>
+<span class="text-emerald-400 font-bold text-sm">Passo 3 — Client envia requisiçêo</span>
+<p class="text-neutral-300 text-sm mt-1">O Client do Host traduz a necessidade do modelo em uma requisiçêo MCP padronizada e a envia ao Server de GitHub.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-emerald-400 font-bold text-sm">Passo 4 — Server executa</span>
-<p class="text-neutral-300 text-sm mt-1">O Server de GitHub recebe a requisição, chama a API do GitHub, obtém a lista de pull requests abertos e formata o resultado.</p>
+<p class="text-neutral-300 text-sm mt-1">O Server de GitHub recebe a requisiçêo, chama a API do GitHub, obtém a lista de pull requests abertos e formata o resultado.</p>
 </div>
 </div>
 <div class="relative">
@@ -339,7 +339,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Para consolidar a arquitetura na sua mente, vamos construir um <strong class="text-neutral-100">mapa mental</strong> da estrutura MCP. Visualizar como as peças se encaixam é fundamental para entender onde cada componente começa e termina, e como a informação flui entre eles.
+        Para consolidar a arquitetura na sua mente, vamos construir um <strong class="text-neutral-100">mapa mental</strong> da estrutura MCP. Visualizar como as peças se encaixam é fundamental para entender onde cada componente começa e termina, e como a informaçêo flui entre eles.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-emerald-900/20 to-dark-800 border border-emerald-500/30 rounded-xl p-6 mb-6">
@@ -347,9 +347,9 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-4">A arquitetura MCP segue uma hierarquia clara de contenção e conexão:</p>
+<p class="mb-4">A arquitetura MCP segue uma hierarquia clara de contençêo e conexêo:</p>
 <div class="bg-dark-800 rounded-lg p-5 border border-dark-700 text-sm space-y-3">
-<div class="text-neutral-100 font-semibold">🏠 HOST (aplicação anfitriã)</div>
+<div class="text-neutral-100 font-semibold">🏠 HOST (aplicaçêo anfitriê)</div>
 <div class="pl-4 border-l-2 border-emerald-500/30 space-y-3">
 <div class="text-neutral-300">🤖 Modelo de IA (Claude, GPT, Gemini...)</div>
 <div class="space-y-2">
@@ -359,7 +359,7 @@
 </div>
 </div>
 </div>
-<p class="mt-4">O Host <strong class="text-neutral-100">contém</strong> o modelo e os Clients. Cada Client <strong class="text-neutral-100">se conecta</strong> a exatamente um Server. Cada Server <strong class="text-neutral-100">se conecta</strong> a um ou mais sistemas externos. Essa separação garante modularidade, segurança e escalabilidade.</p>
+<p class="mt-4">O Host <strong class="text-neutral-100">contém</strong> o modelo e os Clients. Cada Client <strong class="text-neutral-100">se conecta</strong> a exatamente um Server. Cada Server <strong class="text-neutral-100">se conecta</strong> a um ou mais sistemas externos. Essa separaçêo garante modularidade, segurança e escalabilidade.</p>
 </div>
 </div>
 <!-- Box Dica Prática -->
@@ -368,7 +368,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense na arquitetura MCP como um <strong class="text-neutral-100">escritório moderno</strong>. O Host é o prédio do escritório onde tudo acontece. O modelo de IA é o diretor que toma decisões. Os Clients são os assistentes executivos — cada um especializado em lidar com um fornecedor diferente. E os Servers são os fornecedores externos (banco, correio, TI) que executam os serviços solicitados. O diretor não liga diretamente para cada fornecedor — ele pede ao assistente certo, que sabe exatamente como se comunicar com aquele fornecedor.
+          Pense na arquitetura MCP como um <strong class="text-neutral-100">escritório moderno</strong>. O Host é o prédio do escritório onde tudo acontece. O modelo de IA é o diretor que toma decisões. Os Clients sêo os assistentes executivos — cada um especializado em lidar com um fornecedor diferente. E os Servers sêo os fornecedores externos (banco, correio, TI) que executam os serviços solicitados. O diretor nêo liga diretamente para cada fornecedor — ele pede ao assistente certo, que sabe exatamente como se comunicar com aquele fornecedor.
         </p>
 </div>
 </section>
@@ -389,7 +389,7 @@
 <span class="text-emerald-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A beleza da arquitetura MCP é que ela funciona da <strong class="text-neutral-100">mesma forma</strong> independente do cenário. Seja um programador pedindo análise de código ou uma equipe de vendas consultando métricas, o fluxo Host → Client → Server permanece idêntico. O que muda são os <strong class="text-neutral-100">Servers</strong> conectados e as <strong class="text-neutral-100">Tools</strong> disponíveis — mas a arquitetura, o protocolo e o padrão de comunicação são sempre os mesmos. Essa consistência é o que torna o MCP tão poderoso.
+          A beleza da arquitetura MCP é que ela funciona da <strong class="text-neutral-100">mesma forma</strong> independente do cenário. Seja um programador pedindo análise de código ou uma equipe de vendas consultando métricas, o fluxo Host → Client → Server permanece idêntico. O que muda sêo os <strong class="text-neutral-100">Servers</strong> conectados e as <strong class="text-neutral-100">Tools</strong> disponíveis — mas a arquitetura, o protocolo e o padrêo de comunicaçêo sêo sempre os mesmos. Essa consistência é o que torna o MCP têo poderoso.
         </p>
 </div>
 <!-- Timeline - Cenários -->
@@ -404,10 +404,10 @@
 <span class="text-emerald-400 font-bold text-sm">Cenário 1 — Programador analisa repositório</span>
 <p class="text-neutral-300 text-sm mt-1 mb-2">Um desenvolvedor abre o Claude Desktop e pede: "Analise os últimos commits do meu repo e sugira melhorias."</p>
 <div class="text-sm space-y-1 text-neutral-400">
-<p><strong class="text-neutral-300">Host:</strong> Claude Desktop (aplicação com o modelo Claude)</p>
+<p><strong class="text-neutral-300">Host:</strong> Claude Desktop (aplicaçêo com o modelo Claude)</p>
 <p><strong class="text-neutral-300">Client:</strong> Client MCP interno do Claude Desktop</p>
 <p><strong class="text-neutral-300">Server:</strong> Server MCP de GitHub (acessa a API do GitHub)</p>
-<p><strong class="text-neutral-300">Fluxo:</strong> Claude identifica necessidade → Client envia requisição ao Server GitHub → Server consulta commits via API → resultado retorna → Claude apresenta análise com sugestões</p>
+<p><strong class="text-neutral-300">Fluxo:</strong> Claude identifica necessidade → Client envia requisiçêo ao Server GitHub → Server consulta commits via API → resultado retorna → Claude apresenta análise com sugestões</p>
 </div>
 </div>
 </div>
@@ -415,12 +415,12 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-emerald-500/20 border-2 border-emerald-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-emerald-400 font-bold text-sm">Cenário 2 — Empresa consulta vendas</span>
-<p class="text-neutral-300 text-sm mt-1 mb-2">Um gerente de vendas usa a plataforma interna da empresa e pergunta: "Qual foi o faturamento do último trimestre por região?"</p>
+<p class="text-neutral-300 text-sm mt-1 mb-2">Um gerente de vendas usa a plataforma interna da empresa e pergunta: "Qual foi o faturamento do último trimestre por regiêo?"</p>
 <div class="text-sm space-y-1 text-neutral-400">
-<p><strong class="text-neutral-300">Host:</strong> Aplicação interna da empresa (com modelo de IA integrado)</p>
-<p><strong class="text-neutral-300">Client:</strong> Client MCP configurado na aplicação</p>
+<p><strong class="text-neutral-300">Host:</strong> Aplicaçêo interna da empresa (com modelo de IA integrado)</p>
+<p><strong class="text-neutral-300">Client:</strong> Client MCP configurado na aplicaçêo</p>
 <p><strong class="text-neutral-300">Server:</strong> Server MCP de PostgreSQL (conecta ao banco de dados)</p>
-<p><strong class="text-neutral-300">Fluxo:</strong> Modelo identifica necessidade de dados → Client envia requisição ao Server PostgreSQL → Server executa query SQL → resultado retorna → Modelo apresenta relatório formatado com dados por região</p>
+<p><strong class="text-neutral-300">Fluxo:</strong> Modelo identifica necessidade de dados → Client envia requisiçêo ao Server PostgreSQL → Server executa query SQL → resultado retorna → Modelo apresenta relatório formatado com dados por regiêo</p>
 </div>
 </div>
 </div>
@@ -432,7 +432,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Cuidado com permissões!</strong> O fato de um Server MCP poder executar ações em sistemas externos torna o controle de acesso fundamental. Cada Server deve ter apenas as permissões mínimas necessárias — o Server de GitHub não precisa de acesso ao banco de dados, e o Server de PostgreSQL não precisa de acesso ao GitHub. Sempre aplique o <strong class="text-neutral-100">princípio do menor privilégio</strong>: conceda apenas as permissões estritamente necessárias para cada Server executar sua função.
+<strong class="text-neutral-100">Cuidado com permissões!</strong> O fato de um Server MCP poder executar ações em sistemas externos torna o controle de acesso fundamental. Cada Server deve ter apenas as permissões mínimas necessárias — o Server de GitHub nêo precisa de acesso ao banco de dados, e o Server de PostgreSQL nêo precisa de acesso ao GitHub. Sempre aplique o <strong class="text-neutral-100">princípio do menor privilégio</strong>: conceda apenas as permissões estritamente necessárias para cada Server executar sua funçêo.
         </p>
 </div>
 </section>
@@ -443,7 +443,7 @@
 <ul class="space-y-3 mb-8">
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-emerald-400 mt-0.5">✓</span>
-<span>O Host é a aplicação anfitriã que contém o modelo de IA e inicia toda a comunicação — exemplos incluem Claude Desktop, IDEs e apps empresariais.</span>
+<span>O Host é a aplicaçêo anfitriê que contém o modelo de IA e inicia toda a comunicaçêo — exemplos incluem Claude Desktop, IDEs e apps empresariais.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-emerald-400 mt-0.5">✓</span>
@@ -463,12 +463,12 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-emerald-400 mt-0.5">✓</span>
-<span>O padrão se aplica a qualquer cenário — de desenvolvimento a negócios — sempre com controle rigoroso de permissões.</span>
+<span>O padrêo se aplica a qualquer cenário — de desenvolvimento a negócios — sempre com controle rigoroso de permissões.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
 <p class="text-neutral-400 text-sm">
-<strong class="text-neutral-100">Próximo Módulo:</strong> 1.4 — Vendo o MCP em Ação
+<strong class="text-neutral-100">Próximo Módulo:</strong> 1.4 — Vendo o MCP em Açêo
           </p>
 </div>
 <div class="flex flex-wrap gap-3">

@@ -114,7 +114,7 @@
           🏗️ Estrutura de um MCP Server
         </h1>
 <p class="text-neutral-400 text-lg leading-relaxed mb-8">
-          Entenda a anatomia completa de um MCP Server — do import ao registro de tools e o ciclo de vida de uma requisição.
+          Entenda a anatomia completa de um MCP Server — do import ao registro de tools e o ciclo de vida de uma requisiçêo.
         </p>
 <div class="flex flex-wrap gap-4 text-sm">
 <div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
@@ -148,7 +148,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Um MCP Server em Python com FastMCP é surpreendentemente simples. Em apenas ~10 linhas de código, você tem um servidor funcional completo, pronto para receber requisições de qualquer client MCP compatível. A estrutura segue um padrão claro: imports, criação da instância do server, funções decoradas com <code class="text-purple-400">@mcp.tool()</code> e o ponto de entrada. Cada parte tem um papel específico e essencial no funcionamento do servidor.
+        Um MCP Server em Python com FastMCP é surpreendentemente simples. Em apenas ~10 linhas de código, você tem um servidor funcional completo, pronto para receber requisições de qualquer client MCP compatível. A estrutura segue um padrêo claro: imports, criaçêo da instância do server, funções decoradas com <code class="text-purple-400">@mcp.tool()</code> e o ponto de entrada. Cada parte tem um papel específico e essencial no funcionamento do servidor.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -165,7 +165,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A estrutura mínima de um MCP Server é: <strong class="text-neutral-100">(1)</strong> <code class="text-purple-400">from fastmcp import FastMCP</code> — <strong class="text-neutral-100">(2)</strong> <code class="text-purple-400">mcp = FastMCP("meu-server")</code> — <strong class="text-neutral-100">(3)</strong> uma função decorada com <code class="text-purple-400">@mcp.tool()</code> — <strong class="text-neutral-100">(4)</strong> <code class="text-purple-400">mcp.run()</code> no bloco main. Memorize essa sequência: <strong class="text-neutral-100">importar → instanciar → decorar → rodar</strong>. Todo MCP Server segue esse padrão, do mais simples ao mais complexo.
+          A estrutura mínima de um MCP Server é: <strong class="text-neutral-100">(1)</strong> <code class="text-purple-400">from fastmcp import FastMCP</code> — <strong class="text-neutral-100">(2)</strong> <code class="text-purple-400">mcp = FastMCP("meu-server")</code> — <strong class="text-neutral-100">(3)</strong> uma funçêo decorada com <code class="text-purple-400">@mcp.tool()</code> — <strong class="text-neutral-100">(4)</strong> <code class="text-purple-400">mcp.run()</code> no bloco main. Memorize essa sequência: <strong class="text-neutral-100">importar → instanciar → decorar → rodar</strong>. Todo MCP Server segue esse padrêo, do mais simples ao mais complexo.
         </p>
 </div>
 </section>
@@ -174,11 +174,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🔧 Inicialização e Setup</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Inicializaçêo e Setup</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Tudo começa com duas linhas de código: o import do FastMCP e a criação da instância do server. Essas duas linhas estabelecem a fundação sobre a qual todo o resto é construído. O nome que você dá ao server é importante — é assim que o client MCP identifica e exibe o server para o usuário. Escolha nomes descritivos e consistentes.
+        Tudo começa com duas linhas de código: o import do FastMCP e a criaçêo da instância do server. Essas duas linhas estabelecem a fundaçêo sobre a qual todo o resto é construído. O nome que você dá ao server é importante — é assim que o client MCP identifica e exibe o server para o usuário. Escolha nomes descritivos e consistentes.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -186,7 +186,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A inicialização de um MCP Server acontece em dois passos: <strong class="text-neutral-100"><code class="text-purple-400">from fastmcp import FastMCP</code></strong> — importa a classe principal do framework — e <strong class="text-neutral-100"><code class="text-purple-400">mcp = FastMCP("nome-do-server")</code></strong> — cria a instância do server com um nome identificador. O nome passado como argumento é o que aparece no client (como o Claude Desktop) para o usuário saber qual server está disponível. Esse nome deve ser único e descritivo do propósito do server.
+          A inicializaçêo de um MCP Server acontece em dois passos: <strong class="text-neutral-100"><code class="text-purple-400">from fastmcp import FastMCP</code></strong> — importa a classe principal do framework — e <strong class="text-neutral-100"><code class="text-purple-400">mcp = FastMCP("nome-do-server")</code></strong> — cria a instância do server com um nome identificador. O nome passado como argumento é o que aparece no client (como o Claude Desktop) para o usuário saber qual server está disponível. Esse nome deve ser único e descritivo do propósito do server.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -195,7 +195,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O FastMCP é o framework oficial recomendado pela Anthropic para criar MCP Servers em Python. Ele abstrai toda a complexidade do protocolo MCP (JSON-RPC, transporte stdio/SSE, negociação de capabilities) em uma API simples baseada em decorators. Com FastMCP, o que antes exigiria centenas de linhas de código de baixo nível agora exige menos de <strong class="text-neutral-100">10 linhas</strong>. É a forma mais rápida e recomendada de criar um MCP Server.
+          O FastMCP é o framework oficial recomendado pela Anthropic para criar MCP Servers em Python. Ele abstrai toda a complexidade do protocolo MCP (JSON-RPC, transporte stdio/SSE, negociaçêo de capabilities) em uma API simples baseada em decorators. Com FastMCP, o que antes exigiria centenas de linhas de código de baixo nível agora exige menos de <strong class="text-neutral-100">10 linhas</strong>. É a forma mais rápida e recomendada de criar um MCP Server.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -207,7 +207,7 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes genéricos: "server", "mcp", "test"</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes com espaços ou caracteres especiais</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes que não descrevem a função do server</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes que nêo descrevem a funçêo do server</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Reutilizar o mesmo nome em servers diferentes</li>
 </ul>
 </div>
@@ -233,7 +233,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O coração de um MCP Server são as tools — funções Python que o modelo de IA pode chamar. O FastMCP usa o decorator <code class="text-purple-400">@mcp.tool()</code> para transformar qualquer função Python comum em uma tool MCP acessível pelo client. Os parâmetros da função viram os parâmetros da tool, os type hints definem o schema, e a docstring vira a descrição que o modelo lê para decidir quando usar a tool.
+        O coraçêo de um MCP Server sêo as tools — funções Python que o modelo de IA pode chamar. O FastMCP usa o decorator <code class="text-purple-400">@mcp.tool()</code> para transformar qualquer funçêo Python comum em uma tool MCP acessível pelo client. Os parâmetros da funçêo viram os parâmetros da tool, os type hints definem o schema, e a docstring vira a descriçêo que o modelo lê para decidir quando usar a tool.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -241,7 +241,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O decorator <strong class="text-neutral-100"><code class="text-purple-400">@mcp.tool()</code></strong> é a ponte entre Python e o protocolo MCP. Quando você decora uma função com ele, três coisas acontecem automaticamente: <strong class="text-neutral-100">(1)</strong> O nome da função vira o nome da tool; <strong class="text-neutral-100">(2)</strong> Os type hints dos parâmetros são convertidos em JSON Schema para validação; <strong class="text-neutral-100">(3)</strong> A docstring da função vira a descrição que o modelo usa para entender o propósito da tool. Sem precisar escrever uma única linha de configuração.
+          O decorator <strong class="text-neutral-100"><code class="text-purple-400">@mcp.tool()</code></strong> é a ponte entre Python e o protocolo MCP. Quando você decora uma funçêo com ele, três coisas acontecem automaticamente: <strong class="text-neutral-100">(1)</strong> O nome da funçêo vira o nome da tool; <strong class="text-neutral-100">(2)</strong> Os type hints dos parâmetros sêo convertidos em JSON Schema para validaçêo; <strong class="text-neutral-100">(3)</strong> A docstring da funçêo vira a descriçêo que o modelo usa para entender o propósito da tool. Sem precisar escrever uma única linha de configuraçêo.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -250,7 +250,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense no decorator <code class="text-purple-400">@mcp.tool()</code> como um <strong class="text-neutral-100">selo de publicação</strong>: quando você coloca o selo em uma função, está dizendo "essa função está disponível para a IA usar". Sem o selo, a função é apenas código Python interno. Com o selo, ela se torna uma capability do server visível para qualquer client MCP conectado. Cada função decorada é registrada automaticamente na lista de tools do server.
+          Pense no decorator <code class="text-purple-400">@mcp.tool()</code> como um <strong class="text-neutral-100">selo de publicaçêo</strong>: quando você coloca o selo em uma funçêo, está dizendo "essa funçêo está disponível para a IA usar". Sem o selo, a funçêo é apenas código Python interno. Com o selo, ela se torna uma capability do server visível para qualquer client MCP conectado. Cada funçêo decorada é registrada automaticamente na lista de tools do server.
         </p>
 </div>
 <!-- Timeline -->
@@ -263,21 +263,21 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 1</span>
-<p class="text-neutral-300 text-sm mt-1">Você escreve uma função Python normal com type hints e docstring — como faria em qualquer projeto Python.</p>
+<p class="text-neutral-300 text-sm mt-1">Você escreve uma funçêo Python normal com type hints e docstring — como faria em qualquer projeto Python.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 2</span>
-<p class="text-neutral-300 text-sm mt-1">Adiciona o decorator <code class="text-purple-400">@mcp.tool()</code> acima da função — o FastMCP detecta e registra a tool automaticamente.</p>
+<p class="text-neutral-300 text-sm mt-1">Adiciona o decorator <code class="text-purple-400">@mcp.tool()</code> acima da funçêo — o FastMCP detecta e registra a tool automaticamente.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 3</span>
-<p class="text-neutral-300 text-sm mt-1">O FastMCP extrai nome, parâmetros (via type hints) e descrição (via docstring) e gera o JSON Schema automaticamente.</p>
+<p class="text-neutral-300 text-sm mt-1">O FastMCP extrai nome, parâmetros (via type hints) e descriçêo (via docstring) e gera o JSON Schema automaticamente.</p>
 </div>
 </div>
 <div class="relative">
@@ -299,7 +299,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Um MCP Server não é um programa que executa e termina — é um processo que fica ativo, aguardando conexões e processando requisições continuamente. Entender o ciclo de vida completo do server é fundamental para debugar problemas, otimizar performance e construir servers robustos que funcionam de forma confiável em produção.
+        Um MCP Server nêo é um programa que executa e termina — é um processo que fica ativo, aguardando conexões e processando requisições continuamente. Entender o ciclo de vida completo do server é fundamental para debugar problemas, otimizar performance e construir servers robustos que funcionam de forma confiável em produçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -307,7 +307,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O ciclo de vida de um MCP Server segue uma sequência bem definida: o server <strong class="text-neutral-100">inicia</strong> quando o client o executa; <strong class="text-neutral-100">registra suas capabilities</strong> (tools, resources, prompts); <strong class="text-neutral-100">aguarda conexões</strong> via stdio ou SSE; <strong class="text-neutral-100">recebe requisições</strong> do client (chamadas a tools); <strong class="text-neutral-100">executa a lógica</strong> da tool chamada; <strong class="text-neutral-100">retorna o resultado</strong> ao client; e volta a <strong class="text-neutral-100">aguardar</strong> a próxima requisição. Esse ciclo se repete até que o client encerre a conexão.
+          O ciclo de vida de um MCP Server segue uma sequência bem definida: o server <strong class="text-neutral-100">inicia</strong> quando o client o executa; <strong class="text-neutral-100">registra suas capabilities</strong> (tools, resources, prompts); <strong class="text-neutral-100">aguarda conexões</strong> via stdio ou SSE; <strong class="text-neutral-100">recebe requisições</strong> do client (chamadas a tools); <strong class="text-neutral-100">executa a lógica</strong> da tool chamada; <strong class="text-neutral-100">retorna o resultado</strong> ao client; e volta a <strong class="text-neutral-100">aguardar</strong> a próxima requisiçêo. Esse ciclo se repete até que o client encerre a conexêo.
         </p>
 </div>
 <!-- Timeline -->
@@ -319,7 +319,7 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">1. Inicialização</span>
+<span class="text-purple-400 font-bold text-sm">1. Inicializaçêo</span>
 <p class="text-neutral-300 text-sm mt-1">O client (ex: Claude Desktop) executa o comando configurado. O processo Python inicia e o FastMCP carrega todas as tools decoradas.</p>
 </div>
 </div>
@@ -340,7 +340,7 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">4. Recebe Requisição</span>
+<span class="text-purple-400 font-bold text-sm">4. Recebe Requisiçêo</span>
 <p class="text-neutral-300 text-sm mt-1">Quando o modelo decide usar uma tool, o client envia uma mensagem JSON-RPC com o nome da tool e os argumentos.</p>
 </div>
 </div>
@@ -348,14 +348,14 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">5. Executa a Tool</span>
-<p class="text-neutral-300 text-sm mt-1">O FastMCP localiza a função correspondente, valida os parâmetros contra o schema e executa a função Python.</p>
+<p class="text-neutral-300 text-sm mt-1">O FastMCP localiza a funçêo correspondente, valida os parâmetros contra o schema e executa a funçêo Python.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">6. Retorna e Aguarda</span>
-<p class="text-neutral-300 text-sm mt-1">O resultado é serializado e enviado de volta ao client. O server volta ao estado de espera, pronto para a próxima requisição.</p>
+<p class="text-neutral-300 text-sm mt-1">O resultado é serializado e enviado de volta ao client. O server volta ao estado de espera, pronto para a próxima requisiçêo.</p>
 </div>
 </div>
 </div>
@@ -370,7 +370,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Um MCP Server pode ser tão simples quanto um único arquivo Python, ou tão organizado quanto um projeto completo com testes, documentação e módulos separados. A escolha depende da complexidade do que você está construindo. Para aprender e prototipar, um projeto mínimo é suficiente. Para produção, uma estrutura organizada faz toda a diferença na manutenibilidade.
+        Um MCP Server pode ser têo simples quanto um único arquivo Python, ou têo organizado quanto um projeto completo com testes, documentaçêo e módulos separados. A escolha depende da complexidade do que você está construindo. Para aprender e prototipar, um projeto mínimo é suficiente. Para produçêo, uma estrutura organizada faz toda a diferença na manutenibilidade.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -378,7 +378,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Projeto mínimo</strong> — dois arquivos bastam: <code class="text-purple-400">pyproject.toml</code> (metadados e dependências) e <code class="text-purple-400">server.py</code> (código do server). Isso é tudo que você precisa para um MCP Server funcional. <strong class="text-neutral-100">Projeto completo</strong> — para servers mais robustos, organize com: diretório <code class="text-purple-400">src/</code> para código-fonte, <code class="text-purple-400">tests/</code> para testes, <code class="text-purple-400">README.md</code> para documentação, e potencialmente múltiplos módulos para separar responsabilidades.
+<strong class="text-neutral-100">Projeto mínimo</strong> — dois arquivos bastam: <code class="text-purple-400">pyproject.toml</code> (metadados e dependências) e <code class="text-purple-400">server.py</code> (código do server). Isso é tudo que você precisa para um MCP Server funcional. <strong class="text-neutral-100">Projeto completo</strong> — para servers mais robustos, organize com: diretório <code class="text-purple-400">src/</code> para código-fonte, <code class="text-purple-400">tests/</code> para testes, <code class="text-purple-400">README.md</code> para documentaçêo, e potencialmente múltiplos módulos para separar responsabilidades.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -389,7 +389,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Colocar tudo em um único arquivo gigante</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não usar pyproject.toml para gerenciar deps</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo usar pyproject.toml para gerenciar deps</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Misturar lógica de negócio com setup do server</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar testes desde o início do projeto</li>
 </ul>
@@ -400,7 +400,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Começar mínimo (2 arquivos) e crescer conforme necessário</li>
-<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar uv + pyproject.toml para gestão de dependências</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar uv + pyproject.toml para gestêo de dependências</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Separar tools em módulos quando o server crescer</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Manter um README com instruções de setup</li>
 </ul>
@@ -416,7 +416,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O arquivo <code class="text-purple-400">pyproject.toml</code> é o centro de configuração do seu projeto Python. Nele ficam definidas as dependências (como o FastMCP), metadados do projeto, e opcionalmente os entry points que facilitam a execução. O <code class="text-purple-400">uv</code> é o gerenciador de projetos recomendado — ele cuida do ambiente virtual, das dependências e da execução de forma rápida e confiável.
+        O arquivo <code class="text-purple-400">pyproject.toml</code> é o centro de configuraçêo do seu projeto Python. Nele ficam definidas as dependências (como o FastMCP), metadados do projeto, e opcionalmente os entry points que facilitam a execuçêo. O <code class="text-purple-400">uv</code> é o gerenciador de projetos recomendado — ele cuida do ambiente virtual, das dependências e da execuçêo de forma rápida e confiável.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -424,7 +424,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O <strong class="text-neutral-100"><code class="text-purple-400">pyproject.toml</code></strong> define: o nome do projeto, a versão do Python requerida, as dependências (incluindo <code class="text-purple-400">fastmcp</code>), e opcionalmente entry points com <code class="text-purple-400">[project.scripts]</code>. O <strong class="text-neutral-100"><code class="text-purple-400">uv</code></strong> gerencia tudo: cria o ambiente virtual automaticamente, instala dependências com velocidade, e permite executar o server com <code class="text-purple-400">uv run server.py</code>. Juntos, pyproject.toml e uv eliminam a complexidade de configuração de ambiente Python.
+          O <strong class="text-neutral-100"><code class="text-purple-400">pyproject.toml</code></strong> define: o nome do projeto, a versêo do Python requerida, as dependências (incluindo <code class="text-purple-400">fastmcp</code>), e opcionalmente entry points com <code class="text-purple-400">[project.scripts]</code>. O <strong class="text-neutral-100"><code class="text-purple-400">uv</code></strong> gerencia tudo: cria o ambiente virtual automaticamente, instala dependências com velocidade, e permite executar o server com <code class="text-purple-400">uv run server.py</code>. Juntos, pyproject.toml e uv eliminam a complexidade de configuraçêo de ambiente Python.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -433,7 +433,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use <strong class="text-neutral-100"><code class="text-purple-400">uv init nome-do-projeto</code></strong> para criar o pyproject.toml automaticamente, e <strong class="text-neutral-100"><code class="text-purple-400">uv add fastmcp</code></strong> para adicionar a dependência. O uv vai criar o ambiente virtual, resolver dependências e atualizar o pyproject.toml — tudo em um único comando. Nunca mais precisa fazer <code class="text-purple-400">pip install</code> manualmente ou gerenciar virtualenvs na mão.
+          Use <strong class="text-neutral-100"><code class="text-purple-400">uv init nome-do-projeto</code></strong> para criar o pyproject.toml automaticamente, e <strong class="text-neutral-100"><code class="text-purple-400">uv add fastmcp</code></strong> para adicionar a dependência. O uv vai criar o ambiente virtual, resolver dependências e atualizar o pyproject.toml — tudo em um único comando. Nunca mais precisa fazer <code class="text-purple-400">pip install</code> manualmente ou gerenciar virtualenvs na mêo.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -442,7 +442,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Certifique-se de que o <strong class="text-neutral-100">uv</strong> está instalado na sua máquina antes de começar. O Claude Desktop executa o server usando o comando <code class="text-purple-400">uv run</code>, então se o uv não estiver disponível no PATH, o server simplesmente não iniciará — e o erro pode ser silencioso. Verifique com <code class="text-purple-400">uv --version</code> antes de prosseguir. Se não estiver instalado, use <code class="text-purple-400">curl -LsSf https://astral.sh/uv/install.sh | sh</code>.
+          Certifique-se de que o <strong class="text-neutral-100">uv</strong> está instalado na sua máquina antes de começar. O Claude Desktop executa o server usando o comando <code class="text-purple-400">uv run</code>, entêo se o uv nêo estiver disponível no PATH, o server simplesmente nêo iniciará — e o erro pode ser silencioso. Verifique com <code class="text-purple-400">uv --version</code> antes de prosseguir. Se nêo estiver instalado, use <code class="text-purple-400">curl -LsSf https://astral.sh/uv/install.sh | sh</code>.
         </p>
 </div>
 </section>
@@ -457,11 +457,11 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>A inicialização usa <code class="text-purple-400">from fastmcp import FastMCP</code> e <code class="text-purple-400">mcp = FastMCP("nome")</code> — o nome identifica o server no client.</span>
+<span>A inicializaçêo usa <code class="text-purple-400">from fastmcp import FastMCP</code> e <code class="text-purple-400">mcp = FastMCP("nome")</code> — o nome identifica o server no client.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O decorator <code class="text-purple-400">@mcp.tool()</code> transforma funções Python em tools MCP, extraindo nome, parâmetros e descrição automaticamente.</span>
+<span>O decorator <code class="text-purple-400">@mcp.tool()</code> transforma funções Python em tools MCP, extraindo nome, parâmetros e descriçêo automaticamente.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -473,7 +473,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O uv gerencia ambiente virtual, dependências e execução — use <code class="text-purple-400">uv init</code> e <code class="text-purple-400">uv add fastmcp</code> para começar.</span>
+<span>O uv gerencia ambiente virtual, dependências e execuçêo — use <code class="text-purple-400">uv init</code> e <code class="text-purple-400">uv add fastmcp</code> para começar.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">

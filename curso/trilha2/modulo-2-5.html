@@ -110,7 +110,7 @@
           ⚙️ Configurando o claude_desktop_config.json
         </h1>
 <p class="text-neutral-400 text-lg leading-relaxed mb-8">
-          Domine o arquivo de configuração que conecta o Claude Desktop aos MCP Servers.
+          Domine o arquivo de configuraçêo que conecta o Claude Desktop aos MCP Servers.
         </p>
 <div class="flex flex-wrap gap-4 text-sm">
 <div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
@@ -144,7 +144,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O arquivo <code class="text-blue-400">claude_desktop_config.json</code> é o ponto de conexão entre o Claude Desktop e o mundo dos MCP Servers. É um arquivo JSON simples que lista todos os servidores MCP que o Claude pode acessar. Sem ele, o Claude Desktop não sabe da existência de nenhuma ferramenta externa — ele funciona apenas como um chat convencional.
+        O arquivo <code class="text-blue-400">claude_desktop_config.json</code> é o ponto de conexêo entre o Claude Desktop e o mundo dos MCP Servers. É um arquivo JSON simples que lista todos os servidores MCP que o Claude pode acessar. Sem ele, o Claude Desktop nêo sabe da existência de nenhuma ferramenta externa — ele funciona apenas como um chat convencional.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -152,7 +152,7 @@
 <span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O <strong class="text-neutral-100">claude_desktop_config.json</strong> é um arquivo de configuração em formato JSON que serve como o "catálogo" de MCP Servers disponíveis para o Claude Desktop. Cada entrada neste arquivo descreve um server: seu nome, o comando para iniciá-lo e os argumentos necessários. Quando o Claude Desktop inicia, ele lê este arquivo e <strong class="text-neutral-100">tenta conectar-se a cada server listado</strong>. Se o arquivo não existir ou estiver vazio, o Claude não terá acesso a nenhuma ferramenta MCP — funcionando apenas como assistente de chat sem ferramentas externas.
+          O <strong class="text-neutral-100">claude_desktop_config.json</strong> é um arquivo de configuraçêo em formato JSON que serve como o "catálogo" de MCP Servers disponíveis para o Claude Desktop. Cada entrada neste arquivo descreve um server: seu nome, o comando para iniciá-lo e os argumentos necessários. Quando o Claude Desktop inicia, ele lê este arquivo e <strong class="text-neutral-100">tenta conectar-se a cada server listado</strong>. Se o arquivo nêo existir ou estiver vazio, o Claude nêo terá acesso a nenhuma ferramenta MCP — funcionando apenas como assistente de chat sem ferramentas externas.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -161,7 +161,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense no config.json como a <strong class="text-neutral-100">"lista de contatos"</strong> do Claude Desktop. Assim como seu telefone só pode ligar para números que estão na agenda, o Claude Desktop só pode usar tools de servers que estão no config.json. Adicionar um server ao arquivo é como adicionar um novo contato — a partir daquele momento, o Claude sabe que aquele server existe e pode se conectar a ele.
+          Pense no config.json como a <strong class="text-neutral-100">"lista de contatos"</strong> do Claude Desktop. Assim como seu telefone só pode ligar para números que estêo na agenda, o Claude Desktop só pode usar tools de servers que estêo no config.json. Adicionar um server ao arquivo é como adicionar um novo contato — a partir daquele momento, o Claude sabe que aquele server existe e pode se conectar a ele.
         </p>
 </div>
 </section>
@@ -174,7 +174,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O arquivo de configuração fica em um diretório específico para cada sistema operacional. É importante saber exatamente onde ele está, pois você editará este arquivo com frequência ao longo do curso. Se o arquivo ou o diretório não existirem ainda, você precisará criá-los manualmente.
+        O arquivo de configuraçêo fica em um diretório específico para cada sistema operacional. É importante saber exatamente onde ele está, pois você editará este arquivo com frequência ao longo do curso. Se o arquivo ou o diretório nêo existirem ainda, você precisará criá-los manualmente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -182,13 +182,13 @@
 <span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O caminho completo do arquivo varia por sistema operacional. O Claude Desktop procura o arquivo sempre no mesmo local, e não há como alterar esse caminho. Você precisa colocar o arquivo <strong class="text-neutral-100">exatamente</strong> no diretório esperado para que o Claude o encontre.
+          O caminho completo do arquivo varia por sistema operacional. O Claude Desktop procura o arquivo sempre no mesmo local, e nêo há como alterar esse caminho. Você precisa colocar o arquivo <strong class="text-neutral-100">exatamente</strong> no diretório esperado para que o Claude o encontre.
         </p>
 </div>
 <!-- Timeline -->
 <div class="space-y-4 mb-6">
 <div class="flex items-center gap-2 mb-2">
-<span class="text-blue-400 font-semibold text-sm">📋 Localização por sistema operacional</span>
+<span class="text-blue-400 font-semibold text-sm">📋 Localizaçêo por sistema operacional</span>
 </div>
 <div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
 <div class="relative">
@@ -223,7 +223,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O arquivo <strong class="text-neutral-100">pode não existir inicialmente</strong>. Se o diretório Claude existir mas o arquivo não, crie-o manualmente com o conteúdo mínimo: <code class="text-neutral-100">{"mcpServers": {}}</code>. Se nem o diretório existir, crie-o também. No macOS, a pasta Library é oculta por padrão — use Cmd+Shift+. no Finder para exibir pastas ocultas, ou navegue via terminal.
+          O arquivo <strong class="text-neutral-100">pode nêo existir inicialmente</strong>. Se o diretório Claude existir mas o arquivo nêo, crie-o manualmente com o conteúdo mínimo: <code class="text-neutral-100">{"mcpServers": {}}</code>. Se nem o diretório existir, crie-o também. No macOS, a pasta Library é oculta por padrêo — use Cmd+Shift+. no Finder para exibir pastas ocultas, ou navegue via terminal.
         </p>
 </div>
 </section>
@@ -236,7 +236,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Entender a estrutura do arquivo de configuração é fundamental. Ele segue um formato JSON bem definido, com uma hierarquia simples e previsível. Uma vez que você compreenda o padrão, adicionar novos servers se torna uma tarefa mecânica de poucos segundos.
+        Entender a estrutura do arquivo de configuraçêo é fundamental. Ele segue um formato JSON bem definido, com uma hierarquia simples e previsível. Uma vez que você compreenda o padrêo, adicionar novos servers se torna uma tarefa mecânica de poucos segundos.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -289,7 +289,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora que você entende a estrutura do arquivo, vamos ao processo prático de registrar um novo MCP Server. Cada server precisa de um nome identificador, um comando de execução e os argumentos corretos. Seguir o processo passo a passo garante que tudo funcione na primeira tentativa.
+        Agora que você entende a estrutura do arquivo, vamos ao processo prático de registrar um novo MCP Server. Cada server precisa de um nome identificador, um comando de execuçêo e os argumentos corretos. Seguir o processo passo a passo garante que tudo funcione na primeira tentativa.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -371,7 +371,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Configurar o arquivo JSON pela primeira vez é simples, mas alguns erros sutis podem impedir que os MCP Servers sejam carregados. Conhecer os problemas mais comuns e saber diagnosticá-los economiza horas de frustração. A maioria dos problemas se resume a JSON mal formatado ou caminhos incorretos.
+        Configurar o arquivo JSON pela primeira vez é simples, mas alguns erros sutis podem impedir que os MCP Servers sejam carregados. Conhecer os problemas mais comuns e saber diagnosticá-los economiza horas de frustraçêo. A maioria dos problemas se resume a JSON mal formatado ou caminhos incorretos.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -379,12 +379,12 @@
 <span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-3">Os erros mais frequentes na configuração do config.json são:</p>
+<p class="mb-3">Os erros mais frequentes na configuraçêo do config.json sêo:</p>
 <ul class="space-y-2 text-sm">
-<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">JSON inválido:</span> <span>Vírgula extra após o último item, aspas faltando, chaves/colchetes não fechados. O Claude Desktop silenciosamente ignora um arquivo JSON inválido.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">JSON inválido:</span> <span>Vírgula extra após o último item, aspas faltando, chaves/colchetes nêo fechados. O Claude Desktop silenciosamente ignora um arquivo JSON inválido.</span></li>
 <li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Caminhos errados:</span> <span>Caminho para o executável ou script do server incorreto. No Windows, barras invertidas precisam ser escapadas (<code class="text-neutral-100">\\</code>) ou usar barras normais (<code class="text-neutral-100">/</code>).</span></li>
-<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Executável não encontrado:</span> <span>O <code class="text-neutral-100">command</code> especificado não está no PATH do sistema. O npx ou python não são encontrados pelo Claude Desktop.</span></li>
-<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Permissões:</span> <span>O arquivo config ou o executável do server não tem permissões de leitura/execução adequadas.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Executável nêo encontrado:</span> <span>O <code class="text-neutral-100">command</code> especificado nêo está no PATH do sistema. O npx ou python nêo sêo encontrados pelo Claude Desktop.</span></li>
+<li class="flex items-start gap-2"><span class="text-blue-400 font-bold">Permissões:</span> <span>O arquivo config ou o executável do server nêo tem permissões de leitura/execuçêo adequadas.</span></li>
 </ul>
 </div>
 </div>
@@ -394,7 +394,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O Claude Desktop <strong class="text-neutral-100">não exibe mensagens de erro claras</strong> quando o config.json tem problemas. Se os servers não aparecerem após reiniciar, o primeiro passo é sempre validar o JSON. Cole o conteúdo do arquivo em <strong class="text-neutral-100">jsonlint.com</strong> ou use a validação do VS Code (que sublinha erros de sintaxe automaticamente). Uma única vírgula a mais pode invalidar todo o arquivo.
+          O Claude Desktop <strong class="text-neutral-100">nêo exibe mensagens de erro claras</strong> quando o config.json tem problemas. Se os servers nêo aparecerem após reiniciar, o primeiro passo é sempre validar o JSON. Cole o conteúdo do arquivo em <strong class="text-neutral-100">jsonlint.com</strong> ou use a validaçêo do VS Code (que sublinha erros de sintaxe automaticamente). Uma única vírgula a mais pode invalidar todo o arquivo.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -406,8 +406,8 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Vírgula após o último elemento do objeto</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Aspas simples em vez de aspas duplas</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Comentários no JSON (não são permitidos)</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Chaves ou colchetes não balanceados</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Comentários no JSON (nêo sêo permitidos)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Chaves ou colchetes nêo balanceados</li>
 </ul>
 </div>
 <div class="bg-blue-900/20 border border-blue-500/30 rounded-xl p-5">
@@ -428,11 +428,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-blue-500/20 text-blue-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">✅ Validando a Configuração</h2>
+<h2 class="text-2xl font-bold text-neutral-100">✅ Validando a Configuraçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Depois de criar ou editar o config.json, é essencial validar que tudo está funcionando. A validação envolve reiniciar o Claude Desktop, verificar que os servers aparecem na interface e confirmar que as tools estão disponíveis. Um processo simples, mas que precisa ser feito corretamente.
+        Depois de criar ou editar o config.json, é essencial validar que tudo está funcionando. A validaçêo envolve reiniciar o Claude Desktop, verificar que os servers aparecem na interface e confirmar que as tools estêo disponíveis. Um processo simples, mas que precisa ser feito corretamente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-blue-900/20 to-dark-800 border border-blue-500/30 rounded-xl p-6 mb-6">
@@ -440,13 +440,13 @@
 <span class="text-blue-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A validação da configuração segue um fluxo preciso: <strong class="text-neutral-100">salvar o arquivo</strong> config.json, <strong class="text-neutral-100">fechar completamente</strong> o Claude Desktop (não apenas minimizar — fechar de verdade, incluindo a bandeja do sistema), <strong class="text-neutral-100">reabrir</strong> o aplicativo, e <strong class="text-neutral-100">verificar o ícone de martelo</strong> (🔨) na área de input do chat. Se o ícone aparecer, clique nele para ver a lista de tools disponíveis. Se os servers estiverem conectados, você verá os nomes das tools de cada server. Se o ícone não aparecer, há um problema na configuração que precisa ser investigado.
+          A validaçêo da configuraçêo segue um fluxo preciso: <strong class="text-neutral-100">salvar o arquivo</strong> config.json, <strong class="text-neutral-100">fechar completamente</strong> o Claude Desktop (nêo apenas minimizar — fechar de verdade, incluindo a bandeja do sistema), <strong class="text-neutral-100">reabrir</strong> o aplicativo, e <strong class="text-neutral-100">verificar o ícone de martelo</strong> (🔨) na área de input do chat. Se o ícone aparecer, clique nele para ver a lista de tools disponíveis. Se os servers estiverem conectados, você verá os nomes das tools de cada server. Se o ícone nêo aparecer, há um problema na configuraçêo que precisa ser investigado.
         </p>
 </div>
 <!-- Timeline -->
 <div class="space-y-4 mb-6">
 <div class="flex items-center gap-2 mb-2">
-<span class="text-blue-400 font-semibold text-sm">📋 Checklist de validação</span>
+<span class="text-blue-400 font-semibold text-sm">📋 Checklist de validaçêo</span>
 </div>
 <div class="relative pl-8 border-l-2 border-blue-500/30 space-y-6">
 <div class="relative">
@@ -467,14 +467,14 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-blue-400 font-bold text-sm">Passo 3 — Inspecionar tools</span>
-<p class="text-neutral-300 text-sm mt-1">Clique no ícone de martelo para ver a lista de tools. Cada server contribui com suas próprias tools. Verifique que todas as esperadas estão listadas.</p>
+<p class="text-neutral-300 text-sm mt-1">Clique no ícone de martelo para ver a lista de tools. Cada server contribui com suas próprias tools. Verifique que todas as esperadas estêo listadas.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-blue-500/20 border-2 border-blue-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-blue-400 font-bold text-sm">Passo 4 — Checar logs (se necessário)</span>
-<p class="text-neutral-300 text-sm mt-1">Se o ícone não aparecer, verifique os logs do Claude Desktop para mensagens de erro relacionadas à inicialização dos servers MCP.</p>
+<p class="text-neutral-300 text-sm mt-1">Se o ícone nêo aparecer, verifique os logs do Claude Desktop para mensagens de erro relacionadas à inicializaçêo dos servers MCP.</p>
 </div>
 </div>
 </div>
@@ -485,7 +485,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Se tudo der certo, o ícone de martelo mostrará um número ao lado — indicando <strong class="text-neutral-100">quantas tools estão disponíveis</strong>. Clicando nele, você verá cada tool com seu nome e descrição. Essa é a confirmação definitiva de que o MCP está funcionando. No próximo módulo, vamos fazer exatamente isso com um server real de exemplo.
+          Se tudo der certo, o ícone de martelo mostrará um número ao lado — indicando <strong class="text-neutral-100">quantas tools estêo disponíveis</strong>. Clicando nele, você verá cada tool com seu nome e descriçêo. Essa é a confirmaçêo definitiva de que o MCP está funcionando. No próximo módulo, vamos fazer exatamente isso com um server real de exemplo.
         </p>
 </div>
 </section>
@@ -512,11 +512,11 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-blue-400 mt-0.5">✓</span>
-<span>Erros comuns incluem JSON inválido, caminhos incorretos, executáveis não encontrados e problemas de permissão.</span>
+<span>Erros comuns incluem JSON inválido, caminhos incorretos, executáveis nêo encontrados e problemas de permissêo.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-blue-400 mt-0.5">✓</span>
-<span>A validação é feita reiniciando o Claude Desktop e verificando o ícone de martelo com as tools listadas.</span>
+<span>A validaçêo é feita reiniciando o Claude Desktop e verificando o ícone de martelo com as tools listadas.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">

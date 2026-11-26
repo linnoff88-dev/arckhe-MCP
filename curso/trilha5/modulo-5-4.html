@@ -148,7 +148,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O MCP possui dois SDKs oficiais mantidos pela Anthropic: o <strong class="text-neutral-100">@modelcontextprotocol/sdk</strong> para TypeScript e o <strong class="text-neutral-100">fastmcp</strong> para Python. Ambos implementam a mesma especificação e produzem servers totalmente compatíveis entre si. A escolha entre eles depende da sua stack e preferência pessoal — o resultado final é idêntico para o client.
+        O MCP possui dois SDKs oficiais mantidos pela Anthropic: o <strong class="text-neutral-100">@modelcontextprotocol/sdk</strong> para TypeScript e o <strong class="text-neutral-100">fastmcp</strong> para Python. Ambos implementam a mesma especificaçêo e produzem servers totalmente compatíveis entre si. A escolha entre eles depende da sua stack e preferência pessoal — o resultado final é idêntico para o client.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -178,7 +178,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Escolher o SDK da sua stack principal</li>
-<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Aproveitar a tipagem forte do TS para validação</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Aproveitar a tipagem forte do TS para validaçêo</li>
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Seguir os padrões idiomáticos de cada linguagem</li>
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Testar compatibilidade com múltiplos clients</li>
 </ul>
@@ -190,7 +190,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O ecossistema MCP está dividido entre os dois SDKs: aproximadamente <strong class="text-neutral-100">55% dos servers</strong> da comunidade são escritos em Python (pela simplicidade) e <strong class="text-neutral-100">45% em TypeScript</strong> (pela robustez de tipos). Servers oficiais como <strong class="text-neutral-100">filesystem</strong>, <strong class="text-neutral-100">fetch</strong> e <strong class="text-neutral-100">memory</strong> são escritos em TypeScript. Ambos os SDKs recebem atualizações simultâneas quando a spec evolui.
+          O ecossistema MCP está dividido entre os dois SDKs: aproximadamente <strong class="text-neutral-100">55% dos servers</strong> da comunidade sêo escritos em Python (pela simplicidade) e <strong class="text-neutral-100">45% em TypeScript</strong> (pela robustez de tipos). Servers oficiais como <strong class="text-neutral-100">filesystem</strong>, <strong class="text-neutral-100">fetch</strong> e <strong class="text-neutral-100">memory</strong> sêo escritos em TypeScript. Ambos os SDKs recebem atualizações simultâneas quando a spec evolui.
         </p>
 </div>
 </section>
@@ -203,7 +203,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Criar um MCP Server em TypeScript segue o fluxo padrão de qualquer projeto Node.js/TS: inicializar com npm, configurar o TypeScript, instalar o SDK e escrever o código no diretório <strong class="text-neutral-100">src/</strong>. A estrutura é simples e familiar para quem já trabalha com TypeScript.
+        Criar um MCP Server em TypeScript segue o fluxo padrêo de qualquer projeto Node.js/TS: inicializar com npm, configurar o TypeScript, instalar o SDK e escrever o código no diretório <strong class="text-neutral-100">src/</strong>. A estrutura é simples e familiar para quem já trabalha com TypeScript.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -269,7 +269,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        No SDK TypeScript, tools são registradas usando <strong class="text-neutral-100">request handlers</strong>. Diferente do Python onde decorators simplificam a sintaxe, no TS você define explicitamente o handler para <code class="text-teal-400">CallToolRequestSchema</code> e declara os inputs usando JSON Schema. É mais verboso, mas cada tipo é explícito e validado em tempo de compilação.
+        No SDK TypeScript, tools sêo registradas usando <strong class="text-neutral-100">request handlers</strong>. Diferente do Python onde decorators simplificam a sintaxe, no TS você define explicitamente o handler para <code class="text-teal-400">CallToolRequestSchema</code> e declara os inputs usando JSON Schema. É mais verboso, mas cada tipo é explícito e validado em tempo de compilaçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -277,7 +277,7 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Para implementar tools em TypeScript, você usa <code class="text-teal-400">server.setRequestHandler(ListToolsRequestSchema, ...)</code> para listar as tools disponíveis (retornando name, description e inputSchema) e <code class="text-teal-400">server.setRequestHandler(CallToolRequestSchema, ...)</code> para executá-las. O <strong class="text-neutral-100">inputSchema</strong> é definido como JSON Schema padrão com type, properties e required. Dentro do handler de CallTool, você faz um switch no <code class="text-teal-400">request.params.name</code> para despachar a lógica correta.
+          Para implementar tools em TypeScript, você usa <code class="text-teal-400">server.setRequestHandler(ListToolsRequestSchema, ...)</code> para listar as tools disponíveis (retornando name, description e inputSchema) e <code class="text-teal-400">server.setRequestHandler(CallToolRequestSchema, ...)</code> para executá-las. O <strong class="text-neutral-100">inputSchema</strong> é definido como JSON Schema padrêo com type, properties e required. Dentro do handler de CallTool, você faz um switch no <code class="text-teal-400">request.params.name</code> para despachar a lógica correta.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -289,7 +289,7 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Esquecer de listar a tool no ListToolsHandler</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Definir inputSchema incorreto ou incompleto</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não tratar erros dentro do handler</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo tratar erros dentro do handler</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar tipos any nos parâmetros da tool</li>
 </ul>
 </div>
@@ -311,7 +311,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O padrão em TS é retornar <code class="text-teal-400">{ content: [{ type: "text", text: resultado }] }</code> do handler de CallTool. Para erros, adicione <code class="text-teal-400">isError: true</code> ao response. Crie uma função auxiliar <code class="text-teal-400">makeTextResponse(text: string)</code> para evitar repetição — padrão comum em servers TS bem estruturados.
+          O padrêo em TS é retornar <code class="text-teal-400">{ content: [{ type: "text", text: resultado }] }</code> do handler de CallTool. Para erros, adicione <code class="text-teal-400">isError: true</code> ao response. Crie uma funçêo auxiliar <code class="text-teal-400">makeTextResponse(text: string)</code> para evitar repetiçêo — padrêo comum em servers TS bem estruturados.
         </p>
 </div>
 </section>
@@ -324,7 +324,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Além de Tools, o SDK TypeScript suporta <strong class="text-neutral-100">Resources</strong> e <strong class="text-neutral-100">Prompts</strong> usando o mesmo padrão de request handlers. Resources expõem dados para o modelo ler, enquanto Prompts fornecem templates reutilizáveis. A API segue a mesma filosofia: registrar um handler para o schema correspondente.
+        Além de Tools, o SDK TypeScript suporta <strong class="text-neutral-100">Resources</strong> e <strong class="text-neutral-100">Prompts</strong> usando o mesmo padrêo de request handlers. Resources expõem dados para o modelo ler, enquanto Prompts fornecem templates reutilizáveis. A API segue a mesma filosofia: registrar um handler para o schema correspondente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -332,13 +332,13 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Para Resources, use <code class="text-teal-400">server.setRequestHandler(ListResourcesRequestSchema, ...)</code> para listar resources e <code class="text-teal-400">server.setRequestHandler(ReadResourceRequestSchema, ...)</code> para servir o conteúdo. Cada resource tem uma <strong class="text-neutral-100">URI</strong> única (ex: <code class="text-teal-400">file:///config.json</code>) e retorna conteúdo como text ou blob. Para Prompts, o padrão é idêntico: <code class="text-teal-400">ListPromptsRequestSchema</code> e <code class="text-teal-400">GetPromptRequestSchema</code>. Mesma arquitetura, diferentes schemas.
+          Para Resources, use <code class="text-teal-400">server.setRequestHandler(ListResourcesRequestSchema, ...)</code> para listar resources e <code class="text-teal-400">server.setRequestHandler(ReadResourceRequestSchema, ...)</code> para servir o conteúdo. Cada resource tem uma <strong class="text-neutral-100">URI</strong> única (ex: <code class="text-teal-400">file:///config.json</code>) e retorna conteúdo como text ou blob. Para Prompts, o padrêo é idêntico: <code class="text-teal-400">ListPromptsRequestSchema</code> e <code class="text-teal-400">GetPromptRequestSchema</code>. Mesma arquitetura, diferentes schemas.
         </p>
 </div>
 <!-- Timeline -->
 <div class="space-y-4 mb-6">
 <div class="flex items-center gap-2 mb-2">
-<span class="text-teal-400 font-semibold text-sm">📋 Fluxo de implementação de Resources</span>
+<span class="text-teal-400 font-semibold text-sm">📋 Fluxo de implementaçêo de Resources</span>
 </div>
 <div class="relative pl-8 border-l-2 border-teal-500/30 space-y-6">
 <div class="relative">
@@ -370,7 +370,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Na prática, <strong class="text-neutral-100">Tools são a feature mais usada</strong> (presente em ~95% dos servers), seguidas por Resources (~40%) e Prompts (~15%). No entanto, Resources são especialmente valiosos em cenários enterprise onde o modelo precisa acessar documentação, configs ou dados sem executar ações. Prompts são ideais para padronizar interações recorrentes com o modelo.
+          Na prática, <strong class="text-neutral-100">Tools sêo a feature mais usada</strong> (presente em ~95% dos servers), seguidas por Resources (~40%) e Prompts (~15%). No entanto, Resources sêo especialmente valiosos em cenários enterprise onde o modelo precisa acessar documentaçêo, configs ou dados sem executar ações. Prompts sêo ideais para padronizar interações recorrentes com o modelo.
         </p>
 </div>
 </section>
@@ -379,11 +379,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-teal-500/20 text-teal-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">⚙️ Build e Configuração</h2>
+<h2 class="text-2xl font-bold text-neutral-100">⚙️ Build e Configuraçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Diferente do Python onde você roda o arquivo diretamente, em TypeScript é necessário <strong class="text-neutral-100">compilar antes de rodar</strong>. O comando <code class="text-teal-400">tsc</code> compila o TypeScript para JavaScript no diretório <code class="text-teal-400">dist/</code>, e depois você executa com <code class="text-teal-400">node dist/index.js</code>. A configuração no Claude Desktop aponta para o arquivo JavaScript compilado.
+        Diferente do Python onde você roda o arquivo diretamente, em TypeScript é necessário <strong class="text-neutral-100">compilar antes de rodar</strong>. O comando <code class="text-teal-400">tsc</code> compila o TypeScript para JavaScript no diretório <code class="text-teal-400">dist/</code>, e depois você executa com <code class="text-teal-400">node dist/index.js</code>. A configuraçêo no Claude Desktop aponta para o arquivo JavaScript compilado.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -391,7 +391,7 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O workflow de build é: <code class="text-teal-400">npm run build</code> (que executa <code class="text-teal-400">tsc</code>) para compilar, depois <code class="text-teal-400">node dist/index.js</code> para rodar. No <strong class="text-neutral-100">Claude Desktop</strong>, a configuração fica assim: <code class="text-teal-400">"command": "node"</code>, <code class="text-teal-400">"args": ["/caminho/absoluto/dist/index.js"]</code>. Use sempre caminhos absolutos no config para evitar problemas. Alternativamente, use <code class="text-teal-400">npx ts-node src/index.ts</code> durante desenvolvimento para pular o build.
+          O workflow de build é: <code class="text-teal-400">npm run build</code> (que executa <code class="text-teal-400">tsc</code>) para compilar, depois <code class="text-teal-400">node dist/index.js</code> para rodar. No <strong class="text-neutral-100">Claude Desktop</strong>, a configuraçêo fica assim: <code class="text-teal-400">"command": "node"</code>, <code class="text-teal-400">"args": ["/caminho/absoluto/dist/index.js"]</code>. Use sempre caminhos absolutos no config para evitar problemas. Alternativamente, use <code class="text-teal-400">npx ts-node src/index.ts</code> durante desenvolvimento para pular o build.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -400,7 +400,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Adicione <code class="text-teal-400">"build": "tsc"</code> e <code class="text-teal-400">"watch": "tsc --watch"</code> nos scripts do package.json. Durante o desenvolvimento, use <code class="text-teal-400">npm run watch</code> em um terminal para recompilar automaticamente a cada mudança. Para produção, sempre rode <code class="text-teal-400">npm run build</code> e teste com <code class="text-teal-400">node dist/index.js</code> antes de configurar no Claude Desktop.
+          Adicione <code class="text-teal-400">"build": "tsc"</code> e <code class="text-teal-400">"watch": "tsc --watch"</code> nos scripts do package.json. Durante o desenvolvimento, use <code class="text-teal-400">npm run watch</code> em um terminal para recompilar automaticamente a cada mudança. Para produçêo, sempre rode <code class="text-teal-400">npm run build</code> e teste com <code class="text-teal-400">node dist/index.js</code> antes de configurar no Claude Desktop.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -409,7 +409,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Sempre compile antes de rodar!</strong> Um erro comum é editar o arquivo <code class="text-teal-400">.ts</code> e esquecer de recompilar, rodando a versão antiga do <code class="text-teal-400">.js</code>. Se suas mudanças não parecem ter efeito, verifique se rodou <code class="text-teal-400">tsc</code> antes de reiniciar o server. Dica: configure um script <code class="text-teal-400">"dev": "tsc &amp;&amp; node dist/index.js"</code> que compila e roda em sequência.
+<strong class="text-neutral-100">Sempre compile antes de rodar!</strong> Um erro comum é editar o arquivo <code class="text-teal-400">.ts</code> e esquecer de recompilar, rodando a versêo antiga do <code class="text-teal-400">.js</code>. Se suas mudanças nêo parecem ter efeito, verifique se rodou <code class="text-teal-400">tsc</code> antes de reiniciar o server. Dica: configure um script <code class="text-teal-400">"dev": "tsc &amp;&amp; node dist/index.js"</code> que compila e roda em sequência.
         </p>
 </div>
 </section>
@@ -430,7 +430,7 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O <strong class="text-neutral-100">MCP Inspector</strong> (<code class="text-teal-400">npx @modelcontextprotocol/inspector node dist/index.js</code>) conecta ao seu server e permite testar cada tool, resource e prompt individualmente. Você vê os requests JSON-RPC enviados e as responses recebidas em tempo real. Para teste de produção, configure o server no <strong class="text-neutral-100">Claude Desktop</strong> e use-o em conversas reais. Compare o resultado com um server Python equivalente para garantir compatibilidade.
+          O <strong class="text-neutral-100">MCP Inspector</strong> (<code class="text-teal-400">npx @modelcontextprotocol/inspector node dist/index.js</code>) conecta ao seu server e permite testar cada tool, resource e prompt individualmente. Você vê os requests JSON-RPC enviados e as responses recebidas em tempo real. Para teste de produçêo, configure o server no <strong class="text-neutral-100">Claude Desktop</strong> e use-o em conversas reais. Compare o resultado com um server Python equivalente para garantir compatibilidade.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -442,8 +442,8 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Testar só no Inspector sem usar no Claude Desktop</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar logs de erro do stderr</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Pular validação de edge cases nos inputs</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não testar com inputs malformados</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Pular validaçêo de edge cases nos inputs</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo testar com inputs malformados</li>
 </ul>
 </div>
 <div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
@@ -468,7 +468,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-teal-400 font-bold text-sm">1. Compilar</span>
-<p class="text-neutral-300 text-sm mt-1">Rodar <code class="text-teal-400">npm run build</code> e verificar que não há erros de compilação TypeScript.</p>
+<p class="text-neutral-300 text-sm mt-1">Rodar <code class="text-teal-400">npm run build</code> e verificar que nêo há erros de compilaçêo TypeScript.</p>
 </div>
 </div>
 <div class="relative">
@@ -514,11 +514,11 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>
-<span>Resources e Prompts seguem o mesmo padrão de request handlers com seus schemas específicos.</span>
+<span>Resources e Prompts seguem o mesmo padrêo de request handlers com seus schemas específicos.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>
-<span>Sempre compilar com tsc antes de rodar — o Claude Desktop executa o .js compilado, não o .ts.</span>
+<span>Sempre compilar com tsc antes de rodar — o Claude Desktop executa o .js compilado, nêo o .ts.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>

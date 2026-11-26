@@ -115,7 +115,7 @@
           🔢 Server de Calculadora
         </h1>
 <p class="text-neutral-400 text-lg leading-relaxed mb-8">
-          Construa um server com 4 operações matemáticas — seu primeiro server multi-tool com validação de entrada.
+          Construa um server com 4 operações matemáticas — seu primeiro server multi-tool com validaçêo de entrada.
         </p>
 <div class="flex flex-wrap gap-4 text-sm">
 <div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
@@ -149,7 +149,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Antes de escrever qualquer código, vamos planejar nosso server de calculadora. A ideia é criar quatro tools matemáticas básicas: <strong class="text-neutral-100">somar</strong>, <strong class="text-neutral-100">subtrair</strong>, <strong class="text-neutral-100">multiplicar</strong> e <strong class="text-neutral-100">dividir</strong>. Cada uma receberá dois números de ponto flutuante (float) como parâmetros e retornará o resultado da operação. Este será o seu primeiro server com múltiplas tools — um passo importante na construção de servers MCP mais complexos.
+        Antes de escrever qualquer código, vamos planejar nosso server de calculadora. A ideia é criar quatro tools matemáticas básicas: <strong class="text-neutral-100">somar</strong>, <strong class="text-neutral-100">subtrair</strong>, <strong class="text-neutral-100">multiplicar</strong> e <strong class="text-neutral-100">dividir</strong>. Cada uma receberá dois números de ponto flutuante (float) como parâmetros e retornará o resultado da operaçêo. Este será o seu primeiro server com múltiplas tools — um passo importante na construçêo de servers MCP mais complexos.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -157,16 +157,16 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-4">
-          Nosso server terá 4 tools, todas seguindo o mesmo padrão de assinatura:
+          Nosso server terá 4 tools, todas seguindo o mesmo padrêo de assinatura:
         </p>
 <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 space-y-1">
 <p><span class="text-purple-400">somar</span>(a: float, b: float) → float</p>
 <p><span class="text-purple-400">subtrair</span>(a: float, b: float) → float</p>
 <p><span class="text-purple-400">multiplicar</span>(a: float, b: float) → float</p>
-<p><span class="text-purple-400">dividir</span>(a: float, b: float) → float <span class="text-neutral-500"># com validação de b != 0</span></p>
+<p><span class="text-purple-400">dividir</span>(a: float, b: float) → float <span class="text-neutral-500"># com validaçêo de b != 0</span></p>
 </div>
 <p class="text-neutral-300 leading-relaxed mt-4">
-          Todas recebem dois <strong class="text-neutral-100">floats</strong> e retornam um <strong class="text-neutral-100">float</strong>. A exceção é a divisão, que precisa validar se o divisor é zero antes de executar a operação. Esse padrão consistente facilita tanto a implementação quanto o uso pelo modelo de IA.
+          Todas recebem dois <strong class="text-neutral-100">floats</strong> e retornam um <strong class="text-neutral-100">float</strong>. A exceçêo é a divisêo, que precisa validar se o divisor é zero antes de executar a operaçêo. Esse padrêo consistente facilita tanto a implementaçêo quanto o uso pelo modelo de IA.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -175,7 +175,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Planejar as tools antes de codificar é uma <strong class="text-neutral-100">boa prática essencial</strong>. Defina o nome, os parâmetros (com tipos) e o retorno de cada tool. Isso garante consistência, facilita a documentação automática gerada pelo FastMCP e ajuda o modelo de IA a entender quando e como usar cada ferramenta. Pense nas tools como uma API — quanto mais previsível, melhor.
+          Planejar as tools antes de codificar é uma <strong class="text-neutral-100">boa prática essencial</strong>. Defina o nome, os parâmetros (com tipos) e o retorno de cada tool. Isso garante consistência, facilita a documentaçêo automática gerada pelo FastMCP e ajuda o modelo de IA a entender quando e como usar cada ferramenta. Pense nas tools como uma API — quanto mais previsível, melhor.
         </p>
 </div>
 </section>
@@ -184,11 +184,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">➕ Soma e Subtração</h2>
+<h2 class="text-2xl font-bold text-neutral-100">➕ Soma e Subtraçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Vamos começar pelas operações mais simples: soma e subtração. São tools diretas, sem necessidade de validação especial. Elas servem como base para entender o padrão que será repetido nas demais operações. Com o FastMCP, cada tool é apenas uma função Python decorada — simples assim.
+        Vamos começar pelas operações mais simples: soma e subtraçêo. Sêo tools diretas, sem necessidade de validaçêo especial. Elas servem como base para entender o padrêo que será repetido nas demais operações. Com o FastMCP, cada tool é apenas uma funçêo Python decorada — simples assim.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -212,7 +212,7 @@
 <p> <span class="text-purple-400">return</span> a - b</p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Note como os <strong class="text-neutral-100">type hints</strong> (a: float, b: float) são fundamentais. O FastMCP usa essas anotações para gerar automaticamente o schema JSON que o cliente MCP envia ao modelo. Sem type hints, o modelo não sabe que tipo de dado enviar.
+          Note como os <strong class="text-neutral-100">type hints</strong> (a: float, b: float) sêo fundamentais. O FastMCP usa essas anotações para gerar automaticamente o schema JSON que o cliente MCP envia ao modelo. Sem type hints, o modelo nêo sabe que tipo de dado enviar.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -221,7 +221,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sempre escreva <strong class="text-neutral-100">docstrings</strong> nas suas tools. A docstring vira a descrição da tool no schema MCP — é ela que o modelo lê para decidir qual tool usar. Uma docstring clara como "Soma dois números" é muito melhor do que não ter docstring nenhuma.
+          Sempre escreva <strong class="text-neutral-100">docstrings</strong> nas suas tools. A docstring vira a descriçêo da tool no schema MCP — é ela que o modelo lê para decidir qual tool usar. Uma docstring clara como "Soma dois números" é muito melhor do que nêo ter docstring nenhuma.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -230,7 +230,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O FastMCP converte automaticamente os type hints Python em <strong class="text-neutral-100">JSON Schema</strong>. Um parâmetro <code class="text-purple-400">float</code> vira <code class="text-purple-400">{"type": "number"}</code> no schema. Um <code class="text-purple-400">str</code> vira <code class="text-purple-400">{"type": "string"}</code>. Essa conversão automática elimina a necessidade de escrever schemas manualmente — basta anotar as funções Python corretamente e o FastMCP cuida do resto.
+          O FastMCP converte automaticamente os type hints Python em <strong class="text-neutral-100">JSON Schema</strong>. Um parâmetro <code class="text-purple-400">float</code> vira <code class="text-purple-400">{"type": "number"}</code> no schema. Um <code class="text-purple-400">str</code> vira <code class="text-purple-400">{"type": "string"}</code>. Essa conversêo automática elimina a necessidade de escrever schemas manualmente — basta anotar as funções Python corretamente e o FastMCP cuida do resto.
         </p>
 </div>
 </section>
@@ -239,11 +239,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">3</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">✖️ Multiplicação</h2>
+<h2 class="text-2xl font-bold text-neutral-100">✖️ Multiplicaçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A tool de multiplicação segue exatamente o mesmo padrão das anteriores. Isso é intencional — manter consistência entre as tools facilita a vida do desenvolvedor e do modelo. Aqui também é uma boa oportunidade para entender como o FastMCP gera o schema automaticamente a partir da sua função Python.
+        A tool de multiplicaçêo segue exatamente o mesmo padrêo das anteriores. Isso é intencional — manter consistência entre as tools facilita a vida do desenvolvedor e do modelo. Aqui também é uma boa oportunidade para entender como o FastMCP gera o schema automaticamente a partir da sua funçêo Python.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -257,7 +257,7 @@
 <p> <span class="text-purple-400">return</span> a * b</p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Quando o FastMCP registra essa tool, ele gera automaticamente um schema como: <code class="text-purple-400">{"name": "multiplicar", "description": "Multiplica dois números.", "inputSchema": {"type": "object", "properties": {"a": {"type": "number"}, "b": {"type": "number"}}, "required": ["a", "b"]}}</code>. Tudo isso a partir de uma simples função Python com type hints e docstring.
+          Quando o FastMCP registra essa tool, ele gera automaticamente um schema como: <code class="text-purple-400">{"name": "multiplicar", "description": "Multiplica dois números.", "inputSchema": {"type": "object", "properties": {"a": {"type": "number"}, "b": {"type": "number"}}, "required": ["a", "b"]}}</code>. Tudo isso a partir de uma simples funçêo Python com type hints e docstring.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -268,9 +268,9 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem type hints (o schema fica vazio)</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (sem descrição para o modelo)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (sem descriçêo para o modelo)</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes genéricos como "calcular" ou "func1"</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Misturar lógica de negócio com formatação</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Misturar lógica de negócio com formataçêo</li>
 </ul>
 </div>
 <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
@@ -291,11 +291,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">4</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">➗ Divisão com Validação</h2>
+<h2 class="text-2xl font-bold text-neutral-100">➗ Divisêo com Validaçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A divisão é diferente das demais operações porque tem um caso especial perigoso: a <strong class="text-neutral-100">divisão por zero</strong>. Se o usuário pedir para dividir qualquer número por zero e a tool simplesmente executar <code class="text-purple-400">a / b</code>, o Python lançará um <code class="text-purple-400">ZeroDivisionError</code> e o server pode crashar. Precisamos validar a entrada antes de executar a operação.
+        A divisêo é diferente das demais operações porque tem um caso especial perigoso: a <strong class="text-neutral-100">divisêo por zero</strong>. Se o usuário pedir para dividir qualquer número por zero e a tool simplesmente executar <code class="text-purple-400">a / b</code>, o Python lançará um <code class="text-purple-400">ZeroDivisionError</code> e o server pode crashar. Precisamos validar a entrada antes de executar a operaçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -307,11 +307,11 @@
 <p><span class="text-purple-400">def</span> <span class="text-blue-400">dividir</span>(a: <span class="text-yellow-400">float</span>, b: <span class="text-yellow-400">float</span>) -&gt; <span class="text-yellow-400">str</span>:</p>
 <p> <span class="text-green-400">"""Divide a por b. Retorna erro se b for zero."""</span></p>
 <p> <span class="text-purple-400">if</span> b == <span class="text-yellow-400">0</span>:</p>
-<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Erro: divisão por zero não é permitida."</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Erro: divisêo por zero nêo é permitida."</span></p>
 <p> <span class="text-purple-400">return</span> <span class="text-green-400">f"</span>{a / b}<span class="text-green-400">"</span></p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Ao invés de deixar a exceção estourar, retornamos uma <strong class="text-neutral-100">mensagem de erro amigável</strong> como string. O modelo recebe essa mensagem e pode informar o usuário de forma natural: "Não é possível dividir por zero." Isso é muito melhor do que um traceback Python incompreensível.
+          Ao invés de deixar a exceçêo estourar, retornamos uma <strong class="text-neutral-100">mensagem de erro amigável</strong> como string. O modelo recebe essa mensagem e pode informar o usuário de forma natural: "Nêo é possível dividir por zero." Isso é muito melhor do que um traceback Python incompreensível.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -320,7 +320,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Nunca deixe uma tool crashar!</strong> Uma exceção não tratada pode derrubar o server MCP inteiro, desconectando o cliente. Sempre valide entradas, use try/except quando necessário, e retorne mensagens de erro claras. O modelo sabe lidar com mensagens de erro — ele não sabe lidar com um server que parou de responder.
+<strong class="text-neutral-100">Nunca deixe uma tool crashar!</strong> Uma exceçêo nêo tratada pode derrubar o server MCP inteiro, desconectando o cliente. Sempre valide entradas, use try/except quando necessário, e retorne mensagens de erro claras. O modelo sabe lidar com mensagens de erro — ele nêo sabe lidar com um server que parou de responder.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -358,7 +358,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com as 4 tools implementadas, é hora de configurar o server no Claude Desktop e testar cada operação. O objetivo é verificar que o Claude identifica corretamente qual tool usar para cada pergunta e que todas as operações retornam resultados corretos — incluindo o tratamento de divisão por zero.
+        Com as 4 tools implementadas, é hora de configurar o server no Claude Desktop e testar cada operaçêo. O objetivo é verificar que o Claude identifica corretamente qual tool usar para cada pergunta e que todas as operações retornam resultados corretos — incluindo o tratamento de divisêo por zero.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -366,14 +366,14 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-4">
-          Adicione o server ao <strong class="text-neutral-100">claude_desktop_config.json</strong> e reinicie o Claude Desktop. Depois, não se esqueça de adicionar o bloco de inicialização ao final do arquivo:
+          Adicione o server ao <strong class="text-neutral-100">claude_desktop_config.json</strong> e reinicie o Claude Desktop. Depois, nêo se esqueça de adicionar o bloco de inicializaçêo ao final do arquivo:
         </p>
 <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300 mb-4">
 <p><span class="text-purple-400">if</span> __name__ == <span class="text-green-400">"__main__"</span>:</p>
 <p>    mcp.run()</p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Agora teste as tools com perguntas naturais. O Claude vai escolher automaticamente a tool correta para cada operação.
+          Agora teste as tools com perguntas naturais. O Claude vai escolher automaticamente a tool correta para cada operaçêo.
         </p>
 </div>
 <!-- Timeline -->
@@ -392,29 +392,29 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Teste 2 — Subtração</span>
+<span class="text-purple-400 font-bold text-sm">Teste 2 — Subtraçêo</span>
 <p class="text-neutral-300 text-sm mt-1">"Qual é 100 menos 37?" — O Claude deve usar <code class="text-purple-400">subtrair</code> e retornar 63.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Teste 3 — Multiplicação</span>
+<span class="text-purple-400 font-bold text-sm">Teste 3 — Multiplicaçêo</span>
 <p class="text-neutral-300 text-sm mt-1">"Multiplique 8 por 7." — O Claude deve usar <code class="text-purple-400">multiplicar</code> e retornar 56.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Teste 4 — Divisão normal</span>
+<span class="text-purple-400 font-bold text-sm">Teste 4 — Divisêo normal</span>
 <p class="text-neutral-300 text-sm mt-1">"Divida 100 por 4." — O Claude deve usar <code class="text-purple-400">dividir</code> e retornar 25.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Teste 5 — Divisão por zero</span>
-<p class="text-neutral-300 text-sm mt-1">"Divida 100 por 0." — O Claude deve receber a mensagem de erro e explicar que divisão por zero não é possível.</p>
+<span class="text-purple-400 font-bold text-sm">Teste 5 — Divisêo por zero</span>
+<p class="text-neutral-300 text-sm mt-1">"Divida 100 por 0." — O Claude deve receber a mensagem de erro e explicar que divisêo por zero nêo é possível.</p>
 </div>
 </div>
 </div>
@@ -434,11 +434,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🔧 Melhorias e Refatoração</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🔧 Melhorias e Refatoraçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora que o server básico funciona, podemos pensar em melhorias. Arredondamento de resultados, suporte explícito a inteiros e floats, e a adição de novas operações como potenciação. Essas melhorias transformam um server de demonstração em algo mais robusto e profissional.
+        Agora que o server básico funciona, podemos pensar em melhorias. Arredondamento de resultados, suporte explícito a inteiros e floats, e a adiçêo de novas operações como potenciaçêo. Essas melhorias transformam um server de demonstraçêo em algo mais robusto e profissional.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -459,7 +459,7 @@
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">3.</span>
-<span><strong class="text-neutral-100">Nova tool:</strong> Adicione <code class="text-purple-400">potenciar(base: float, expoente: float)</code> como exercício — segue o mesmo padrão das demais.</span>
+<span><strong class="text-neutral-100">Nova tool:</strong> Adicione <code class="text-purple-400">potenciar(base: float, expoente: float)</code> como exercício — segue o mesmo padrêo das demais.</span>
 </li>
 </ul>
 </div>
@@ -469,7 +469,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Como exercício, implemente a tool <code class="text-purple-400">potenciar(base: float, expoente: float)</code>. Ela deve retornar <code class="text-purple-400">base ** expoente</code>. Pense: precisa de validação especial? O que acontece com <code class="text-purple-400">0 ** 0</code>? E com expoentes negativos? Pratique o pensamento de <strong class="text-neutral-100">"o que pode dar errado?"</strong> — essa mentalidade vai te servir em todo server MCP que construir.
+          Como exercício, implemente a tool <code class="text-purple-400">potenciar(base: float, expoente: float)</code>. Ela deve retornar <code class="text-purple-400">base ** expoente</code>. Pense: precisa de validaçêo especial? O que acontece com <code class="text-purple-400">0 ** 0</code>? E com expoentes negativos? Pratique o pensamento de <strong class="text-neutral-100">"o que pode dar errado?"</strong> — essa mentalidade vai te servir em todo server MCP que construir.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -491,7 +491,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Arredondar resultados de ponto flutuante</li>
-<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Manter tools separadas por operação</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Manter tools separadas por operaçêo</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Adicionar novas tools incrementalmente</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Testar cada melhoria isoladamente</li>
 </ul>
@@ -509,7 +509,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Implementamos soma e subtração como funções simples com type hints e docstrings.</span>
+<span>Implementamos soma e subtraçêo como funções simples com type hints e docstrings.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -517,7 +517,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Adicionamos validação de divisão por zero — retornando mensagem de erro ao invés de crashar.</span>
+<span>Adicionamos validaçêo de divisêo por zero — retornando mensagem de erro ao invés de crashar.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>

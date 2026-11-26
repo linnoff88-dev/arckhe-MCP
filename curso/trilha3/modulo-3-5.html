@@ -149,7 +149,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Para nosso server de clima, vamos usar a <strong class="text-neutral-100">wttr.in</strong> — uma API de clima gratuita, sem necessidade de cadastro ou chave de autenticação. Ela retorna dados meteorológicos em texto simples ou JSON, é extremamente simples de usar e perfeita para aprendizado. Basta fazer uma requisição GET e os dados chegam prontos.
+        Para nosso server de clima, vamos usar a <strong class="text-neutral-100">wttr.in</strong> — uma API de clima gratuita, sem necessidade de cadastro ou chave de autenticaçêo. Ela retorna dados meteorológicos em texto simples ou JSON, é extremamente simples de usar e perfeita para aprendizado. Basta fazer uma requisiçêo GET e os dados chegam prontos.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -161,12 +161,12 @@
         </p>
 <div class="bg-dark-800 rounded-lg p-4 font-mono text-sm text-neutral-300">
 <p class="text-neutral-500"># Exemplos de URL:</p>
-<p>https://wttr.in/São Paulo?format=j1</p>
+<p>https://wttr.in/Sêo Paulo?format=j1</p>
 <p>https://wttr.in/Tokyo?format=j1</p>
 <p>https://wttr.in/London?format=j1</p>
 </div>
 <p class="text-neutral-300 leading-relaxed mt-4">
-          O JSON retornado contém temperatura, condição climática, umidade, sensação térmica, velocidade do vento e muito mais. Vamos extrair os dados mais relevantes para criar uma resposta útil.
+          O JSON retornado contém temperatura, condiçêo climática, umidade, sensaçêo térmica, velocidade do vento e muito mais. Vamos extrair os dados mais relevantes para criar uma resposta útil.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -175,7 +175,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A wttr.in é um projeto open source hospedado no GitHub. Suporta <strong class="text-neutral-100">mais de 50 idiomas</strong>, aceita nomes de cidades em qualquer idioma e também funciona com coordenadas geográficas. É usada por milhões de desenvolvedores e não requer autenticação — ideal para prototipagem rápida e projetos de aprendizado como o nosso.
+          A wttr.in é um projeto open source hospedado no GitHub. Suporta <strong class="text-neutral-100">mais de 50 idiomas</strong>, aceita nomes de cidades em qualquer idioma e também funciona com coordenadas geográficas. É usada por milhões de desenvolvedores e nêo requer autenticaçêo — ideal para prototipagem rápida e projetos de aprendizado como o nosso.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -184,7 +184,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Antes de implementar a tool, teste a API diretamente no navegador ou terminal. Acesse <code class="text-purple-400">https://wttr.in/São Paulo?format=j1</code> e veja a estrutura do JSON. Isso ajuda a entender quais campos estão disponíveis e como extrair os dados que queremos. Você também pode testar no terminal com <code class="text-purple-400">curl "wttr.in/São Paulo?format=j1"</code>.
+          Antes de implementar a tool, teste a API diretamente no navegador ou terminal. Acesse <code class="text-purple-400">https://wttr.in/Sêo Paulo?format=j1</code> e veja a estrutura do JSON. Isso ajuda a entender quais campos estêo disponíveis e como extrair os dados que queremos. Você também pode testar no terminal com <code class="text-purple-400">curl "wttr.in/Sêo Paulo?format=j1"</code>.
         </p>
 </div>
 </section>
@@ -197,7 +197,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Para fazer requisições HTTP dentro do nosso server MCP, precisamos de uma biblioteca HTTP. Em Python, as duas opções principais são <strong class="text-neutral-100">requests</strong> (síncrona) e <strong class="text-neutral-100">httpx</strong> (com suporte async). Para servers MCP, o <code class="text-purple-400">httpx</code> é a escolha preferida porque suporta chamadas assíncronas nativamente, o que combina melhor com a arquitetura do MCP.
+        Para fazer requisições HTTP dentro do nosso server MCP, precisamos de uma biblioteca HTTP. Em Python, as duas opções principais sêo <strong class="text-neutral-100">requests</strong> (síncrona) e <strong class="text-neutral-100">httpx</strong> (com suporte async). Para servers MCP, o <code class="text-purple-400">httpx</code> é a escolha preferida porque suporta chamadas assíncronas nativamente, o que combina melhor com a arquitetura do MCP.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -212,7 +212,7 @@
 <p>uv add httpx</p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Com o <code class="text-purple-400">httpx</code>, podemos usar <code class="text-purple-400">async with httpx.AsyncClient()</code> para fazer requisições HTTP assíncronas dentro de tools MCP. A função da tool será declarada como <code class="text-purple-400">async def</code>, permitindo que o server continue responsivo enquanto aguarda a resposta da API externa.
+          Com o <code class="text-purple-400">httpx</code>, podemos usar <code class="text-purple-400">async with httpx.AsyncClient()</code> para fazer requisições HTTP assíncronas dentro de tools MCP. A funçêo da tool será declarada como <code class="text-purple-400">async def</code>, permitindo que o server continue responsivo enquanto aguarda a resposta da API externa.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -250,7 +250,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora vamos implementar a tool de consulta ao clima. Ela receberá o nome de uma cidade como string, fará uma requisição HTTP para a wttr.in, parseará o JSON de resposta e extrairá as informações mais relevantes: temperatura, condição climática, umidade e sensação térmica.
+        Agora vamos implementar a tool de consulta ao clima. Ela receberá o nome de uma cidade como string, fará uma requisiçêo HTTP para a wttr.in, parseará o JSON de resposta e extrairá as informações mais relevantes: temperatura, condiçêo climática, umidade e sensaçêo térmica.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -281,9 +281,9 @@
 <p> <span class="text-purple-400">return</span> (</p>
 <p> <span class="text-green-400">f"Clima em </span>{cidade}<span class="text-green-400">:\n"</span></p>
 <p> <span class="text-green-400">f"Temperatura: </span>{temp}<span class="text-green-400">°C\n"</span></p>
-<p> <span class="text-green-400">f"Sensação térmica: </span>{sensacao}<span class="text-green-400">°C\n"</span></p>
+<p> <span class="text-green-400">f"Sensaçêo térmica: </span>{sensacao}<span class="text-green-400">°C\n"</span></p>
 <p> <span class="text-green-400">f"Umidade: </span>{umidade}<span class="text-green-400">%\n"</span></p>
-<p> <span class="text-green-400">f"Condição: </span>{descricao}<span class="text-green-400">"</span></p>
+<p> <span class="text-green-400">f"Condiçêo: </span>{descricao}<span class="text-green-400">"</span></p>
 <p>    )</p>
 </div>
 </div>
@@ -293,7 +293,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Note que usamos <code class="text-purple-400">async def</code> e <code class="text-purple-400">await</code> na tool. O FastMCP suporta tools assíncronas nativamente — basta declarar a função como <code class="text-purple-400">async</code>. O <code class="text-purple-400">timeout=10.0</code> garante que a requisição não fique pendurada para sempre se a API não responder. Sempre defina timeouts em requisições HTTP externas.
+          Note que usamos <code class="text-purple-400">async def</code> e <code class="text-purple-400">await</code> na tool. O FastMCP suporta tools assíncronas nativamente — basta declarar a funçêo como <code class="text-purple-400">async</code>. O <code class="text-purple-400">timeout=10.0</code> garante que a requisiçêo nêo fique pendurada para sempre se a API nêo responder. Sempre defina timeouts em requisições HTTP externas.
         </p>
 </div>
 </section>
@@ -323,7 +323,7 @@
 </div>
 <div class="bg-dark-800 rounded-lg p-4 border border-dark-700">
 <div class="text-purple-400 text-xs mb-2 font-semibold">String formatada (bom)</div>
-<p class="text-neutral-300 font-mono text-xs">Clima em São Paulo:<br/>Temperatura: 25°C<br/>Umidade: 60%<br/>Condição: Clear</p>
+<p class="text-neutral-300 font-mono text-xs">Clima em Sêo Paulo:<br/>Temperatura: 25°C<br/>Umidade: 60%<br/>Condiçêo: Clear</p>
 </div>
 </div>
 </div>
@@ -362,7 +362,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Quando sua tool depende de uma API externa, muitas coisas podem dar errado: a cidade pode não existir, a internet pode cair, a API pode estar fora do ar, ou a requisição pode demorar demais. Cada um desses cenários precisa ser tratado individualmente para que o server continue funcionando e o modelo receba uma mensagem de erro útil.
+        Quando sua tool depende de uma API externa, muitas coisas podem dar errado: a cidade pode nêo existir, a internet pode cair, a API pode estar fora do ar, ou a requisiçêo pode demorar demais. Cada um desses cenários precisa ser tratado individualmente para que o server continue funcionando e o modelo receba uma mensagem de erro útil.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -381,9 +381,9 @@
 <p>            dados = response.json()</p>
 <p> <span class="text-neutral-500"># ... extrair e retornar dados</span></p>
 <p> <span class="text-purple-400">except</span> httpx.HTTPStatusError:</p>
-<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Erro: cidade '</span>{cidade}<span class="text-green-400">' não encontrada."</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">f"Erro: cidade '</span>{cidade}<span class="text-green-400">' nêo encontrada."</span></p>
 <p> <span class="text-purple-400">except</span> httpx.ConnectError:</p>
-<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Erro: sem conexão com a internet."</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"Erro: sem conexêo com a internet."</span></p>
 <p> <span class="text-purple-400">except</span> httpx.TimeoutException:</p>
 <p> <span class="text-purple-400">return</span> <span class="text-green-400">"Erro: a API demorou demais para responder."</span></p>
 <p> <span class="text-purple-400">except</span> Exception <span class="text-purple-400">as</span> e:</p>
@@ -396,7 +396,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Nunca confie em APIs externas!</strong> Toda requisição HTTP pode falhar. Uma tool que funciona perfeitamente no seu teste local pode quebrar em produção porque a API ficou fora do ar, mudou o formato da resposta ou atingiu o rate limit. O tratamento de erros não é opcional — é obrigatório para qualquer tool que faz requisições externas.
+<strong class="text-neutral-100">Nunca confie em APIs externas!</strong> Toda requisiçêo HTTP pode falhar. Uma tool que funciona perfeitamente no seu teste local pode quebrar em produçêo porque a API ficou fora do ar, mudou o formato da resposta ou atingiu o rate limit. O tratamento de erros nêo é opcional — é obrigatório para qualquer tool que faz requisições externas.
         </p>
 </div>
 <!-- Timeline -->
@@ -409,21 +409,21 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">HTTPStatusError (404, 500, etc.)</span>
-<p class="text-neutral-300 text-sm mt-1">A API respondeu com código de erro. Cidade não encontrada (404) ou erro interno da API (500). Retorne mensagem clara indicando o problema.</p>
+<p class="text-neutral-300 text-sm mt-1">A API respondeu com código de erro. Cidade nêo encontrada (404) ou erro interno da API (500). Retorne mensagem clara indicando o problema.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">ConnectError</span>
-<p class="text-neutral-300 text-sm mt-1">Não foi possível conectar à API — geralmente significa sem internet ou DNS não resolvido. Informe o usuário que a conexão falhou.</p>
+<p class="text-neutral-300 text-sm mt-1">Nêo foi possível conectar à API — geralmente significa sem internet ou DNS nêo resolvido. Informe o usuário que a conexêo falhou.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">TimeoutException</span>
-<p class="text-neutral-300 text-sm mt-1">A API demorou mais que o timeout definido (10 segundos). Pode ser sobrecarga do servidor. Informe que a API não respondeu a tempo.</p>
+<p class="text-neutral-300 text-sm mt-1">A API demorou mais que o timeout definido (10 segundos). Pode ser sobrecarga do servidor. Informe que a API nêo respondeu a tempo.</p>
 </div>
 </div>
 <div class="relative">
@@ -445,7 +445,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com a tool implementada e o tratamento de erros no lugar, configure o server no Claude Desktop e teste com diferentes cidades e cenários. O objetivo é verificar que a tool retorna dados corretos e que os erros são tratados graciosamente.
+        Com a tool implementada e o tratamento de erros no lugar, configure o server no Claude Desktop e teste com diferentes cidades e cenários. O objetivo é verificar que a tool retorna dados corretos e que os erros sêo tratados graciosamente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -458,7 +458,7 @@
 <ul class="space-y-2 text-neutral-300 text-sm">
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">1.</span>
-<span>"Como está o clima em São Paulo?" — deve retornar temperatura, umidade e condição.</span>
+<span>"Como está o clima em Sêo Paulo?" — deve retornar temperatura, umidade e condiçêo.</span>
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">2.</span>
@@ -466,7 +466,7 @@
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">3.</span>
-<span>"Preciso de guarda-chuva em Londres hoje?" — o Claude deve inferir da condição climática.</span>
+<span>"Preciso de guarda-chuva em Londres hoje?" — o Claude deve inferir da condiçêo climática.</span>
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">4.</span>
@@ -480,7 +480,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Observe como o Claude <strong class="text-neutral-100">interpreta os dados</strong> retornados pela tool. Ele não apenas repete os números — ele contextualiza. Se a temperatura é 35°C, ele pode dizer "está bastante quente". Se a umidade é 90%, ele pode avisar sobre a sensação abafada. Quanto mais clara a resposta da tool, melhor a interpretação do modelo.
+          Observe como o Claude <strong class="text-neutral-100">interpreta os dados</strong> retornados pela tool. Ele nêo apenas repete os números — ele contextualiza. Se a temperatura é 35°C, ele pode dizer "está bastante quente". Se a umidade é 90%, ele pode avisar sobre a sensaçêo abafada. Quanto mais clara a resposta da tool, melhor a interpretaçêo do modelo.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -489,7 +489,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Este server de clima é um exemplo clássico de <strong class="text-neutral-100">"API bridge"</strong> — um padrão muito comum em servers MCP. O server atua como ponte entre o modelo e uma API externa, traduzindo a requisição do modelo em chamada HTTP e a resposta HTTP em texto para o modelo. Esse mesmo padrão pode ser aplicado a qualquer API: previsão do tempo, cotações, notícias, dados financeiros, status de serviços e muito mais.
+          Este server de clima é um exemplo clássico de <strong class="text-neutral-100">"API bridge"</strong> — um padrêo muito comum em servers MCP. O server atua como ponte entre o modelo e uma API externa, traduzindo a requisiçêo do modelo em chamada HTTP e a resposta HTTP em texto para o modelo. Esse mesmo padrêo pode ser aplicado a qualquer API: previsêo do tempo, cotações, notícias, dados financeiros, status de serviços e muito mais.
         </p>
 </div>
 </section>
@@ -500,7 +500,7 @@
 <ul class="space-y-3 mb-8">
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Escolhemos a API wttr.in — gratuita, sem autenticação, ideal para aprendizado.</span>
+<span>Escolhemos a API wttr.in — gratuita, sem autenticaçêo, ideal para aprendizado.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -516,7 +516,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Tratamos erros específicos: cidade não encontrada, sem internet, timeout e erros inesperados.</span>
+<span>Tratamos erros específicos: cidade nêo encontrada, sem internet, timeout e erros inesperados.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>

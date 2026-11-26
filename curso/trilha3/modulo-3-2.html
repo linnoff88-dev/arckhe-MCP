@@ -148,7 +148,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Neste módulo, vamos criar o MCP Server mais simples possível: uma única tool que recebe um nome e retorna uma saudação. O objetivo não é impressionar pela complexidade, mas sim entender cada linha de código e o fluxo completo — do código Python até o Claude usando a tool. Se você entender o Hello World completamente, construir servers complexos será apenas uma questão de adicionar mais tools.
+        Neste módulo, vamos criar o MCP Server mais simples possível: uma única tool que recebe um nome e retorna uma saudaçêo. O objetivo nêo é impressionar pela complexidade, mas sim entender cada linha de código e o fluxo completo — do código Python até o Claude usando a tool. Se você entender o Hello World completamente, construir servers complexos será apenas uma questêo de adicionar mais tools.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -156,7 +156,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O <strong class="text-neutral-100">Hello World MCP</strong> é um server com uma única tool: <code class="text-purple-400">hello(nome: str)</code> que retorna <code class="text-purple-400">f"Olá, {nome}!"</code>. É o equivalente ao "Hello World" de qualquer linguagem de programação — o menor programa funcional possível. A diferença é que, em vez de imprimir no terminal, essa função será <strong class="text-neutral-100">chamada por uma IA</strong> através do protocolo MCP. O modelo decide quando chamar, passa os parâmetros, e recebe o resultado.
+          O <strong class="text-neutral-100">Hello World MCP</strong> é um server com uma única tool: <code class="text-purple-400">hello(nome: str)</code> que retorna <code class="text-purple-400">f"Olá, {nome}!"</code>. É o equivalente ao "Hello World" de qualquer linguagem de programaçêo — o menor programa funcional possível. A diferença é que, em vez de imprimir no terminal, essa funçêo será <strong class="text-neutral-100">chamada por uma IA</strong> através do protocolo MCP. O modelo decide quando chamar, passa os parâmetros, e recebe o resultado.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -165,7 +165,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Resista à tentação de adicionar features extras no Hello World. O objetivo aqui é <strong class="text-neutral-100">clareza total</strong>, não funcionalidade. Quando você entender cada linha deste server mínimo, será capaz de construir qualquer coisa. Pense nisso como aprender a andar antes de correr — o fundamento sólido agora vai economizar horas de debugging depois.
+          Resista à tentaçêo de adicionar features extras no Hello World. O objetivo aqui é <strong class="text-neutral-100">clareza total</strong>, nêo funcionalidade. Quando você entender cada linha deste server mínimo, será capaz de construir qualquer coisa. Pense nisso como aprender a andar antes de correr — o fundamento sólido agora vai economizar horas de debugging depois.
         </p>
 </div>
 </section>
@@ -186,13 +186,13 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A criação do projeto usa três comandos: <strong class="text-neutral-100"><code class="text-purple-400">uv init hello-mcp</code></strong> — cria o diretório com pyproject.toml; <strong class="text-neutral-100"><code class="text-purple-400">cd hello-mcp</code></strong> — entra no diretório; e <strong class="text-neutral-100"><code class="text-purple-400">uv add fastmcp</code></strong> — adiciona o FastMCP como dependência. Depois, crie o arquivo <code class="text-purple-400">server.py</code> onde ficará o código do server. Em menos de 30 segundos, você tem um projeto Python completo e configurado.
+          A criaçêo do projeto usa três comandos: <strong class="text-neutral-100"><code class="text-purple-400">uv init hello-mcp</code></strong> — cria o diretório com pyproject.toml; <strong class="text-neutral-100"><code class="text-purple-400">cd hello-mcp</code></strong> — entra no diretório; e <strong class="text-neutral-100"><code class="text-purple-400">uv add fastmcp</code></strong> — adiciona o FastMCP como dependência. Depois, crie o arquivo <code class="text-purple-400">server.py</code> onde ficará o código do server. Em menos de 30 segundos, você tem um projeto Python completo e configurado.
         </p>
 </div>
 <!-- Timeline -->
 <div class="space-y-4 mb-6">
 <div class="flex items-center gap-2 mb-2">
-<span class="text-purple-400 font-semibold text-sm">📋 Passo a passo da criação</span>
+<span class="text-purple-400 font-semibold text-sm">📋 Passo a passo da criaçêo</span>
 </div>
 <div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
 <div class="relative">
@@ -231,7 +231,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Se você já tem o <code class="text-purple-400">uv</code> instalado, pode fazer tudo em uma linha: <strong class="text-neutral-100"><code class="text-purple-400">uv init hello-mcp &amp;&amp; cd hello-mcp &amp;&amp; uv add fastmcp</code></strong>. O uv é extremamente rápido — a instalação do FastMCP e todas as suas dependências leva apenas alguns segundos, muito mais rápido que o pip tradicional.
+          Se você já tem o <code class="text-purple-400">uv</code> instalado, pode fazer tudo em uma linha: <strong class="text-neutral-100"><code class="text-purple-400">uv init hello-mcp &amp;&amp; cd hello-mcp &amp;&amp; uv add fastmcp</code></strong>. O uv é extremamente rápido — a instalaçêo do FastMCP e todas as suas dependências leva apenas alguns segundos, muito mais rápido que o pip tradicional.
         </p>
 </div>
 </section>
@@ -244,7 +244,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora vem a parte mais satisfatória: escrever o código do server. São apenas 10 linhas — mas cada uma tem um propósito preciso. Não copie e cole sem entender; leia cada linha e compreenda o que ela faz. Este é o código que transforma uma função Python comum em uma capability acessível por qualquer IA compatível com MCP.
+        Agora vem a parte mais satisfatória: escrever o código do server. Sêo apenas 10 linhas — mas cada uma tem um propósito preciso. Nêo copie e cole sem entender; leia cada linha e compreenda o que ela faz. Este é o código que transforma uma funçêo Python comum em uma capability acessível por qualquer IA compatível com MCP.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -264,7 +264,7 @@
 <div class="mt-2"><span class="text-purple-400">if</span> __name__ == <span class="text-emerald-400">"__main__"</span>:</div>
 <div>    mcp.run()</div>
 </div>
-<p class="mt-4">Essas ~10 linhas são um MCP Server completo e funcional. O FastMCP cuida de todo o protocolo por baixo — JSON-RPC, transporte, negociação de capabilities, serialização — você só precisa se preocupar com a lógica da sua tool.</p>
+<p class="mt-4">Essas ~10 linhas sêo um MCP Server completo e funcional. O FastMCP cuida de todo o protocolo por baixo — JSON-RPC, transporte, negociaçêo de capabilities, serializaçêo — você só precisa se preocupar com a lógica da sua tool.</p>
 </div>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -273,7 +273,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sem o FastMCP, implementar o mesmo server usando o protocolo MCP de baixo nível exigiria mais de <strong class="text-neutral-100">150 linhas de código</strong> — incluindo parsing de JSON-RPC, gerenciamento de transporte stdio, negociação de capabilities, serialização de schemas, e tratamento de erros do protocolo. O FastMCP reduz isso para <strong class="text-neutral-100">~10 linhas</strong>, uma redução de mais de 90% no código necessário. Essa é a vantagem de usar um framework bem projetado.
+          Sem o FastMCP, implementar o mesmo server usando o protocolo MCP de baixo nível exigiria mais de <strong class="text-neutral-100">150 linhas de código</strong> — incluindo parsing de JSON-RPC, gerenciamento de transporte stdio, negociaçêo de capabilities, serializaçêo de schemas, e tratamento de erros do protocolo. O FastMCP reduz isso para <strong class="text-neutral-100">~10 linhas</strong>, uma reduçêo de mais de 90% no código necessário. Essa é a vantagem de usar um framework bem projetado.
         </p>
 </div>
 </section>
@@ -286,7 +286,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com o código pronto, é hora de conectar o server ao Claude Desktop. Isso é feito editando o arquivo de configuração do Claude e adicionando uma entrada para o seu server. O Claude Desktop vai usar o <code class="text-purple-400">uv</code> para iniciar o server automaticamente quando necessário.
+        Com o código pronto, é hora de conectar o server ao Claude Desktop. Isso é feito editando o arquivo de configuraçêo do Claude e adicionando uma entrada para o seu server. O Claude Desktop vai usar o <code class="text-purple-400">uv</code> para iniciar o server automaticamente quando necessário.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -319,7 +319,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O caminho no <code class="text-purple-400">--directory</code> <strong class="text-neutral-100">deve ser absoluto</strong> — caminhos relativos não funcionam. Use o caminho completo como <code class="text-purple-400">/home/usuario/projetos/hello-mcp</code> no Linux/Mac ou <code class="text-purple-400">C:\\Users\\usuario\\projetos\\hello-mcp</code> no Windows. Um caminho errado é a causa número 1 de "server não aparece no Claude" — verifique com cuidado!
+          O caminho no <code class="text-purple-400">--directory</code> <strong class="text-neutral-100">deve ser absoluto</strong> — caminhos relativos nêo funcionam. Use o caminho completo como <code class="text-purple-400">/home/usuario/projetos/hello-mcp</code> no Linux/Mac ou <code class="text-purple-400">C:\\Users\\usuario\\projetos\\hello-mcp</code> no Windows. Um caminho errado é a causa número 1 de "server nêo aparece no Claude" — verifique com cuidado!
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -374,7 +374,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Se a tool não aparecer no Claude Desktop, verifique: <strong class="text-neutral-100">(1)</strong> o caminho no config.json está correto e absoluto; <strong class="text-neutral-100">(2)</strong> o uv está instalado e acessível; <strong class="text-neutral-100">(3)</strong> o Claude Desktop foi reiniciado; <strong class="text-neutral-100">(4)</strong> o arquivo server.py não tem erros de sintaxe. Você pode testar o server manualmente com <code class="text-purple-400">uv run server.py</code> no terminal — se der erro, o problema está no código.
+          Se a tool nêo aparecer no Claude Desktop, verifique: <strong class="text-neutral-100">(1)</strong> o caminho no config.json está correto e absoluto; <strong class="text-neutral-100">(2)</strong> o uv está instalado e acessível; <strong class="text-neutral-100">(3)</strong> o Claude Desktop foi reiniciado; <strong class="text-neutral-100">(4)</strong> o arquivo server.py nêo tem erros de sintaxe. Você pode testar o server manualmente com <code class="text-purple-400">uv run server.py</code> no terminal — se der erro, o problema está no código.
         </p>
 </div>
 <!-- Timeline -->
@@ -394,7 +394,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 2</span>
-<p class="text-neutral-300 text-sm mt-1">Verifique se o ícone de ferramentas (martelo) aparece — ele indica que MCP Servers estão conectados.</p>
+<p class="text-neutral-300 text-sm mt-1">Verifique se o ícone de ferramentas (martelo) aparece — ele indica que MCP Servers estêo conectados.</p>
 </div>
 </div>
 <div class="relative">
@@ -408,7 +408,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 4</span>
-<p class="text-neutral-300 text-sm mt-1">O Claude pedirá permissão para usar a tool "hello" — clique em "Allow" para autorizar.</p>
+<p class="text-neutral-300 text-sm mt-1">O Claude pedirá permissêo para usar a tool "hello" — clique em "Allow" para autorizar.</p>
 </div>
 </div>
 <div class="relative">
@@ -430,7 +430,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Agora que o server funciona, vamos voltar ao código e destrinchar cada linha em detalhe. Entender o "porquê" de cada elemento é o que separa copiar código de compreender código. Cada linha do Hello World tem uma função precisa no funcionamento do MCP Server, e nenhuma é supérflua.
+        Agora que o server funciona, vamos voltar ao código e destrinchar cada linha em detalhe. Entender o "porquê" de cada elemento é o que separa copiar código de compreender código. Cada linha do Hello World tem uma funçêo precisa no funcionamento do MCP Server, e nenhuma é supérflua.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -441,7 +441,7 @@
 <ul class="space-y-3">
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">Import:</span>
-<span><code class="text-purple-400">from fastmcp import FastMCP</code> — traz o framework para o código. Sem isso, Python não sabe o que é FastMCP.</span>
+<span><code class="text-purple-400">from fastmcp import FastMCP</code> — traz o framework para o código. Sem isso, Python nêo sabe o que é FastMCP.</span>
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">Instância:</span>
@@ -449,11 +449,11 @@
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">Decorator:</span>
-<span><code class="text-purple-400">@mcp.tool()</code> — registra a função como uma tool MCP. Sem o decorator, é apenas uma função Python normal.</span>
+<span><code class="text-purple-400">@mcp.tool()</code> — registra a funçêo como uma tool MCP. Sem o decorator, é apenas uma funçêo Python normal.</span>
 </li>
 <li class="flex items-start gap-3">
-<span class="text-purple-400 font-bold shrink-0">Função:</span>
-<span><code class="text-purple-400">def hello(nome: str) -&gt; str</code> — a lógica da tool. O nome da função vira o nome da tool.</span>
+<span class="text-purple-400 font-bold shrink-0">Funçêo:</span>
+<span><code class="text-purple-400">def hello(nome: str) -&gt; str</code> — a lógica da tool. O nome da funçêo vira o nome da tool.</span>
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">Type hints:</span>
@@ -461,7 +461,7 @@
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">Docstring:</span>
-<span><code class="text-purple-400">"""Diz olá para a pessoa informada."""</code> — vira a descrição da tool que o modelo lê para decidir quando usá-la.</span>
+<span><code class="text-purple-400">"""Diz olá para a pessoa informada."""</code> — vira a descriçêo da tool que o modelo lê para decidir quando usá-la.</span>
 </li>
 </ul>
 </div>
@@ -472,7 +472,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Cada elemento do código tem um mapeamento direto no protocolo MCP: o <strong class="text-neutral-100">nome da função</strong> vira o campo <code class="text-purple-400">name</code> da tool; os <strong class="text-neutral-100">type hints</strong> viram o <code class="text-purple-400">inputSchema</code> (JSON Schema); a <strong class="text-neutral-100">docstring</strong> vira o campo <code class="text-purple-400">description</code>; e o <strong class="text-neutral-100">retorno</strong> vira o <code class="text-purple-400">content</code> da resposta. O FastMCP faz essa tradução automaticamente — você escreve Python idiomático, e o framework gera o protocolo MCP correto.
+          Cada elemento do código tem um mapeamento direto no protocolo MCP: o <strong class="text-neutral-100">nome da funçêo</strong> vira o campo <code class="text-purple-400">name</code> da tool; os <strong class="text-neutral-100">type hints</strong> viram o <code class="text-purple-400">inputSchema</code> (JSON Schema); a <strong class="text-neutral-100">docstring</strong> vira o campo <code class="text-purple-400">description</code>; e o <strong class="text-neutral-100">retorno</strong> vira o <code class="text-purple-400">content</code> da resposta. O FastMCP faz essa traduçêo automaticamente — você escreve Python idiomático, e o framework gera o protocolo MCP correto.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -481,7 +481,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Experimente mudar coisas e ver o que acontece: <strong class="text-neutral-100">mude a docstring</strong> e veja como o Claude descreve a tool; <strong class="text-neutral-100">adicione um segundo parâmetro</strong> e veja o Claude pedir as informações extras; <strong class="text-neutral-100">mude o nome da função</strong> e veja o novo nome aparecer no Claude. Essa experimentação ativa é a melhor forma de internalizar como cada parte do código se conecta com o comportamento do MCP Server.
+          Experimente mudar coisas e ver o que acontece: <strong class="text-neutral-100">mude a docstring</strong> e veja como o Claude descreve a tool; <strong class="text-neutral-100">adicione um segundo parâmetro</strong> e veja o Claude pedir as informações extras; <strong class="text-neutral-100">mude o nome da funçêo</strong> e veja o novo nome aparecer no Claude. Essa experimentaçêo ativa é a melhor forma de internalizar como cada parte do código se conecta com o comportamento do MCP Server.
         </p>
 </div>
 </section>
@@ -492,7 +492,7 @@
 <ul class="space-y-3 mb-8">
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Criamos o MCP Server mais simples possível: uma tool <code class="text-purple-400">hello</code> que retorna uma saudação personalizada.</span>
+<span>Criamos o MCP Server mais simples possível: uma tool <code class="text-purple-400">hello</code> que retorna uma saudaçêo personalizada.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -500,11 +500,11 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O código completo tem ~10 linhas: import, instância, decorator, função com type hints e docstring, e ponto de entrada.</span>
+<span>O código completo tem ~10 linhas: import, instância, decorator, funçêo com type hints e docstring, e ponto de entrada.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>A configuração no Claude Desktop usa o <code class="text-purple-400">claude_desktop_config.json</code> com caminho absoluto obrigatório.</span>
+<span>A configuraçêo no Claude Desktop usa o <code class="text-purple-400">claude_desktop_config.json</code> com caminho absoluto obrigatório.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -512,7 +512,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Cada linha do código mapeia diretamente para elementos do protocolo MCP: nome, schema, descrição e resposta.</span>
+<span>Cada linha do código mapeia diretamente para elementos do protocolo MCP: nome, schema, descriçêo e resposta.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">

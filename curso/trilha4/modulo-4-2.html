@@ -149,7 +149,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O <strong class="text-neutral-100">SQLite</strong> é um banco de dados relacional embutido — ele não precisa de um servidor separado rodando, nem de instalação ou configuração. O banco inteiro vive em um único arquivo <code class="text-amber-400">.db</code>. Python já vem com o módulo <code class="text-amber-400">sqlite3</code> na biblioteca padrão, o que significa zero dependências externas. É a escolha perfeita para aprendizado e projetos locais.
+        O <strong class="text-neutral-100">SQLite</strong> é um banco de dados relacional embutido — ele nêo precisa de um servidor separado rodando, nem de instalaçêo ou configuraçêo. O banco inteiro vive em um único arquivo <code class="text-amber-400">.db</code>. Python já vem com o módulo <code class="text-amber-400">sqlite3</code> na biblioteca padrêo, o que significa zero dependências externas. É a escolha perfeita para aprendizado e projetos locais.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -157,7 +157,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O SQLite é um banco de dados <strong class="text-neutral-100">serverless</strong> — diferente do PostgreSQL ou MySQL, ele não roda como um serviço separado. Basta fazer <code class="text-amber-400">import sqlite3</code> e usar <code class="text-amber-400">sqlite3.connect("meu_banco.db")</code> para criar ou abrir um banco. Todas as operações SQL funcionam normalmente: CREATE TABLE, INSERT, SELECT, UPDATE, DELETE. O arquivo <code class="text-amber-400">.db</code> é portátil — você pode copiar, versionar e compartilhar. Para nosso MCP Server, isso significa que não precisamos configurar nenhuma infraestrutura extra.
+          O SQLite é um banco de dados <strong class="text-neutral-100">serverless</strong> — diferente do PostgreSQL ou MySQL, ele nêo roda como um serviço separado. Basta fazer <code class="text-amber-400">import sqlite3</code> e usar <code class="text-amber-400">sqlite3.connect("meu_banco.db")</code> para criar ou abrir um banco. Todas as operações SQL funcionam normalmente: CREATE TABLE, INSERT, SELECT, UPDATE, DELETE. O arquivo <code class="text-amber-400">.db</code> é portátil — você pode copiar, versionar e compartilhar. Para nosso MCP Server, isso significa que nêo precisamos configurar nenhuma infraestrutura extra.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -196,7 +196,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tabela <strong class="text-neutral-100">produtos</strong> terá 5 colunas: <code class="text-amber-400">id</code> (INTEGER PRIMARY KEY AUTOINCREMENT), <code class="text-amber-400">nome</code> (TEXT NOT NULL), <code class="text-amber-400">preco</code> (REAL NOT NULL), <code class="text-amber-400">categoria</code> (TEXT NOT NULL) e <code class="text-amber-400">estoque</code> (INTEGER DEFAULT 0). O SQL de criação: <code class="text-amber-400">CREATE TABLE IF NOT EXISTS produtos (...)</code>. Use <code class="text-amber-400">IF NOT EXISTS</code> para que o script possa rodar múltiplas vezes sem erro. Insira pelo menos 10 produtos de exemplo com categorias variadas (Eletrônicos, Livros, Roupas, etc.) para que as consultas sejam interessantes.
+          A tabela <strong class="text-neutral-100">produtos</strong> terá 5 colunas: <code class="text-amber-400">id</code> (INTEGER PRIMARY KEY AUTOINCREMENT), <code class="text-amber-400">nome</code> (TEXT NOT NULL), <code class="text-amber-400">preco</code> (REAL NOT NULL), <code class="text-amber-400">categoria</code> (TEXT NOT NULL) e <code class="text-amber-400">estoque</code> (INTEGER DEFAULT 0). O SQL de criaçêo: <code class="text-amber-400">CREATE TABLE IF NOT EXISTS produtos (...)</code>. Use <code class="text-amber-400">IF NOT EXISTS</code> para que o script possa rodar múltiplas vezes sem erro. Insira pelo menos 10 produtos de exemplo com categorias variadas (Eletrônicos, Livros, Roupas, etc.) para que as consultas sejam interessantes.
         </p>
 </div>
 <!-- Timeline -->
@@ -209,7 +209,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Passo 1: Criar o script</span>
-<p class="text-neutral-300 text-sm mt-1">Crie um arquivo criar_banco.py que importa sqlite3 e define a função de inicialização do banco com a tabela produtos.</p>
+<p class="text-neutral-300 text-sm mt-1">Crie um arquivo criar_banco.py que importa sqlite3 e define a funçêo de inicializaçêo do banco com a tabela produtos.</p>
 </div>
 </div>
 <div class="relative">
@@ -234,7 +234,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sempre use <code class="text-amber-400">conn.commit()</code> após operações de escrita (INSERT, UPDATE, DELETE) e <code class="text-amber-400">conn.close()</code> ao finalizar. Use o gerenciador de contexto <code class="text-amber-400">with sqlite3.connect("banco.db") as conn:</code> para garantir que a conexão seja fechada automaticamente mesmo se ocorrer um erro. Isso previne corrupção de dados.
+          Sempre use <code class="text-amber-400">conn.commit()</code> após operações de escrita (INSERT, UPDATE, DELETE) e <code class="text-amber-400">conn.close()</code> ao finalizar. Use o gerenciador de contexto <code class="text-amber-400">with sqlite3.connect("banco.db") as conn:</code> para garantir que a conexêo seja fechada automaticamente mesmo se ocorrer um erro. Isso previne corrupçêo de dados.
         </p>
 </div>
 </section>
@@ -247,7 +247,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A tool de consulta é o coração do nosso Consultor de Banco de Dados. O usuário descreve o que quer saber em linguagem natural — "quais produtos custam mais de R$50?" — e o Claude traduz isso em uma chamada à tool. A tool recebe uma descrição da consulta, monta o SQL SELECT apropriado e retorna os resultados formatados.
+        A tool de consulta é o coraçêo do nosso Consultor de Banco de Dados. O usuário descreve o que quer saber em linguagem natural — "quais produtos custam mais de R$50?" — e o Claude traduz isso em uma chamada à tool. A tool recebe uma descriçêo da consulta, monta o SQL SELECT apropriado e retorna os resultados formatados.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -255,7 +255,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">consultar(query_descricao: str)</code> recebe uma descrição em linguagem natural do que o usuário quer consultar. Uma abordagem segura é oferecer <strong class="text-neutral-100">consultas predefinidas</strong>: listar todos os produtos, filtrar por categoria, buscar por faixa de preço, verificar estoque. Para cada tipo de consulta, a tool monta um SQL SELECT seguro com parâmetros. Os resultados são formatados como uma tabela legível com nome, preço, categoria e estoque de cada produto encontrado.
+          A tool <code class="text-amber-400">consultar(query_descricao: str)</code> recebe uma descriçêo em linguagem natural do que o usuário quer consultar. Uma abordagem segura é oferecer <strong class="text-neutral-100">consultas predefinidas</strong>: listar todos os produtos, filtrar por categoria, buscar por faixa de preço, verificar estoque. Para cada tipo de consulta, a tool monta um SQL SELECT seguro com parâmetros. Os resultados sêo formatados como uma tabela legível com nome, preço, categoria e estoque de cada produto encontrado.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -267,7 +267,7 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Concatenar input do usuário direto no SQL</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">f"SELECT * WHERE nome = '{input}'"</code></li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Executar SQL arbitrário sem validação</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Executar SQL arbitrário sem validaçêo</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Confiar que o modelo sempre gera SQL seguro</li>
 </ul>
 </div>
@@ -293,7 +293,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Além de consultar, nosso servidor também vai permitir que o Claude <strong class="text-neutral-100">insira novos produtos</strong> e <strong class="text-neutral-100">atualize dados existentes</strong>. Essas tools de escrita precisam de validação rigorosa dos dados antes de executar qualquer operação no banco, e devem sempre confirmar o resultado da operação.
+        Além de consultar, nosso servidor também vai permitir que o Claude <strong class="text-neutral-100">insira novos produtos</strong> e <strong class="text-neutral-100">atualize dados existentes</strong>. Essas tools de escrita precisam de validaçêo rigorosa dos dados antes de executar qualquer operaçêo no banco, e devem sempre confirmar o resultado da operaçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -301,7 +301,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">inserir_produto(nome: str, preco: float, categoria: str, estoque: int = 0)</code> valida que o preço é positivo e o nome não está vazio, depois executa um INSERT parametrizado. A tool <code class="text-amber-400">atualizar_produto(id: int, nome: str = None, preco: float = None, categoria: str = None, estoque: int = None)</code> busca o produto pelo ID, atualiza apenas os campos fornecidos e confirma a operação. Ambas usam <code class="text-amber-400">conn.commit()</code> para persistir as mudanças e retornam uma mensagem clara de sucesso ou erro.
+          A tool <code class="text-amber-400">inserir_produto(nome: str, preco: float, categoria: str, estoque: int = 0)</code> valida que o preço é positivo e o nome nêo está vazio, depois executa um INSERT parametrizado. A tool <code class="text-amber-400">atualizar_produto(id: int, nome: str = None, preco: float = None, categoria: str = None, estoque: int = None)</code> busca o produto pelo ID, atualiza apenas os campos fornecidos e confirma a operaçêo. Ambas usam <code class="text-amber-400">conn.commit()</code> para persistir as mudanças e retornam uma mensagem clara de sucesso ou erro.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -310,7 +310,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sempre valide os dados <strong class="text-neutral-100">antes</strong> de executar o SQL. Verifique: preço é maior que zero? Nome não está vazio? ID existe no banco? Estoque não é negativo? Essas validações simples evitam dados inconsistentes e retornam mensagens de erro úteis para o Claude apresentar ao usuário, em vez de exceções crípticas do banco de dados.
+          Sempre valide os dados <strong class="text-neutral-100">antes</strong> de executar o SQL. Verifique: preço é maior que zero? Nome nêo está vazio? ID existe no banco? Estoque nêo é negativo? Essas validações simples evitam dados inconsistentes e retornam mensagens de erro úteis para o Claude apresentar ao usuário, em vez de exceções crípticas do banco de dados.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -319,7 +319,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Operações de <strong class="text-neutral-100">escrita no banco</strong> (INSERT, UPDATE, DELETE) são irreversíveis após o commit. Diferente do JSON onde você pode facilmente restaurar uma versão anterior, alterações no SQLite são permanentes. Considere implementar um mecanismo de confirmação: a tool primeiro mostra o que vai fazer e só executa quando o usuário confirma. Para projetos de aprendizado isso não é crítico, mas é uma boa prática.
+          Operações de <strong class="text-neutral-100">escrita no banco</strong> (INSERT, UPDATE, DELETE) sêo irreversíveis após o commit. Diferente do JSON onde você pode facilmente restaurar uma versêo anterior, alterações no SQLite sêo permanentes. Considere implementar um mecanismo de confirmaçêo: a tool primeiro mostra o que vai fazer e só executa quando o usuário confirma. Para projetos de aprendizado isso nêo é crítico, mas é uma boa prática.
         </p>
 </div>
 </section>
@@ -340,16 +340,16 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">SQL Injection</strong> ocorre quando dados fornecidos pelo usuário (ou pelo modelo) são inseridos diretamente em uma string SQL, permitindo que comandos SQL maliciosos sejam executados. Em um MCP Server, o modelo de IA recebe input do usuário e o repassa para as tools — se o modelo enviar algo como <code class="text-amber-400">"; DROP TABLE produtos; --</code> como nome de produto, e a tool concatenar isso diretamente no SQL, o resultado é a destruição da tabela inteira. A defesa é simples e absoluta: <strong class="text-neutral-100">SEMPRE usar queries parametrizadas</strong> com placeholders <code class="text-amber-400">?</code>.
+<strong class="text-neutral-100">SQL Injection</strong> ocorre quando dados fornecidos pelo usuário (ou pelo modelo) sêo inseridos diretamente em uma string SQL, permitindo que comandos SQL maliciosos sejam executados. Em um MCP Server, o modelo de IA recebe input do usuário e o repassa para as tools — se o modelo enviar algo como <code class="text-amber-400">"; DROP TABLE produtos; --</code> como nome de produto, e a tool concatenar isso diretamente no SQL, o resultado é a destruiçêo da tabela inteira. A defesa é simples e absoluta: <strong class="text-neutral-100">SEMPRE usar queries parametrizadas</strong> com placeholders <code class="text-amber-400">?</code>.
         </p>
 </div>
 <!-- Box Alerta -->
 <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
 <div class="flex items-center gap-2 mb-3">
-<span class="text-red-400 font-semibold text-sm">🚨 CRÍTICO — Leia com Atenção</span>
+<span class="text-red-400 font-semibold text-sm">🚨 CRÍTICO — Leia com Atençêo</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">NUNCA</strong>, em nenhuma circunstância, concatene strings diretamente em queries SQL. Não importa se "parece seguro" ou se "o modelo não enviaria isso" — modelos de IA são imprevisíveis e podem gerar qualquer texto, incluindo payloads de SQL Injection. Um MCP Server com SQL Injection é uma <strong class="text-neutral-100">porta aberta</strong> para destruição de dados. Sempre use <code class="text-amber-400">cursor.execute("SELECT * FROM produtos WHERE nome = ?", (nome,))</code> — o placeholder <code class="text-amber-400">?</code> garante que o valor é tratado como dado, nunca como código SQL.
+<strong class="text-neutral-100">NUNCA</strong>, em nenhuma circunstância, concatene strings diretamente em queries SQL. Nêo importa se "parece seguro" ou se "o modelo nêo enviaria isso" — modelos de IA sêo imprevisíveis e podem gerar qualquer texto, incluindo payloads de SQL Injection. Um MCP Server com SQL Injection é uma <strong class="text-neutral-100">porta aberta</strong> para destruiçêo de dados. Sempre use <code class="text-amber-400">cursor.execute("SELECT * FROM produtos WHERE nome = ?", (nome,))</code> — o placeholder <code class="text-amber-400">?</code> garante que o valor é tratado como dado, nunca como código SQL.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -362,7 +362,7 @@
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">f"SELECT * FROM produtos WHERE nome = '{nome}'"</code></li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">"INSERT INTO produtos VALUES ('" + nome + "')"</code></li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span><code class="text-red-400">query = "DELETE WHERE id = " + str(id)</code></li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Qualquer forma de concatenação de strings com SQL</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Qualquer forma de concatenaçêo de strings com SQL</li>
 </ul>
 </div>
 <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
@@ -395,7 +395,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Configure o servidor no Claude Desktop e comece a conversar naturalmente. O Claude analisará cada pedido, decidirá qual tool chamar e com quais parâmetros, executará a consulta no banco e apresentará os resultados em linguagem natural. Você não precisa saber SQL — o modelo faz a tradução para você. Tudo graças ao MCP que conecta a capacidade linguística do modelo à potência do banco de dados.
+          Configure o servidor no Claude Desktop e comece a conversar naturalmente. O Claude analisará cada pedido, decidirá qual tool chamar e com quais parâmetros, executará a consulta no banco e apresentará os resultados em linguagem natural. Você nêo precisa saber SQL — o modelo faz a traduçêo para você. Tudo graças ao MCP que conecta a capacidade linguística do modelo à potência do banco de dados.
         </p>
 </div>
 <!-- Timeline -->
@@ -414,7 +414,7 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Inserção de produto</span>
+<span class="text-amber-400 font-bold text-sm">Inserçêo de produto</span>
 <p class="text-neutral-300 text-sm mt-1">"Adicione um produto chamado 'Teclado Mecânico' na categoria Eletrônicos, custando R$299,90 com 15 unidades em estoque." — Deve chamar inserir_produto.</p>
 </div>
 </div>
@@ -428,7 +428,7 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Atualização</span>
+<span class="text-amber-400 font-bold text-sm">Atualizaçêo</span>
 <p class="text-neutral-300 text-sm mt-1">"Atualize o preço do produto ID 3 para R$89,90." — Deve chamar atualizar_produto com os parâmetros corretos.</p>
 </div>
 </div>
@@ -440,7 +440,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Experimente perguntas cada vez mais complexas para testar os limites do seu servidor: "Qual a média de preço dos produtos da categoria Eletrônicos?", "Quais produtos têm menos de 5 unidades em estoque?", "Compare o preço médio entre categorias". Cada pergunta revelará se suas tools são expressivas o suficiente ou se precisam de mais funcionalidades. Isso é <strong class="text-neutral-100">desenvolvimento iterativo</strong> na prática.
+          Experimente perguntas cada vez mais complexas para testar os limites do seu servidor: "Qual a média de preço dos produtos da categoria Eletrônicos?", "Quais produtos têm menos de 5 unidades em estoque?", "Compare o preço médio entre categorias". Cada pergunta revelará se suas tools sêo expressivas o suficiente ou se precisam de mais funcionalidades. Isso é <strong class="text-neutral-100">desenvolvimento iterativo</strong> na prática.
         </p>
 </div>
 </section>
@@ -463,7 +463,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Adicionamos tools de inserção e atualização com validação de dados antes da escrita.</span>
+<span>Adicionamos tools de inserçêo e atualizaçêo com validaçêo de dados antes da escrita.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>

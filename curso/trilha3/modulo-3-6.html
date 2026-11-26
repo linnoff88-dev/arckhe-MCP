@@ -145,11 +145,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">📦 O Que São Resources no Código</h2>
+<h2 class="text-2xl font-bold text-neutral-100">📦 O Que Sêo Resources no Código</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Até agora trabalhamos com <strong class="text-neutral-100">tools</strong> — funções que executam ações e retornam resultados. Agora vamos conhecer os <strong class="text-neutral-100">resources</strong>: dados que o modelo pode ler, mas não modificar. Enquanto tools são "verbos" (fazer algo), resources são "substantivos" (acessar algo). Essa distinção é fundamental na arquitetura MCP.
+        Até agora trabalhamos com <strong class="text-neutral-100">tools</strong> — funções que executam ações e retornam resultados. Agora vamos conhecer os <strong class="text-neutral-100">resources</strong>: dados que o modelo pode ler, mas nêo modificar. Enquanto tools sêo "verbos" (fazer algo), resources sêo "substantivos" (acessar algo). Essa distinçêo é fundamental na arquitetura MCP.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -163,10 +163,10 @@
 <p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"config://app"</span>)</p>
 <p><span class="text-purple-400">def</span> <span class="text-blue-400">get_config</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
 <p> <span class="text-green-400">"""Retorna as configurações do app."""</span></p>
-<p> <span class="text-purple-400">return</span> <span class="text-green-400">"versão: 1.0, modo: produção"</span></p>
+<p> <span class="text-purple-400">return</span> <span class="text-green-400">"versêo: 1.0, modo: produçêo"</span></p>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A diferença fundamental: <strong class="text-neutral-100">tools executam ações</strong> (enviar email, calcular, consultar API), enquanto <strong class="text-neutral-100">resources expõem dados</strong> (configurações, documentação, status). O modelo lê resources para obter contexto, mas não pode usá-los para modificar nada.
+          A diferença fundamental: <strong class="text-neutral-100">tools executam ações</strong> (enviar email, calcular, consultar API), enquanto <strong class="text-neutral-100">resources expõem dados</strong> (configurações, documentaçêo, status). O modelo lê resources para obter contexto, mas nêo pode usá-los para modificar nada.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -175,7 +175,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense em resources como <strong class="text-neutral-100">arquivos em um sistema de arquivos virtual</strong>. Cada resource tem um endereço (URI) e um conteúdo. O modelo pode "abrir e ler" esses arquivos, mas não pode "escrever" neles. Use resources para tudo que o modelo precisa saber mas não precisa fazer: configurações, documentação, constantes, dados de referência.
+          Pense em resources como <strong class="text-neutral-100">arquivos em um sistema de arquivos virtual</strong>. Cada resource tem um endereço (URI) e um conteúdo. O modelo pode "abrir e ler" esses arquivos, mas nêo pode "escrever" neles. Use resources para tudo que o modelo precisa saber mas nêo precisa fazer: configurações, documentaçêo, constantes, dados de referência.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -213,7 +213,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Resources estáticos retornam dados fixos que não mudam entre chamadas — configurações do aplicativo, documentação, constantes, regras de negócio. São os mais simples de implementar e os mais comuns em servers MCP. O modelo pode acessá-los a qualquer momento para obter informações de referência.
+        Resources estáticos retornam dados fixos que nêo mudam entre chamadas — configurações do aplicativo, documentaçêo, constantes, regras de negócio. Sêo os mais simples de implementar e os mais comuns em servers MCP. O modelo pode acessá-los a qualquer momento para obter informações de referência.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -226,15 +226,15 @@
 <p> <span class="text-green-400">"""Configurações do aplicativo."""</span></p>
 <p> <span class="text-purple-400">return</span> <span class="text-green-400">"""</span></p>
 <p><span class="text-green-400">    Aplicativo: Meu Server MCP</span></p>
-<p><span class="text-green-400">    Versão: 1.0.0</span></p>
-<p><span class="text-green-400">    Ambiente: produção</span></p>
+<p><span class="text-green-400">    Versêo: 1.0.0</span></p>
+<p><span class="text-green-400">    Ambiente: produçêo</span></p>
 <p><span class="text-green-400">    Max conexões: 100</span></p>
-<p><span class="text-green-400">    Timeout padrão: 30s</span></p>
+<p><span class="text-green-400">    Timeout padrêo: 30s</span></p>
 <p><span class="text-green-400">    """</span></p>
 <br/>
 <p><span class="text-purple-400">@mcp.resource</span>(<span class="text-green-400">"docs://ajuda"</span>)</p>
 <p><span class="text-purple-400">def</span> <span class="text-blue-400">get_help</span>() -&gt; <span class="text-yellow-400">str</span>:</p>
-<p> <span class="text-green-400">"""Documentação de ajuda."""</span></p>
+<p> <span class="text-green-400">"""Documentaçêo de ajuda."""</span></p>
 <p> <span class="text-purple-400">return</span> <span class="text-green-400">"Use as tools disponíveis para calcular e consultar clima."</span></p>
 </div>
 </div>
@@ -244,7 +244,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Resources estáticos são ótimos para dar <strong class="text-neutral-100">contexto ao modelo</strong>. Por exemplo, um resource com as regras de negócio da empresa permite que o modelo responda perguntas sobre políticas sem precisar de uma tool. Um resource com a documentação do sistema ajuda o modelo a guiar o usuário. Pense nos resources como o "manual de instruções" que o modelo pode consultar.
+          Resources estáticos sêo ótimos para dar <strong class="text-neutral-100">contexto ao modelo</strong>. Por exemplo, um resource com as regras de negócio da empresa permite que o modelo responda perguntas sobre políticas sem precisar de uma tool. Um resource com a documentaçêo do sistema ajuda o modelo a guiar o usuário. Pense nos resources como o "manual de instruções" que o modelo pode consultar.
         </p>
 </div>
 </section>
@@ -257,7 +257,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Diferente dos estáticos, resources dinâmicos retornam dados que mudam a cada acesso. A data e hora atual, o status do sistema, contadores, dados de monitoramento — tudo isso é dinâmico. A função do resource é chamada cada vez que o modelo acessa aquele URI, garantindo dados sempre atualizados.
+        Diferente dos estáticos, resources dinâmicos retornam dados que mudam a cada acesso. A data e hora atual, o status do sistema, contadores, dados de monitoramento — tudo isso é dinâmico. A funçêo do resource é chamada cada vez que o modelo acessa aquele URI, garantindo dados sempre atualizados.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -301,14 +301,14 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 2</span>
-<p class="text-neutral-300 text-sm mt-1">O FastMCP recebe a requisição e executa a função associada àquela URI naquele momento.</p>
+<p class="text-neutral-300 text-sm mt-1">O FastMCP recebe a requisiçêo e executa a funçêo associada àquela URI naquele momento.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 3</span>
-<p class="text-neutral-300 text-sm mt-1">A função retorna o dado atualizado (ex: "14:35:22") e o modelo usa na sua resposta ao usuário.</p>
+<p class="text-neutral-300 text-sm mt-1">A funçêo retorna o dado atualizado (ex: "14:35:22") e o modelo usa na sua resposta ao usuário.</p>
 </div>
 </div>
 </div>
@@ -319,7 +319,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Resources dinâmicos são particularmente úteis em cenários de <strong class="text-neutral-100">monitoramento e observabilidade</strong>. Um server MCP pode expor resources com métricas do sistema, status de serviços, logs recentes e dashboards de saúde — permitindo que o modelo responda perguntas como "Como está a saúde do sistema?" ou "Qual o uso de memória atual?" sem precisar de tools específicas.
+          Resources dinâmicos sêo particularmente úteis em cenários de <strong class="text-neutral-100">monitoramento e observabilidade</strong>. Um server MCP pode expor resources com métricas do sistema, status de serviços, logs recentes e dashboards de saúde — permitindo que o modelo responda perguntas como "Como está a saúde do sistema?" ou "Qual o uso de memória atual?" sem precisar de tools específicas.
         </p>
 </div>
 </section>
@@ -332,7 +332,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Cada resource é identificado por uma <strong class="text-neutral-100">URI</strong> (Uniform Resource Identifier) — um endereço único que segue o padrão <code class="text-purple-400">tipo://caminho</code>. O "tipo" (scheme) indica a categoria do dado e o "caminho" identifica o recurso específico. URIs bem organizadas facilitam a descoberta e o uso dos resources pelo modelo.
+        Cada resource é identificado por uma <strong class="text-neutral-100">URI</strong> (Uniform Resource Identifier) — um endereço único que segue o padrêo <code class="text-purple-400">tipo://caminho</code>. O "tipo" (scheme) indica a categoria do dado e o "caminho" identifica o recurso específico. URIs bem organizadas facilitam a descoberta e o uso dos resources pelo modelo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -356,7 +356,7 @@
 <span class="text-purple-400">status://</span>health <span class="text-neutral-500">→ status de saúde do sistema</span>
 </div>
 <div class="bg-dark-800 rounded-lg p-3 border border-dark-700 font-mono">
-<span class="text-purple-400">docs://</span>api/endpoints <span class="text-neutral-500">→ documentação de endpoints</span>
+<span class="text-purple-400">docs://</span>api/endpoints <span class="text-neutral-500">→ documentaçêo de endpoints</span>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mt-4">
@@ -424,7 +424,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A listagem de resources funciona como um <strong class="text-neutral-100">"catálogo"</strong> do server. O client MCP pode pedir a lista completa de resources antes de usar qualquer um deles. Isso permite que o modelo saiba exatamente quais dados estão disponíveis e como acessá-los. Mantenha suas URIs e descrições (docstrings) organizadas para facilitar a descoberta.
+          A listagem de resources funciona como um <strong class="text-neutral-100">"catálogo"</strong> do server. O client MCP pode pedir a lista completa de resources antes de usar qualquer um deles. Isso permite que o modelo saiba exatamente quais dados estêo disponíveis e como acessá-los. Mantenha suas URIs e descrições (docstrings) organizadas para facilitar a descoberta.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -433,7 +433,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Cuidado com o que você expõe como resource. Todos os resources registrados ficam visíveis para o client MCP. <strong class="text-neutral-100">Nunca exponha dados sensíveis</strong> como senhas, tokens de API, chaves privadas ou dados pessoais sem proteção adequada. Trate resources como endpoints públicos — se um dado não deve ser lido pelo modelo, não crie um resource para ele.
+          Cuidado com o que você expõe como resource. Todos os resources registrados ficam visíveis para o client MCP. <strong class="text-neutral-100">Nunca exponha dados sensíveis</strong> como senhas, tokens de API, chaves privadas ou dados pessoais sem proteçêo adequada. Trate resources como endpoints públicos — se um dado nêo deve ser lido pelo modelo, nêo crie um resource para ele.
         </p>
 </div>
 </section>
@@ -446,7 +446,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Vamos testar os resources que criamos no Claude Desktop. O modelo deve ser capaz de listar os resources disponíveis e ler o conteúdo de cada um. Diferente das tools (que o modelo chama ativamente), resources são dados que o modelo pode acessar quando precisa de contexto para responder uma pergunta.
+        Vamos testar os resources que criamos no Claude Desktop. O modelo deve ser capaz de listar os resources disponíveis e ler o conteúdo de cada um. Diferente das tools (que o modelo chama ativamente), resources sêo dados que o modelo pode acessar quando precisa de contexto para responder uma pergunta.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -459,7 +459,7 @@
 <ul class="space-y-2 text-neutral-300 text-sm">
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">1.</span>
-<span>"Quais configurações estão disponíveis?" — o modelo deve ler o resource <code class="text-purple-400">config://app</code>.</span>
+<span>"Quais configurações estêo disponíveis?" — o modelo deve ler o resource <code class="text-purple-400">config://app</code>.</span>
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">2.</span>
@@ -471,7 +471,7 @@
 </li>
 <li class="flex items-start gap-3">
 <span class="text-purple-400 font-bold shrink-0">4.</span>
-<span>"Me mostre a documentação de ajuda." — o modelo deve ler <code class="text-purple-400">docs://ajuda</code>.</span>
+<span>"Me mostre a documentaçêo de ajuda." — o modelo deve ler <code class="text-purple-400">docs://ajuda</code>.</span>
 </li>
 </ul>
 </div>
@@ -481,7 +481,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Uma boa prática é criar um resource <code class="text-purple-400">docs://ajuda</code> em todo server MCP que explique quais tools e resources estão disponíveis. Quando o usuário pergunta "O que você pode fazer?", o modelo lê esse resource e apresenta as capacidades do server de forma organizada. É como criar um <strong class="text-neutral-100">menu de ajuda integrado</strong>.
+          Uma boa prática é criar um resource <code class="text-purple-400">docs://ajuda</code> em todo server MCP que explique quais tools e resources estêo disponíveis. Quando o usuário pergunta "O que você pode fazer?", o modelo lê esse resource e apresenta as capacidades do server de forma organizada. É como criar um <strong class="text-neutral-100">menu de ajuda integrado</strong>.
         </p>
 </div>
 <!-- Timeline -->
@@ -521,11 +521,11 @@
 <ul class="space-y-3 mb-8">
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Resources são dados que o modelo lê — diferentes de tools que executam ações.</span>
+<span>Resources sêo dados que o modelo lê — diferentes de tools que executam ações.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Resources estáticos retornam dados fixos: configurações, documentação, constantes.</span>
+<span>Resources estáticos retornam dados fixos: configurações, documentaçêo, constantes.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -533,7 +533,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>URIs seguem o padrão scheme://path e devem ser claras, organizadas e descritivas.</span>
+<span>URIs seguem o padrêo scheme://path e devem ser claras, organizadas e descritivas.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>

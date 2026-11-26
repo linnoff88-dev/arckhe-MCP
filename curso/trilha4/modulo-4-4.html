@@ -4,7 +4,7 @@
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Módulo 4.4 — Integração com API REST | MCP — Do Zero ao Servidor</title>
+<title>Módulo 4.4 — Integraçêo com API REST | MCP — Do Zero ao Servidor</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
     tailwind.config = {
@@ -112,7 +112,7 @@
 <div class="bg-gradient-to-br from-amber-900/30 to-dark-800 border border-amber-500/30 rounded-2xl p-8 md:p-12">
 <span class="bg-amber-500/20 text-amber-400 text-xs font-bold px-3 py-1.5 rounded-full">MÓDULO 4.4</span>
 <h1 class="text-3xl md:text-4xl font-extrabold mt-5 mb-4 text-neutral-100">
-          🌐 Integração com API REST
+          🌐 Integraçêo com API REST
         </h1>
 <p class="text-neutral-400 text-lg leading-relaxed mb-8">
           Crie um MCP Server que consome a API do GitHub — listar repos, buscar issues e criar issues via Claude.
@@ -157,7 +157,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A API REST do GitHub está disponível em <strong class="text-neutral-100">api.github.com</strong>. Os principais endpoints que utilizaremos são: <strong class="text-neutral-100">GET /user/repos</strong> para listar seus repositórios, <strong class="text-neutral-100">GET /repos/{owner}/{repo}/issues</strong> para buscar issues de um repositório específico, e <strong class="text-neutral-100">POST /repos/{owner}/{repo}/issues</strong> para criar novas issues. Todas as respostas são em formato JSON, facilitando o parsing e a formatação dos dados. A API possui rate limits — 5.000 requests por hora com autenticação — que devem ser respeitados no seu servidor.
+          A API REST do GitHub está disponível em <strong class="text-neutral-100">api.github.com</strong>. Os principais endpoints que utilizaremos sêo: <strong class="text-neutral-100">GET /user/repos</strong> para listar seus repositórios, <strong class="text-neutral-100">GET /repos/{owner}/{repo}/issues</strong> para buscar issues de um repositório específico, e <strong class="text-neutral-100">POST /repos/{owner}/{repo}/issues</strong> para criar novas issues. Todas as respostas sêo em formato JSON, facilitando o parsing e a formataçêo dos dados. A API possui rate limits — 5.000 requests por hora com autenticaçêo — que devem ser respeitados no seu servidor.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -166,7 +166,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A API do GitHub processa mais de <strong class="text-neutral-100">bilhões de requests por dia</strong> e é usada por praticamente todas as ferramentas de desenvolvimento modernas — CI/CD, IDEs, bots, dashboards. Com autenticação via token, o rate limit sobe para <strong class="text-neutral-100">5.000 requests/hora</strong>, mais que suficiente para um MCP Server pessoal. Sem autenticação, o limite cai para apenas 60 requests/hora, tornando qualquer uso prático inviável.
+          A API do GitHub processa mais de <strong class="text-neutral-100">bilhões de requests por dia</strong> e é usada por praticamente todas as ferramentas de desenvolvimento modernas — CI/CD, IDEs, bots, dashboards. Com autenticaçêo via token, o rate limit sobe para <strong class="text-neutral-100">5.000 requests/hora</strong>, mais que suficiente para um MCP Server pessoal. Sem autenticaçêo, o limite cai para apenas 60 requests/hora, tornando qualquer uso prático inviável.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -175,7 +175,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Antes de escrever qualquer código, teste a API manualmente com <strong class="text-neutral-100">curl</strong> ou com ferramentas como Insomnia/Postman. Execute <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">curl https://api.github.com/users/{seu-usuario}/repos</code> para ver a estrutura do JSON retornado. Isso facilita muito a implementação das tools do MCP Server, pois você já saberá exatamente quais campos extrair e formatar.
+          Antes de escrever qualquer código, teste a API manualmente com <strong class="text-neutral-100">curl</strong> ou com ferramentas como Insomnia/Postman. Execute <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">curl https://api.github.com/users/{seu-usuario}/repos</code> para ver a estrutura do JSON retornado. Isso facilita muito a implementaçêo das tools do MCP Server, pois você já saberá exatamente quais campos extrair e formatar.
         </p>
 </div>
 </section>
@@ -184,7 +184,7 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">2</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🔑 Autenticação com Token</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🔑 Autenticaçêo com Token</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
@@ -218,7 +218,7 @@
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token hardcoded no código-fonte</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Commitar arquivo .env no repositório</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token com escopos excessivos (admin)</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token sem data de expiração</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Token sem data de expiraçêo</li>
 </ul>
 </div>
 <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
@@ -229,7 +229,7 @@
 <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Armazenar token em variável de ambiente</li>
 <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Adicionar .env ao .gitignore</li>
 <li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Usar escopos mínimos necessários</li>
-<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Definir data de expiração no token</li>
+<li class="flex items-start gap-2"><span class="text-amber-400 mt-0.5">•</span>Definir data de expiraçêo no token</li>
 </ul>
 </div>
 </div>
@@ -243,7 +243,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A primeira tool do nosso MCP Server GitHub será a listagem de repositórios. Usando o endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">GET /user/repos</code>, vamos buscar os repositórios do usuário autenticado, filtrar por visibilidade, ordenar por data de atualização e formatar os resultados de forma legível para o Claude apresentar ao usuário.
+        A primeira tool do nosso MCP Server GitHub será a listagem de repositórios. Usando o endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">GET /user/repos</code>, vamos buscar os repositórios do usuário autenticado, filtrar por visibilidade, ordenar por data de atualizaçêo e formatar os resultados de forma legível para o Claude apresentar ao usuário.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -266,7 +266,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
     for r in repos:
         stars = r["stargazers_count"]
         lang = r.get("language", "N/A")
-        lines.append(f"⭐ {stars} | {r['name']} ({lang}) — {r.get('description', 'Sem descrição')}")
+        lines.append(f"⭐ {stars} | {r['name']} ({lang}) — {r.get('description', 'Sem descriçêo')}")
     return "\n".join(lines)</code></pre>
 </div>
 </div>
@@ -276,7 +276,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Formate a saída de forma que o <strong class="text-neutral-100">Claude consiga interpretar facilmente</strong>. Inclua nome, descrição, linguagem principal e número de estrelas. Use parâmetros opcionais como <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">visibility</code> (all, public, private) para dar ao Claude flexibilidade na consulta. O parâmetro <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">sort=updated</code> garante que os repos mais recentes apareçam primeiro.
+          Formate a saída de forma que o <strong class="text-neutral-100">Claude consiga interpretar facilmente</strong>. Inclua nome, descriçêo, linguagem principal e número de estrelas. Use parâmetros opcionais como <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">visibility</code> (all, public, private) para dar ao Claude flexibilidade na consulta. O parâmetro <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">sort=updated</code> garante que os repos mais recentes apareçam primeiro.
         </p>
 </div>
 <!-- Timeline -->
@@ -296,14 +296,14 @@ async def list_repos(visibility: str = "all") -&gt; str:
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Passo 2</span>
-<p class="text-neutral-300 text-sm mt-1">O MCP Server faz GET /user/repos com o token de autenticação e recebe a lista de repositórios em JSON.</p>
+<p class="text-neutral-300 text-sm mt-1">O MCP Server faz GET /user/repos com o token de autenticaçêo e recebe a lista de repositórios em JSON.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Passo 3</span>
-<p class="text-neutral-300 text-sm mt-1">A tool formata os dados (nome, descrição, linguagem, stars) e retorna texto estruturado para o Claude apresentar.</p>
+<p class="text-neutral-300 text-sm mt-1">A tool formata os dados (nome, descriçêo, linguagem, stars) e retorna texto estruturado para o Claude apresentar.</p>
 </div>
 </div>
 </div>
@@ -338,7 +338,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar JSON bruto para o Claude</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar tratamento de repo inexistente</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não filtrar — retornar centenas de issues</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo filtrar — retornar centenas de issues</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Misturar issues e pull requests (PRs vêm no mesmo endpoint)</li>
 </ul>
 </div>
@@ -360,7 +360,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Um detalhe importante: o endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/repos/{owner}/{repo}/issues</code> retorna <strong class="text-neutral-100">tanto issues quanto pull requests</strong>. Para filtrar apenas issues reais, verifique se o campo <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">pull_request</code> está ausente no objeto. A API suporta paginação via parâmetros <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">page</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">per_page</code> (máximo 100 por página).
+          Um detalhe importante: o endpoint <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">/repos/{owner}/{repo}/issues</code> retorna <strong class="text-neutral-100">tanto issues quanto pull requests</strong>. Para filtrar apenas issues reais, verifique se o campo <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">pull_request</code> está ausente no objeto. A API suporta paginaçêo via parâmetros <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">page</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">per_page</code> (máximo 100 por página).
         </p>
 </div>
 </section>
@@ -373,7 +373,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A terceira tool é a mais poderosa — e a mais perigosa. Usando <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">POST /repos/{owner}/{repo}/issues</code>, o Claude poderá criar issues diretamente no seu repositório. Isso é uma ação de escrita, o que exige validação cuidadosa dos parâmetros e consciência de que estamos dando ao modelo a capacidade de modificar dados reais.
+        A terceira tool é a mais poderosa — e a mais perigosa. Usando <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">POST /repos/{owner}/{repo}/issues</code>, o Claude poderá criar issues diretamente no seu repositório. Isso é uma açêo de escrita, o que exige validaçêo cuidadosa dos parâmetros e consciência de que estamos dando ao modelo a capacidade de modificar dados reais.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -381,12 +381,12 @@ async def list_repos(visibility: str = "all") -&gt; str:
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-4">A tool de criar issue envia um POST com body JSON contendo <strong class="text-neutral-100">title</strong> (obrigatório) e <strong class="text-neutral-100">body</strong> (descrição, opcional mas recomendado). Valide que o título não esteja vazio e tenha comprimento razoável. Após a criação, retorne a URL da issue criada para que o usuário possa acessá-la diretamente:</p>
+<p class="mb-4">A tool de criar issue envia um POST com body JSON contendo <strong class="text-neutral-100">title</strong> (obrigatório) e <strong class="text-neutral-100">body</strong> (descriçêo, opcional mas recomendado). Valide que o título nêo esteja vazio e tenha comprimento razoável. Após a criaçêo, retorne a URL da issue criada para que o usuário possa acessá-la diretamente:</p>
 <pre class="bg-dark-900 border border-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">@server.tool()
 async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; str:
     """Cria uma nova issue em um repositório GitHub."""
     if not title.strip():
-        return "Erro: o título da issue não pode ser vazio."
+        return "Erro: o título da issue nêo pode ser vazio."
     async with httpx.AsyncClient() as client:
         resp = await client.post(
             f"https://api.github.com/repos/{owner}/{repo}/issues",
@@ -402,10 +402,10 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 <!-- Box Alerta -->
 <div class="bg-red-900/20 border border-red-500/30 rounded-xl p-6 mb-6">
 <div class="flex items-center gap-2 mb-3">
-<span class="text-red-400 font-semibold text-sm">🚨 Alerta — Ação Destrutiva</span>
+<span class="text-red-400 font-semibold text-sm">🚨 Alerta — Açêo Destrutiva</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Criar issues é uma <strong class="text-neutral-100">ação de escrita</strong> — ela modifica dados reais no seu GitHub. Diferente de listar ou buscar, essa tool tem efeitos colaterais permanentes. Considere adicionar uma confirmação antes de executar a criação, ou pelo menos logar cada issue criada. Em um ambiente corporativo, essa tool deve ter <strong class="text-neutral-100">controle de acesso rigoroso</strong> e audit trail completo.
+          Criar issues é uma <strong class="text-neutral-100">açêo de escrita</strong> — ela modifica dados reais no seu GitHub. Diferente de listar ou buscar, essa tool tem efeitos colaterais permanentes. Considere adicionar uma confirmaçêo antes de executar a criaçêo, ou pelo menos logar cada issue criada. Em um ambiente corporativo, essa tool deve ter <strong class="text-neutral-100">controle de acesso rigoroso</strong> e audit trail completo.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -414,7 +414,7 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sempre retorne a <strong class="text-neutral-100">URL da issue criada</strong> na resposta — isso permite que o Claude apresente um link clicável ao usuário. Valide os parâmetros antes de enviar o request: título não vazio, owner e repo no formato correto. Considere adicionar parâmetros opcionais como <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">labels</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">assignees</code> para criar issues mais completas.
+          Sempre retorne a <strong class="text-neutral-100">URL da issue criada</strong> na resposta — isso permite que o Claude apresente um link clicável ao usuário. Valide os parâmetros antes de enviar o request: título nêo vazio, owner e repo no formato correto. Considere adicionar parâmetros opcionais como <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">labels</code> e <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">assignees</code> para criar issues mais completas.
         </p>
 </div>
 </section>
@@ -423,11 +423,11 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">6</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🧪 Testando a Integração</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🧪 Testando a Integraçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com as três tools implementadas — listar repos, buscar issues e criar issues — é hora de testar a integração completa. Configure o server no Claude Desktop e experimente comandos em linguagem natural para verificar que tudo funciona corretamente. O Claude deve ser capaz de escolher a tool certa automaticamente baseado no seu pedido.
+        Com as três tools implementadas — listar repos, buscar issues e criar issues — é hora de testar a integraçêo completa. Configure o server no Claude Desktop e experimente comandos em linguagem natural para verificar que tudo funciona corretamente. O Claude deve ser capaz de escolher a tool certa automaticamente baseado no seu pedido.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -461,7 +461,7 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Teste 2 — Consulta</span>
-<p class="text-neutral-300 text-sm mt-1">Peça para buscar issues de um repositório real. Confirme que os números, títulos e labels estão corretos.</p>
+<p class="text-neutral-300 text-sm mt-1">Peça para buscar issues de um repositório real. Confirme que os números, títulos e labels estêo corretos.</p>
 </div>
 </div>
 <div class="relative">
@@ -475,7 +475,7 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Teste 4 — Erro</span>
-<p class="text-neutral-300 text-sm mt-1">Peça para buscar issues de um repositório que não existe. Verifique se o erro é tratado graciosamente.</p>
+<p class="text-neutral-300 text-sm mt-1">Peça para buscar issues de um repositório que nêo existe. Verifique se o erro é tratado graciosamente.</p>
 </div>
 </div>
 </div>
@@ -488,9 +488,9 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Testar apenas o "caminho feliz"</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar cenários de erro (repo inválido, sem permissão)</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não verificar se os dados retornados estão corretos</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Criar issues de teste em repos de produção</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar cenários de erro (repo inválido, sem permissêo)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo verificar se os dados retornados estêo corretos</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Criar issues de teste em repos de produçêo</li>
 </ul>
 </div>
 <div class="bg-amber-900/20 border border-amber-500/30 rounded-xl p-5">
@@ -517,11 +517,11 @@ async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; 
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Autenticação via Personal Access Token armazenado em variável de ambiente — nunca no código.</span>
+<span>Autenticaçêo via Personal Access Token armazenado em variável de ambiente — nunca no código.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Tool list_repos usa GET /user/repos para listar repositórios com nome, descrição, linguagem e stars.</span>
+<span>Tool list_repos usa GET /user/repos para listar repositórios com nome, descriçêo, linguagem e stars.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>

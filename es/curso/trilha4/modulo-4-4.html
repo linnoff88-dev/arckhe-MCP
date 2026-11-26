@@ -266,7 +266,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
     for r in repos:
         stars = r["stargazers_count"]
         lang = r.get("language", "N/A")
-        lines.append(f"⭐ {stars} | {r['name']} ({lang}) — {r.get('description', 'Sem descrição')}")
+        lines.append(f"⭐ {stars} | {r['name']} ({lang}) — {r.get('description', 'Sem descriçêo')}")
     return "\n".join(lines)</code></pre>
 </div>
 </div>
@@ -386,7 +386,7 @@ async def list_repos(visibility: str = "all") -&gt; str:
 async def create_issue(owner: str, repo: str, title: str, body: str = "") -&gt; str:
     """Cria uma nova issue em um repositório GitHub."""
     if not title.strip():
-        return "Erro: o título da issue não pode ser vazio."
+        return "Erro: o título da issue nêo pode ser vazio."
     async with httpx.AsyncClient() as client:
         resp = await client.post(
             f"https://api.github.com/repos/{owner}/{repo}/issues",

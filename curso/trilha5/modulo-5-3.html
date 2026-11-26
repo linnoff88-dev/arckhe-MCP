@@ -148,7 +148,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O MCP suporta dois modelos de transporte: <strong class="text-neutral-100">STDIO</strong> (entrada/saída padrão) e <strong class="text-neutral-100">HTTP</strong> (via rede). STDIO é local, simples e rápido — ideal para desenvolvimento e uso pessoal. HTTP é remoto, acessível pela rede e perfeito para deploy em cloud. A pergunta-chave é: <strong class="text-neutral-100">quando migrar?</strong> Quando outros precisam acessar seu server — seja sua equipe, seus clientes ou sua infraestrutura de produção.
+        O MCP suporta dois modelos de transporte: <strong class="text-neutral-100">STDIO</strong> (entrada/saída padrêo) e <strong class="text-neutral-100">HTTP</strong> (via rede). STDIO é local, simples e rápido — ideal para desenvolvimento e uso pessoal. HTTP é remoto, acessível pela rede e perfeito para deploy em cloud. A pergunta-chave é: <strong class="text-neutral-100">quando migrar?</strong> Quando outros precisam acessar seu server — seja sua equipe, seus clientes ou sua infraestrutura de produçêo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -156,7 +156,7 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">STDIO</strong> funciona como um pipe Unix: o client lança o server como processo filho e se comunica via stdin/stdout. É zero-config e instantâneo, mas limitado à máquina local. <strong class="text-neutral-100">HTTP</strong> expõe o server como um serviço web: qualquer client na rede pode se conectar via URL. Isso habilita cenários como múltiplos clients simultâneos, deploy em containers, e acesso de qualquer lugar do mundo. A troca é que HTTP exige configuração de rede, segurança e infraestrutura — mas o ganho em flexibilidade é enorme.
+<strong class="text-neutral-100">STDIO</strong> funciona como um pipe Unix: o client lança o server como processo filho e se comunica via stdin/stdout. É zero-config e instantâneo, mas limitado à máquina local. <strong class="text-neutral-100">HTTP</strong> expõe o server como um serviço web: qualquer client na rede pode se conectar via URL. Isso habilita cenários como múltiplos clients simultâneos, deploy em containers, e acesso de qualquer lugar do mundo. A troca é que HTTP exige configuraçêo de rede, segurança e infraestrutura — mas o ganho em flexibilidade é enorme.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -167,7 +167,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar HTTP para uso local quando STDIO basta</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Expor HTTP sem autenticação na internet</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Expor HTTP sem autenticaçêo na internet</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Manter STDIO quando múltiplos clients precisam acessar</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar a latência de rede ao migrar para HTTP</li>
 </ul>
@@ -190,7 +190,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A especificação MCP define oficialmente dois transportes: <strong class="text-neutral-100">STDIO</strong> e <strong class="text-neutral-100">HTTP com SSE</strong>. Na prática, a maioria dos MCP Servers em produção utiliza HTTP/SSE para permitir integração com múltiplos clients e deploy em nuvem. O protocolo HTTP adiciona tipicamente <strong class="text-neutral-100">1-5ms de latência</strong> por requisição em redes locais, mas essa diferença é imperceptível comparada ao tempo de processamento das ferramentas. A versão mais recente do protocolo também suporta <strong class="text-neutral-100">Streamable HTTP</strong>, uma evolução do SSE com melhor suporte a reconexão.
+          A especificaçêo MCP define oficialmente dois transportes: <strong class="text-neutral-100">STDIO</strong> e <strong class="text-neutral-100">HTTP com SSE</strong>. Na prática, a maioria dos MCP Servers em produçêo utiliza HTTP/SSE para permitir integraçêo com múltiplos clients e deploy em nuvem. O protocolo HTTP adiciona tipicamente <strong class="text-neutral-100">1-5ms de latência</strong> por requisiçêo em redes locais, mas essa diferença é imperceptível comparada ao tempo de processamento das ferramentas. A versêo mais recente do protocolo também suporta <strong class="text-neutral-100">Streamable HTTP</strong>, uma evoluçêo do SSE com melhor suporte a reconexêo.
         </p>
 </div>
 </section>
@@ -203,7 +203,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O FastMCP abstrai toda a complexidade de configurar um servidor HTTP. Com uma única linha de código, você troca o transporte de STDIO para HTTP ou SSE. O framework cuida de rotas, serialização JSON-RPC, gerenciamento de conexões e streaming — você foca na lógica das suas tools.
+        O FastMCP abstrai toda a complexidade de configurar um servidor HTTP. Com uma única linha de código, você troca o transporte de STDIO para HTTP ou SSE. O framework cuida de rotas, serializaçêo JSON-RPC, gerenciamento de conexões e streaming — você foca na lógica das suas tools.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -213,7 +213,7 @@
 <div class="text-neutral-300 leading-relaxed">
 <p class="mb-4">Configurar HTTP no FastMCP é trocar um único parâmetro:</p>
 <div class="bg-dark-900 rounded-lg p-4 text-sm font-mono overflow-x-auto mb-4">
-<pre class="text-neutral-300"><span class="text-neutral-500"># Antes — transporte STDIO (padrão)</span>
+<pre class="text-neutral-300"><span class="text-neutral-500"># Antes — transporte STDIO (padrêo)</span>
 <span class="text-teal-400">mcp.run</span>()
 
 <span class="text-neutral-500"># Depois — transporte HTTP</span>
@@ -231,7 +231,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use uma variável de ambiente para alternar entre transportes sem modificar o código: <code class="text-teal-400">transport = os.getenv("MCP_TRANSPORT", "stdio")</code>. Em desenvolvimento local, use STDIO. Em produção, defina <code class="text-teal-400">MCP_TRANSPORT=http</code>. Assim, o mesmo código funciona em ambos os cenários sem nenhuma alteração no source.
+          Use uma variável de ambiente para alternar entre transportes sem modificar o código: <code class="text-teal-400">transport = os.getenv("MCP_TRANSPORT", "stdio")</code>. Em desenvolvimento local, use STDIO. Em produçêo, defina <code class="text-teal-400">MCP_TRANSPORT=http</code>. Assim, o mesmo código funciona em ambos os cenários sem nenhuma alteraçêo no source.
         </p>
 </div>
 <!-- Timeline -->
@@ -273,7 +273,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        SSE (Server-Sent Events) é uma tecnologia que permite o server enviar <strong class="text-neutral-100">atualizações contínuas</strong> para o client via uma conexão HTTP persistente. Diferente de WebSockets (bidirecional), SSE é unidirecional: o server envia, o client recebe. Isso é ideal para operações longas onde o client precisa acompanhar o progresso em tempo real.
+        SSE (Server-Sent Events) é uma tecnologia que permite o server enviar <strong class="text-neutral-100">atualizações contínuas</strong> para o client via uma conexêo HTTP persistente. Diferente de WebSockets (bidirecional), SSE é unidirecional: o server envia, o client recebe. Isso é ideal para operações longas onde o client precisa acompanhar o progresso em tempo real.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -281,7 +281,7 @@
 <span class="text-teal-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          No transporte SSE do MCP, o client faz uma requisição HTTP e mantém a <strong class="text-neutral-100">conexão aberta</strong>. O server envia mensagens JSON-RPC como eventos SSE conforme processa as requisições. Isso permite streaming de resultados parciais, notificações de progresso e respostas incrementais. O MCP usa SSE como canal de resposta enquanto o client envia requisições via POST normal. Essa arquitetura é robusta e funciona bem com proxies, load balancers e CDNs — diferente de WebSockets que requerem suporte especial de infraestrutura.
+          No transporte SSE do MCP, o client faz uma requisiçêo HTTP e mantém a <strong class="text-neutral-100">conexêo aberta</strong>. O server envia mensagens JSON-RPC como eventos SSE conforme processa as requisições. Isso permite streaming de resultados parciais, notificações de progresso e respostas incrementais. O MCP usa SSE como canal de resposta enquanto o client envia requisições via POST normal. Essa arquitetura é robusta e funciona bem com proxies, load balancers e CDNs — diferente de WebSockets que requerem suporte especial de infraestrutura.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -292,7 +292,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Usar polling em vez de SSE para atualizações</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não tratar reconexão quando a conexão SSE cai</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo tratar reconexêo quando a conexêo SSE cai</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Enviar payloads enormes via SSE sem chunking</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar timeouts em operações longas</li>
 </ul>
@@ -303,8 +303,8 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Usar SSE para operações que demoram mais de 1s</li>
-<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Implementar heartbeat para manter a conexão viva</li>
-<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Tratar reconexão automática no client</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Implementar heartbeat para manter a conexêo viva</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Tratar reconexêo automática no client</li>
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">•</span>Enviar notificações de progresso para tools lentas</li>
 </ul>
 </div>
@@ -315,7 +315,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          SSE é suportado nativamente por todos os browsers modernos e pela maioria dos frameworks HTTP. Comparado a WebSockets, SSE usa <strong class="text-neutral-100">HTTP padrão</strong>, o que significa compatibilidade total com proxies reversos (Nginx, Cloudflare) sem configuração especial. A reconexão automática é built-in na spec SSE — se a conexão cair, o browser reconecta automaticamente usando o último <code class="text-teal-400">Last-Event-ID</code>. A evolução do SSE no MCP é o <strong class="text-neutral-100">Streamable HTTP</strong>, que combina POST para envio e SSE para recebimento em um único endpoint.
+          SSE é suportado nativamente por todos os browsers modernos e pela maioria dos frameworks HTTP. Comparado a WebSockets, SSE usa <strong class="text-neutral-100">HTTP padrêo</strong>, o que significa compatibilidade total com proxies reversos (Nginx, Cloudflare) sem configuraçêo especial. A reconexêo automática é built-in na spec SSE — se a conexêo cair, o browser reconecta automaticamente usando o último <code class="text-teal-400">Last-Event-ID</code>. A evoluçêo do SSE no MCP é o <strong class="text-neutral-100">Streamable HTTP</strong>, que combina POST para envio e SSE para recebimento em um único endpoint.
         </p>
 </div>
 </section>
@@ -328,7 +328,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Expor um MCP Server via HTTP significa expô-lo à rede — e potencialmente à internet. Segurança não é opcional: <strong class="text-neutral-100">HTTPS obrigatório</strong> em produção, autenticação via headers, configuração de CORS e rate limiting são o mínimo. Um server MCP sem proteção é uma porta aberta para execução de código arbitrário.
+        Expor um MCP Server via HTTP significa expô-lo à rede — e potencialmente à internet. Segurança nêo é opcional: <strong class="text-neutral-100">HTTPS obrigatório</strong> em produçêo, autenticaçêo via headers, configuraçêo de CORS e rate limiting sêo o mínimo. Um server MCP sem proteçêo é uma porta aberta para execuçêo de código arbitrário.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-teal-900/20 to-dark-800 border border-teal-500/30 rounded-xl p-6 mb-6">
@@ -339,8 +339,8 @@
 <p class="mb-4">Checklist de segurança para MCP Server HTTP:</p>
 <ul class="space-y-2">
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">1.</span><strong class="text-neutral-100">HTTPS/TLS</strong> — criptografa o tráfego. Use Let's Encrypt ou o TLS do seu cloud provider.</li>
-<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">2.</span><strong class="text-neutral-100">Autenticação</strong> — valide tokens nos headers (<code class="text-teal-400">Authorization: Bearer &lt;token&gt;</code>).</li>
-<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">3.</span><strong class="text-neutral-100">CORS</strong> — restrinja origens permitidas para evitar requisições de domínios não autorizados.</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">2.</span><strong class="text-neutral-100">Autenticaçêo</strong> — valide tokens nos headers (<code class="text-teal-400">Authorization: Bearer &lt;token&gt;</code>).</li>
+<li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">3.</span><strong class="text-neutral-100">CORS</strong> — restrinja origens permitidas para evitar requisições de domínios nêo autorizados.</li>
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">4.</span><strong class="text-neutral-100">Rate Limiting</strong> — limite requisições por IP/token para prevenir abuso.</li>
 <li class="flex items-start gap-2"><span class="text-teal-400 mt-0.5">5.</span><strong class="text-neutral-100">Firewall/VPN</strong> — em ambientes corporativos, restrinja acesso à rede interna.</li>
 </ul>
@@ -352,7 +352,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">NUNCA use HTTP sem TLS em produção!</strong> Sem HTTPS, tokens de autenticação, dados de requisições e respostas trafegam em texto puro — qualquer pessoa na mesma rede pode interceptar. Um MCP Server expõe tools que podem executar código, acessar bancos de dados e manipular arquivos. HTTP sem TLS em produção é equivalente a deixar a porta do cofre aberta com a senha colada na parede.
+<strong class="text-neutral-100">NUNCA use HTTP sem TLS em produçêo!</strong> Sem HTTPS, tokens de autenticaçêo, dados de requisições e respostas trafegam em texto puro — qualquer pessoa na mesma rede pode interceptar. Um MCP Server expõe tools que podem executar código, acessar bancos de dados e manipular arquivos. HTTP sem TLS em produçêo é equivalente a deixar a porta do cofre aberta com a senha colada na parede.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -362,10 +362,10 @@
 <span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>HTTP puro em produção (sem TLS)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>HTTP puro em produçêo (sem TLS)</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tokens hardcoded no código-fonte</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>CORS com <code class="text-red-400">allow_origins=["*"]</code> em produção</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Server exposto na internet sem autenticação</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>CORS com <code class="text-red-400">allow_origins=["*"]</code> em produçêo</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Server exposto na internet sem autenticaçêo</li>
 </ul>
 </div>
 <div class="bg-teal-900/20 border border-teal-500/30 rounded-xl p-5">
@@ -426,7 +426,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-teal-500/20 border-2 border-teal-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-teal-400 font-bold text-sm">Passo 1</span>
-<p class="text-neutral-300 text-sm mt-1">Criar o <code class="text-teal-400">Dockerfile</code> na raiz do projeto com a configuração do server HTTP.</p>
+<p class="text-neutral-300 text-sm mt-1">Criar o <code class="text-teal-400">Dockerfile</code> na raiz do projeto com a configuraçêo do server HTTP.</p>
 </div>
 </div>
 <div class="relative">
@@ -458,7 +458,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Para projetos pessoais e MVPs, <strong class="text-neutral-100">Railway</strong> e <strong class="text-neutral-100">Fly.io</strong> são as opções mais rápidas — deploy direto do GitHub em minutos, com HTTPS automático e tier gratuito. Para produção com mais controle, use <strong class="text-neutral-100">Docker + VPS</strong> (Hetzner, DigitalOcean) com Nginx como reverse proxy e Let's Encrypt para TLS. Sempre use <code class="text-teal-400">.dockerignore</code> para excluir <code class="text-neutral-400">.env</code>, <code class="text-neutral-400">.git</code> e <code class="text-neutral-400">__pycache__</code>.
+          Para projetos pessoais e MVPs, <strong class="text-neutral-100">Railway</strong> e <strong class="text-neutral-100">Fly.io</strong> sêo as opções mais rápidas — deploy direto do GitHub em minutos, com HTTPS automático e tier gratuito. Para produçêo com mais controle, use <strong class="text-neutral-100">Docker + VPS</strong> (Hetzner, DigitalOcean) com Nginx como reverse proxy e Let's Encrypt para TLS. Sempre use <code class="text-teal-400">.dockerignore</code> para excluir <code class="text-neutral-400">.env</code>, <code class="text-neutral-400">.git</code> e <code class="text-neutral-400">__pycache__</code>.
         </p>
 </div>
 </section>
@@ -493,7 +493,7 @@ $ <span class="text-teal-400">curl</span> https://meu-server.railway.app/sse
   }
 }</pre>
 </div>
-<p>Para clients HTTP/SSE, basta apontar a URL do server deployed. O client se conecta via HTTPS, mantém a conexão SSE aberta e envia requisições normalmente. Verifique latência com <code class="text-teal-400">curl -w "%{time_total}"</code> para garantir que o tempo de resposta é aceitável.</p>
+<p>Para clients HTTP/SSE, basta apontar a URL do server deployed. O client se conecta via HTTPS, mantém a conexêo SSE aberta e envia requisições normalmente. Verifique latência com <code class="text-teal-400">curl -w "%{time_total}"</code> para garantir que o tempo de resposta é aceitável.</p>
 </div>
 </div>
 <!-- Box Dica Prática -->
@@ -502,7 +502,7 @@ $ <span class="text-teal-400">curl</span> https://meu-server.railway.app/sse
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Teste a partir de <strong class="text-neutral-100">múltiplos ambientes</strong>: sua máquina local, uma VM em outra região, e o celular (via hotspot 4G). Cada ambiente revela problemas diferentes — DNS pode falhar em uma rede, CORS pode bloquear em um browser, e latência pode ser inaceitável de outra região. Use <code class="text-teal-400">mcp-cli</code> ou <code class="text-teal-400">npx @modelcontextprotocol/inspector</code> para inspecionar as mensagens JSON-RPC trocadas.
+          Teste a partir de <strong class="text-neutral-100">múltiplos ambientes</strong>: sua máquina local, uma VM em outra regiêo, e o celular (via hotspot 4G). Cada ambiente revela problemas diferentes — DNS pode falhar em uma rede, CORS pode bloquear em um browser, e latência pode ser inaceitável de outra regiêo. Use <code class="text-teal-400">mcp-cli</code> ou <code class="text-teal-400">npx @modelcontextprotocol/inspector</code> para inspecionar as mensagens JSON-RPC trocadas.
         </p>
 </div>
 <!-- Timeline -->
@@ -550,11 +550,11 @@ $ <span class="text-teal-400">curl</span> https://meu-server.railway.app/sse
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>
-<span>SSE permite streaming e atualizações contínuas via conexão HTTP persistente.</span>
+<span>SSE permite streaming e atualizações contínuas via conexêo HTTP persistente.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>
-<span>Segurança é obrigatória: HTTPS, autenticação, CORS e rate limiting são o mínimo.</span>
+<span>Segurança é obrigatória: HTTPS, autenticaçêo, CORS e rate limiting sêo o mínimo.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-teal-400 mt-0.5">✓</span>

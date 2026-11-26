@@ -144,11 +144,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🎨 O Que São Decorators</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🎨 O Que Sêo Decorators</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Decorators são um dos recursos mais elegantes do Python. Usando a sintaxe <code class="text-purple-400">@</code>, você pode modificar o comportamento de uma função sem alterar seu código. O FastMCP aproveita esse recurso para transformar funções Python comuns em tools MCP — sem precisar de arquivos de configuração, registros manuais ou código boilerplate. Basta colocar o decorator e a mágica acontece.
+        Decorators sêo um dos recursos mais elegantes do Python. Usando a sintaxe <code class="text-purple-400">@</code>, você pode modificar o comportamento de uma funçêo sem alterar seu código. O FastMCP aproveita esse recurso para transformar funções Python comuns em tools MCP — sem precisar de arquivos de configuraçêo, registros manuais ou código boilerplate. Basta colocar o decorator e a mágica acontece.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -156,7 +156,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Um <strong class="text-neutral-100">decorator</strong> em Python é uma função que recebe outra função como argumento e retorna uma versão modificada dela. A sintaxe <code class="text-purple-400">@decorator</code> é apenas um atalho para <code class="text-purple-400">funcao = decorator(funcao)</code>. No caso do FastMCP, o decorator <code class="text-purple-400">@mcp.tool()</code> faz três coisas: <strong class="text-neutral-100">(1)</strong> registra a função na lista de tools do server; <strong class="text-neutral-100">(2)</strong> extrai metadados (nome, parâmetros, descrição) usando introspecção Python; e <strong class="text-neutral-100">(3)</strong> mantém a função original intacta — ela continua funcionando normalmente como qualquer função Python.
+          Um <strong class="text-neutral-100">decorator</strong> em Python é uma funçêo que recebe outra funçêo como argumento e retorna uma versêo modificada dela. A sintaxe <code class="text-purple-400">@decorator</code> é apenas um atalho para <code class="text-purple-400">funcao = decorator(funcao)</code>. No caso do FastMCP, o decorator <code class="text-purple-400">@mcp.tool()</code> faz três coisas: <strong class="text-neutral-100">(1)</strong> registra a funçêo na lista de tools do server; <strong class="text-neutral-100">(2)</strong> extrai metadados (nome, parâmetros, descriçêo) usando introspecçêo Python; e <strong class="text-neutral-100">(3)</strong> mantém a funçêo original intacta — ela continua funcionando normalmente como qualquer funçêo Python.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -165,7 +165,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense em um decorator como um <strong class="text-neutral-100">selo que marca a função como "disponível para a IA"</strong>. Assim como um produto na prateleira de uma loja precisa de uma etiqueta de preço para ser vendido, uma função Python precisa do decorator <code class="text-purple-400">@mcp.tool()</code> para ser visível como tool MCP. Sem o selo, a função existe mas ninguém fora do código sabe que ela está lá. Com o selo, ela aparece no catálogo de tools que o modelo pode usar.
+          Pense em um decorator como um <strong class="text-neutral-100">selo que marca a funçêo como "disponível para a IA"</strong>. Assim como um produto na prateleira de uma loja precisa de uma etiqueta de preço para ser vendido, uma funçêo Python precisa do decorator <code class="text-purple-400">@mcp.tool()</code> para ser visível como tool MCP. Sem o selo, a funçêo existe mas ninguém fora do código sabe que ela está lá. Com o selo, ela aparece no catálogo de tools que o modelo pode usar.
         </p>
 </div>
 </section>
@@ -178,7 +178,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O decorator <code class="text-purple-400">@mcp.tool()</code> é o componente mais importante do FastMCP. Ele faz o trabalho pesado de conectar seu código Python ao protocolo MCP, extraindo automaticamente tudo que o client precisa saber sobre a tool: nome, descrição e schema de parâmetros. Vamos entender exatamente o que ele extrai e como.
+        O decorator <code class="text-purple-400">@mcp.tool()</code> é o componente mais importante do FastMCP. Ele faz o trabalho pesado de conectar seu código Python ao protocolo MCP, extraindo automaticamente tudo que o client precisa saber sobre a tool: nome, descriçêo e schema de parâmetros. Vamos entender exatamente o que ele extrai e como.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -186,7 +186,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O decorator <code class="text-purple-400">@mcp.tool()</code> extrai automaticamente três informações essenciais da função: <strong class="text-neutral-100">Nome</strong> — obtido diretamente do nome da função Python (ex: <code class="text-purple-400">def buscar_clima</code> vira a tool <code class="text-purple-400">buscar_clima</code>); <strong class="text-neutral-100">Descrição</strong> — extraída do docstring da função, que o modelo lê para entender quando e como usar a tool; e <strong class="text-neutral-100">Parâmetros</strong> — extraídos dos type hints, convertidos automaticamente em JSON Schema para validação. Tudo isso acontece sem nenhuma configuração manual.
+          O decorator <code class="text-purple-400">@mcp.tool()</code> extrai automaticamente três informações essenciais da funçêo: <strong class="text-neutral-100">Nome</strong> — obtido diretamente do nome da funçêo Python (ex: <code class="text-purple-400">def buscar_clima</code> vira a tool <code class="text-purple-400">buscar_clima</code>); <strong class="text-neutral-100">Descriçêo</strong> — extraída do docstring da funçêo, que o modelo lê para entender quando e como usar a tool; e <strong class="text-neutral-100">Parâmetros</strong> — extraídos dos type hints, convertidos automaticamente em JSON Schema para validaçêo. Tudo isso acontece sem nenhuma configuraçêo manual.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -195,7 +195,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A abordagem de "convenção sobre configuração" do FastMCP é inspirada em frameworks como Ruby on Rails e FastAPI. Estudos de produtividade de desenvolvedores mostram que eliminar código boilerplate pode <strong class="text-neutral-100">aumentar a velocidade de desenvolvimento em até 40%</strong>. No caso do FastMCP, a mesma tool que exigiria ~30 linhas de configuração manual (nome, schema JSON, handler) é definida em apenas <strong class="text-neutral-100">3-5 linhas</strong> de Python idiomático com o decorator.
+          A abordagem de "convençêo sobre configuraçêo" do FastMCP é inspirada em frameworks como Ruby on Rails e FastAPI. Estudos de produtividade de desenvolvedores mostram que eliminar código boilerplate pode <strong class="text-neutral-100">aumentar a velocidade de desenvolvimento em até 40%</strong>. No caso do FastMCP, a mesma tool que exigiria ~30 linhas de configuraçêo manual (nome, schema JSON, handler) é definida em apenas <strong class="text-neutral-100">3-5 linhas</strong> de Python idiomático com o decorator.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -205,9 +205,9 @@
 <span class="text-red-400 font-semibold text-sm">❌ Evitar</span>
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (tool sem descrição)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (tool sem descriçêo)</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parâmetros sem type hints (schema incompleto)</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes de função genéricos como "processar"</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nomes de funçêo genéricos como "processar"</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Esquecer os parênteses: @mcp.tool vs @mcp.tool()</li>
 </ul>
 </div>
@@ -233,7 +233,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Os type hints do Python são a base do sistema de schemas do FastMCP. Cada tipo Python é convertido automaticamente em um tipo JSON Schema equivalente, que o modelo de IA usa para saber exatamente que parâmetros enviar ao chamar a tool. Quanto mais precisos os type hints, mais preciso o modelo será ao usar a tool.
+        Os type hints do Python sêo a base do sistema de schemas do FastMCP. Cada tipo Python é convertido automaticamente em um tipo JSON Schema equivalente, que o modelo de IA usa para saber exatamente que parâmetros enviar ao chamar a tool. Quanto mais precisos os type hints, mais preciso o modelo será ao usar a tool.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -269,7 +269,7 @@
 </div>
 <div class="bg-dark-800 rounded-lg p-3 border border-dark-700 col-span-2">
 <div class="text-purple-400 font-mono font-bold">Optional[str]</div>
-<div class="text-neutral-500 text-xs mt-1">→ "type": "string" (não obrigatório)</div>
+<div class="text-neutral-500 text-xs mt-1">→ "type": "string" (nêo obrigatório)</div>
 </div>
 </div>
 <p class="mt-4">O modelo usa esse schema para <strong class="text-neutral-100">validar</strong> os parâmetros antes de enviar — garantindo que a tool sempre recebe dados no formato correto.</p>
@@ -281,7 +281,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Sempre use type hints <strong class="text-neutral-100">o mais específicos possível</strong>. Em vez de <code class="text-purple-400">list</code>, use <code class="text-purple-400">list[str]</code>. Em vez de <code class="text-purple-400">dict</code>, use <code class="text-purple-400">dict[str, int]</code>. Quanto mais informação o schema tiver, mais corretamente o modelo vai preencher os parâmetros. Um parâmetro marcado como <code class="text-purple-400">Optional[str] = None</code> indica ao modelo que ele pode omitir esse campo quando não for relevante.
+          Sempre use type hints <strong class="text-neutral-100">o mais específicos possível</strong>. Em vez de <code class="text-purple-400">list</code>, use <code class="text-purple-400">list[str]</code>. Em vez de <code class="text-purple-400">dict</code>, use <code class="text-purple-400">dict[str, int]</code>. Quanto mais informaçêo o schema tiver, mais corretamente o modelo vai preencher os parâmetros. Um parâmetro marcado como <code class="text-purple-400">Optional[str] = None</code> indica ao modelo que ele pode omitir esse campo quando nêo for relevante.
         </p>
 </div>
 </section>
@@ -294,7 +294,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O que a tool retorna é tão importante quanto o que ela recebe. O FastMCP suporta diversos tipos de retorno e cuida da serialização automaticamente. Strings são retornadas diretamente, dicionários e listas são convertidos em JSON, e tipos complexos são tratados de forma transparente. Entender os tipos de retorno ajuda você a construir tools que comunicam resultados de forma clara para o modelo.
+        O que a tool retorna é têo importante quanto o que ela recebe. O FastMCP suporta diversos tipos de retorno e cuida da serializaçêo automaticamente. Strings sêo retornadas diretamente, dicionários e listas sêo convertidos em JSON, e tipos complexos sêo tratados de forma transparente. Entender os tipos de retorno ajuda você a construir tools que comunicam resultados de forma clara para o modelo.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -302,7 +302,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Tools MCP podem retornar diferentes tipos de dados: <strong class="text-neutral-100"><code class="text-purple-400">str</code></strong> — o mais comum, retorna texto simples que o modelo pode usar diretamente; <strong class="text-neutral-100"><code class="text-purple-400">dict</code></strong> — para dados estruturados, serializado automaticamente em JSON; <strong class="text-neutral-100"><code class="text-purple-400">list</code></strong> — para coleções de itens, também serializado em JSON. O FastMCP converte qualquer um desses tipos no formato de resposta MCP correto. Para a maioria dos casos, retornar uma <code class="text-purple-400">str</code> com a informação formatada é a opção mais simples e eficaz.
+          Tools MCP podem retornar diferentes tipos de dados: <strong class="text-neutral-100"><code class="text-purple-400">str</code></strong> — o mais comum, retorna texto simples que o modelo pode usar diretamente; <strong class="text-neutral-100"><code class="text-purple-400">dict</code></strong> — para dados estruturados, serializado automaticamente em JSON; <strong class="text-neutral-100"><code class="text-purple-400">list</code></strong> — para coleções de itens, também serializado em JSON. O FastMCP converte qualquer um desses tipos no formato de resposta MCP correto. Para a maioria dos casos, retornar uma <code class="text-purple-400">str</code> com a informaçêo formatada é a opçêo mais simples e eficaz.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -313,7 +313,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar None silenciosamente</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar objetos não-serializáveis</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar objetos nêo-serializáveis</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar mensagens de erro genéricas</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Retornar dados sem contexto explicativo</li>
 </ul>
@@ -333,14 +333,14 @@
 <!-- Timeline -->
 <div class="space-y-4">
 <div class="flex items-center gap-2 mb-2">
-<span class="text-purple-400 font-semibold text-sm">📋 Fluxo de serialização do retorno</span>
+<span class="text-purple-400 font-semibold text-sm">📋 Fluxo de serializaçêo do retorno</span>
 </div>
 <div class="relative pl-8 border-l-2 border-purple-500/30 space-y-6">
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 1</span>
-<p class="text-neutral-300 text-sm mt-1">A função Python retorna um valor (str, dict, list ou outro tipo suportado).</p>
+<p class="text-neutral-300 text-sm mt-1">A funçêo Python retorna um valor (str, dict, list ou outro tipo suportado).</p>
 </div>
 </div>
 <div class="relative">
@@ -365,11 +365,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">5</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">📖 Descrições e Documentação</h2>
+<h2 class="text-2xl font-bold text-neutral-100">📖 Descrições e Documentaçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        As docstrings das suas funções não são apenas boa prática de programação — no contexto do MCP, elas são a interface entre o modelo de IA e a tool. O modelo lê a descrição para decidir quando usar a tool e como preenchê-la. Uma descrição ruim significa que o modelo vai usar a tool no momento errado ou com parâmetros incorretos. Uma descrição boa significa que a tool será usada perfeitamente.
+        As docstrings das suas funções nêo sêo apenas boa prática de programaçêo — no contexto do MCP, elas sêo a interface entre o modelo de IA e a tool. O modelo lê a descriçêo para decidir quando usar a tool e como preenchê-la. Uma descriçêo ruim significa que o modelo vai usar a tool no momento errado ou com parâmetros incorretos. Uma descriçêo boa significa que a tool será usada perfeitamente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -377,7 +377,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A <strong class="text-neutral-100">docstring</strong> da função vira o campo <code class="text-purple-400">description</code> da tool no protocolo MCP. O modelo de IA lê essa descrição para tomar três decisões: <strong class="text-neutral-100">(1)</strong> Quando usar — "essa tool é relevante para o que o usuário pediu?"; <strong class="text-neutral-100">(2)</strong> Como usar — "que parâmetros devo passar?"; e <strong class="text-neutral-100">(3)</strong> O que esperar — "que tipo de resultado essa tool retorna?". Quanto mais clara, específica e informativa a descrição, melhor o modelo usa a tool. Descrições vagas geram uso impreciso.
+          A <strong class="text-neutral-100">docstring</strong> da funçêo vira o campo <code class="text-purple-400">description</code> da tool no protocolo MCP. O modelo de IA lê essa descriçêo para tomar três decisões: <strong class="text-neutral-100">(1)</strong> Quando usar — "essa tool é relevante para o que o usuário pediu?"; <strong class="text-neutral-100">(2)</strong> Como usar — "que parâmetros devo passar?"; e <strong class="text-neutral-100">(3)</strong> O que esperar — "que tipo de resultado essa tool retorna?". Quanto mais clara, específica e informativa a descriçêo, melhor o modelo usa a tool. Descrições vagas geram uso impreciso.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -386,7 +386,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Escreva docstrings como se estivesse explicando a tool para um colega que nunca viu seu código. Seja <strong class="text-neutral-100">específico sobre o que a tool faz</strong>, mencione <strong class="text-neutral-100">quando ela deve ser usada</strong>, e descreva <strong class="text-neutral-100">o que cada parâmetro significa</strong>. Por exemplo: em vez de "Busca dados", escreva "Busca a previsão do tempo atual para uma cidade brasileira. Retorna temperatura, umidade e condição climática."
+          Escreva docstrings como se estivesse explicando a tool para um colega que nunca viu seu código. Seja <strong class="text-neutral-100">específico sobre o que a tool faz</strong>, mencione <strong class="text-neutral-100">quando ela deve ser usada</strong>, e descreva <strong class="text-neutral-100">o que cada parâmetro significa</strong>. Por exemplo: em vez de "Busca dados", escreva "Busca a previsêo do tempo atual para uma cidade brasileira. Retorna temperatura, umidade e condiçêo climática."
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -399,7 +399,7 @@
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Processa dados" — o quê? que dados?</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Faz a coisa" — que coisa?</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>"Helper function" — helper para quê?</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sem docstring (descrição vazia)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Sem docstring (descriçêo vazia)</li>
 </ul>
 </div>
 <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
@@ -407,7 +407,7 @@
 <span class="text-purple-400 font-semibold text-sm">✅ Boas descrições</span>
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
-<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Busca previsão do tempo para uma cidade"</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Busca previsêo do tempo para uma cidade"</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Calcula a soma de dois números inteiros"</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Envia um e-mail para o destinatário informado"</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>"Lista os 10 repositórios mais recentes do GitHub"</li>
@@ -424,7 +424,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Construir tools MCP que funcionam é fácil. Construir tools que funcionam <em>bem</em> exige atenção a boas práticas. Nomes claros, type hints completos, docstrings descritivas, uso inteligente de defaults e Optional — tudo isso impacta diretamente na qualidade da experiência do usuário final com a IA. Aqui estão as práticas que separam tools amadoras de profissionais.
+        Construir tools MCP que funcionam é fácil. Construir tools que funcionam <em>bem</em> exige atençêo a boas práticas. Nomes claros, type hints completos, docstrings descritivas, uso inteligente de defaults e Optional — tudo isso impacta diretamente na qualidade da experiência do usuário final com a IA. Aqui estêo as práticas que separam tools amadoras de profissionais.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -432,7 +432,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          As boas práticas para tools MCP incluem: <strong class="text-neutral-100">Nomes claros</strong> — use verbos descritivos como <code class="text-purple-400">buscar_clima</code>, <code class="text-purple-400">criar_tarefa</code>, <code class="text-purple-400">enviar_email</code>; <strong class="text-neutral-100">Type hints completos</strong> — marque todos os parâmetros e o retorno com tipos precisos; <strong class="text-neutral-100">Docstrings descritivas</strong> — explique o que a tool faz, quando usar, e o que cada parâmetro significa; <strong class="text-neutral-100">Defaults inteligentes</strong> — use valores padrão quando um parâmetro tem um valor mais comum; e <strong class="text-neutral-100">Optional</strong> — use <code class="text-purple-400">Optional[tipo]</code> para campos que não são obrigatórios, permitindo que o modelo os omita quando não forem relevantes.
+          As boas práticas para tools MCP incluem: <strong class="text-neutral-100">Nomes claros</strong> — use verbos descritivos como <code class="text-purple-400">buscar_clima</code>, <code class="text-purple-400">criar_tarefa</code>, <code class="text-purple-400">enviar_email</code>; <strong class="text-neutral-100">Type hints completos</strong> — marque todos os parâmetros e o retorno com tipos precisos; <strong class="text-neutral-100">Docstrings descritivas</strong> — explique o que a tool faz, quando usar, e o que cada parâmetro significa; <strong class="text-neutral-100">Defaults inteligentes</strong> — use valores padrêo quando um parâmetro tem um valor mais comum; e <strong class="text-neutral-100">Optional</strong> — use <code class="text-purple-400">Optional[tipo]</code> para campos que nêo sêo obrigatórios, permitindo que o modelo os omita quando nêo forem relevantes.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -445,7 +445,7 @@
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Tools que fazem muitas coisas (princípio da responsabilidade única)</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Parâmetros sem type hints (schema incompleto)</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Erros silenciosos sem mensagem explicativa</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Muitos parâmetros obrigatórios quando não necessário</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Muitos parâmetros obrigatórios quando nêo necessário</li>
 </ul>
 </div>
 <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
@@ -466,7 +466,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Nunca confie que o modelo vai enviar parâmetros corretos — <strong class="text-neutral-100">sempre valide as entradas</strong> dentro da função. Embora o JSON Schema ajude, o modelo pode enviar valores inesperados (strings vazias, números fora do range, etc.). Use validações simples no início da função e retorne mensagens de erro claras quando os dados forem inválidos. Uma tool que falha com uma mensagem útil é muito melhor que uma que crasheia silenciosamente.
+          Nunca confie que o modelo vai enviar parâmetros corretos — <strong class="text-neutral-100">sempre valide as entradas</strong> dentro da funçêo. Embora o JSON Schema ajude, o modelo pode enviar valores inesperados (strings vazias, números fora do range, etc.). Use validações simples no início da funçêo e retorne mensagens de erro claras quando os dados forem inválidos. Uma tool que falha com uma mensagem útil é muito melhor que uma que crasheia silenciosamente.
         </p>
 </div>
 </section>
@@ -481,11 +481,11 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O <code class="text-purple-400">@mcp.tool()</code> extrai automaticamente: nome (da função), descrição (da docstring) e parâmetros (dos type hints).</span>
+<span>O <code class="text-purple-400">@mcp.tool()</code> extrai automaticamente: nome (da funçêo), descriçêo (da docstring) e parâmetros (dos type hints).</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Type hints Python (str, int, float, bool, list, dict, Optional) são convertidos em JSON Schema automaticamente.</span>
+<span>Type hints Python (str, int, float, bool, list, dict, Optional) sêo convertidos em JSON Schema automaticamente.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -493,7 +493,7 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Docstrings são a interface com o modelo — quanto melhor a descrição, mais corretamente o modelo usa a tool.</span>
+<span>Docstrings sêo a interface com o modelo — quanto melhor a descriçêo, mais corretamente o modelo usa a tool.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>

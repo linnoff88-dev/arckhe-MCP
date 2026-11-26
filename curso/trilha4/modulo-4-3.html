@@ -115,7 +115,7 @@
           📁 Assistente de Arquivos
         </h1>
 <p class="text-neutral-400 text-lg leading-relaxed mb-8">
-          Construa um MCP Server que lê, resume e organiza arquivos locais — um assistente pessoal de organização.
+          Construa um MCP Server que lê, resume e organiza arquivos locais — um assistente pessoal de organizaçêo.
         </p>
 <div class="flex flex-wrap gap-4 text-sm">
 <div class="bg-dark-800 border border-dark-700 rounded-lg px-4 py-2 text-center">
@@ -149,7 +149,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O Assistente de Arquivos é um projeto que combina o poder do MCP com operações do sistema de arquivos. Vamos criar <strong class="text-neutral-100">4 tools</strong> que permitem ao Claude interagir com arquivos e pastas locais: ler conteúdo, buscar texto, gerar estatísticas e organizar arquivos automaticamente. Tudo usando os módulos <code class="text-amber-400">pathlib</code> e <code class="text-amber-400">os</code> da biblioteca padrão do Python.
+        O Assistente de Arquivos é um projeto que combina o poder do MCP com operações do sistema de arquivos. Vamos criar <strong class="text-neutral-100">4 tools</strong> que permitem ao Claude interagir com arquivos e pastas locais: ler conteúdo, buscar texto, gerar estatísticas e organizar arquivos automaticamente. Tudo usando os módulos <code class="text-amber-400">pathlib</code> e <code class="text-amber-400">os</code> da biblioteca padrêo do Python.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -157,7 +157,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          As 4 tools do Assistente de Arquivos: <strong class="text-neutral-100">ler_arquivo(caminho)</strong> — lê o conteúdo de um arquivo de texto e retorna com metadados (tamanho, data de modificação); <strong class="text-neutral-100">buscar_em_arquivos(pasta, texto)</strong> — busca uma string em todos os arquivos de uma pasta recursivamente, retornando arquivo, linha e contexto; <strong class="text-neutral-100">estatisticas_pasta(caminho)</strong> — conta arquivos por extensão, tamanho total, maior/menor arquivo; <strong class="text-neutral-100">organizar_por_tipo(pasta)</strong> — move arquivos para subpastas organizadas por extensão (.pdf para PDFs/, .jpg para Imagens/, etc.). Todas usam <code class="text-amber-400">pathlib.Path</code> para manipulação segura de caminhos.
+          As 4 tools do Assistente de Arquivos: <strong class="text-neutral-100">ler_arquivo(caminho)</strong> — lê o conteúdo de um arquivo de texto e retorna com metadados (tamanho, data de modificaçêo); <strong class="text-neutral-100">buscar_em_arquivos(pasta, texto)</strong> — busca uma string em todos os arquivos de uma pasta recursivamente, retornando arquivo, linha e contexto; <strong class="text-neutral-100">estatisticas_pasta(caminho)</strong> — conta arquivos por extensêo, tamanho total, maior/menor arquivo; <strong class="text-neutral-100">organizar_por_tipo(pasta)</strong> — move arquivos para subpastas organizadas por extensêo (.pdf para PDFs/, .jpg para Imagens/, etc.). Todas usam <code class="text-amber-400">pathlib.Path</code> para manipulaçêo segura de caminhos.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -166,7 +166,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use <code class="text-amber-400">pathlib.Path</code> em vez de <code class="text-amber-400">os.path</code> para todas as operações com caminhos. O pathlib oferece uma API mais intuitiva e orientada a objetos: <code class="text-amber-400">Path("pasta").iterdir()</code> para listar, <code class="text-amber-400">path.suffix</code> para extensão, <code class="text-amber-400">path.stat().st_size</code> para tamanho. Além disso, funciona corretamente em Windows, Linux e macOS sem ajustes manuais de barras.
+          Use <code class="text-amber-400">pathlib.Path</code> em vez de <code class="text-amber-400">os.path</code> para todas as operações com caminhos. O pathlib oferece uma API mais intuitiva e orientada a objetos: <code class="text-amber-400">Path("pasta").iterdir()</code> para listar, <code class="text-amber-400">path.suffix</code> para extensêo, <code class="text-amber-400">path.stat().st_size</code> para tamanho. Além disso, funciona corretamente em Windows, Linux e macOS sem ajustes manuais de barras.
         </p>
 </div>
 </section>
@@ -179,7 +179,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A tool <strong class="text-neutral-100">ler_arquivo</strong> é a mais básica e mais poderosa do nosso assistente. Ela lê o conteúdo de um arquivo de texto e retorna junto com metadados úteis como tamanho e data de modificação. O mais interessante é que o Claude naturalmente resume o conteúdo ao apresentá-lo ao usuário — você não precisa implementar lógica de resumo, o modelo faz isso sozinho.
+        A tool <strong class="text-neutral-100">ler_arquivo</strong> é a mais básica e mais poderosa do nosso assistente. Ela lê o conteúdo de um arquivo de texto e retorna junto com metadados úteis como tamanho e data de modificaçêo. O mais interessante é que o Claude naturalmente resume o conteúdo ao apresentá-lo ao usuário — você nêo precisa implementar lógica de resumo, o modelo faz isso sozinho.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -187,7 +187,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">ler_arquivo(caminho: str)</code> usa <code class="text-amber-400">Path(caminho)</code> para abrir o arquivo, lê o conteúdo com <code class="text-amber-400">path.read_text(encoding="utf-8")</code> e coleta metadados via <code class="text-amber-400">path.stat()</code>: tamanho em bytes/KB, data da última modificação formatada. O retorno combina os metadados e o conteúdo em uma string organizada. O Claude recebe tudo isso e pode resumir, analisar ou responder perguntas sobre o conteúdo — sem nenhum código extra de IA da sua parte.
+          A tool <code class="text-amber-400">ler_arquivo(caminho: str)</code> usa <code class="text-amber-400">Path(caminho)</code> para abrir o arquivo, lê o conteúdo com <code class="text-amber-400">path.read_text(encoding="utf-8")</code> e coleta metadados via <code class="text-amber-400">path.stat()</code>: tamanho em bytes/KB, data da última modificaçêo formatada. O retorno combina os metadados e o conteúdo em uma string organizada. O Claude recebe tudo isso e pode resumir, analisar ou responder perguntas sobre o conteúdo — sem nenhum código extra de IA da sua parte.
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -199,7 +199,7 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ler arquivos binários (.exe, .zip, imagens) como texto</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ler arquivos enormes (&gt;1MB) inteiros de uma vez</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Não verificar se o arquivo existe antes de ler</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Nêo verificar se o arquivo existe antes de ler</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar erros de encoding (UnicodeDecodeError)</li>
 </ul>
 </div>
@@ -242,7 +242,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">buscar_em_arquivos(pasta: str, texto: str)</code> usa <code class="text-amber-400">Path(pasta).rglob("*")</code> para iterar recursivamente sobre todos os arquivos. Para cada arquivo de texto, lê as linhas e verifica se o texto buscado aparece (case-insensitive com <code class="text-amber-400">.lower()</code>). O retorno inclui: <strong class="text-neutral-100">nome do arquivo</strong>, <strong class="text-neutral-100">número da linha</strong> e a <strong class="text-neutral-100">linha com contexto</strong> (a linha encontrada mais uma linha antes e depois). Limite o número de resultados (ex: máximo 50) para não sobrecarregar a resposta.
+          A tool <code class="text-amber-400">buscar_em_arquivos(pasta: str, texto: str)</code> usa <code class="text-amber-400">Path(pasta).rglob("*")</code> para iterar recursivamente sobre todos os arquivos. Para cada arquivo de texto, lê as linhas e verifica se o texto buscado aparece (case-insensitive com <code class="text-amber-400">.lower()</code>). O retorno inclui: <strong class="text-neutral-100">nome do arquivo</strong>, <strong class="text-neutral-100">número da linha</strong> e a <strong class="text-neutral-100">linha com contexto</strong> (a linha encontrada mais uma linha antes e depois). Limite o número de resultados (ex: máximo 50) para nêo sobrecarregar a resposta.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -251,7 +251,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use <code class="text-amber-400">rglob("*")</code> para busca recursiva (inclui subpastas) e filtre apenas arquivos com <code class="text-amber-400">path.is_file()</code>. Ignore arquivos binários verificando a extensão ou usando um try/except ao ler. Uma boa lista de extensões de texto: <code class="text-amber-400">.txt, .py, .js, .md, .html, .css, .json, .yml, .toml, .cfg, .ini, .log</code>. Ignorar pastas como <code class="text-amber-400">.git</code>, <code class="text-amber-400">__pycache__</code> e <code class="text-amber-400">node_modules</code> acelera muito a busca.
+          Use <code class="text-amber-400">rglob("*")</code> para busca recursiva (inclui subpastas) e filtre apenas arquivos com <code class="text-amber-400">path.is_file()</code>. Ignore arquivos binários verificando a extensêo ou usando um try/except ao ler. Uma boa lista de extensões de texto: <code class="text-amber-400">.txt, .py, .js, .md, .html, .css, .json, .yml, .toml, .cfg, .ini, .log</code>. Ignorar pastas como <code class="text-amber-400">.git</code>, <code class="text-amber-400">__pycache__</code> e <code class="text-amber-400">node_modules</code> acelera muito a busca.
         </p>
 </div>
 <!-- Timeline -->
@@ -264,7 +264,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Passo 1: Validar a pasta</span>
-<p class="text-neutral-300 text-sm mt-1">Verificar que o caminho existe e é um diretório com Path(pasta).is_dir(). Retornar erro claro se não for.</p>
+<p class="text-neutral-300 text-sm mt-1">Verificar que o caminho existe e é um diretório com Path(pasta).is_dir(). Retornar erro claro se nêo for.</p>
 </div>
 </div>
 <div class="relative">
@@ -293,7 +293,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A tool <strong class="text-neutral-100">estatisticas_pasta</strong> analisa uma pasta e retorna um panorama completo: quantos arquivos existem, como estão distribuídos por extensão, qual o tamanho total, qual o maior e o menor arquivo, e quando o arquivo mais recente foi modificado. É como um "raio-X" do diretório.
+        A tool <strong class="text-neutral-100">estatisticas_pasta</strong> analisa uma pasta e retorna um panorama completo: quantos arquivos existem, como estêo distribuídos por extensêo, qual o tamanho total, qual o maior e o menor arquivo, e quando o arquivo mais recente foi modificado. É como um "raio-X" do diretório.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -301,7 +301,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">estatisticas_pasta(caminho: str)</code> percorre todos os arquivos da pasta com <code class="text-amber-400">Path(caminho).rglob("*")</code>, coletando informações com <code class="text-amber-400">path.stat()</code> para cada arquivo. Ela calcula: <strong class="text-neutral-100">total de arquivos</strong>, <strong class="text-neutral-100">distribuição por extensão</strong> (usando um dicionário/Counter), <strong class="text-neutral-100">tamanho total</strong> em bytes/KB/MB, <strong class="text-neutral-100">maior e menor arquivo</strong> com seus nomes e tamanhos, e <strong class="text-neutral-100">data do arquivo mais recente</strong>. O retorno é uma string formatada que o Claude apresenta como um relatório organizado.
+          A tool <code class="text-amber-400">estatisticas_pasta(caminho: str)</code> percorre todos os arquivos da pasta com <code class="text-amber-400">Path(caminho).rglob("*")</code>, coletando informações com <code class="text-amber-400">path.stat()</code> para cada arquivo. Ela calcula: <strong class="text-neutral-100">total de arquivos</strong>, <strong class="text-neutral-100">distribuiçêo por extensêo</strong> (usando um dicionário/Counter), <strong class="text-neutral-100">tamanho total</strong> em bytes/KB/MB, <strong class="text-neutral-100">maior e menor arquivo</strong> com seus nomes e tamanhos, e <strong class="text-neutral-100">data do arquivo mais recente</strong>. O retorno é uma string formatada que o Claude apresenta como um relatório organizado.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -310,7 +310,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Ferramentas de análise de diretório são surpreendentemente úteis no dia a dia. Estudos mostram que o usuário médio tem mais de <strong class="text-neutral-100">100.000 arquivos</strong> no computador e gasta cerca de <strong class="text-neutral-100">2,5 horas por semana</strong> procurando e organizando arquivos. Uma tool que fornece estatísticas rápidas permite identificar rapidamente pastas que precisam de limpeza, arquivos enormes que consomem espaço, e extensões inesperadas que podem indicar problemas.
+          Ferramentas de análise de diretório sêo surpreendentemente úteis no dia a dia. Estudos mostram que o usuário médio tem mais de <strong class="text-neutral-100">100.000 arquivos</strong> no computador e gasta cerca de <strong class="text-neutral-100">2,5 horas por semana</strong> procurando e organizando arquivos. Uma tool que fornece estatísticas rápidas permite identificar rapidamente pastas que precisam de limpeza, arquivos enormes que consomem espaço, e extensões inesperadas que podem indicar problemas.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -319,7 +319,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use <code class="text-amber-400">collections.Counter</code> para contar extensões de forma elegante: <code class="text-amber-400">Counter(p.suffix.lower() for p in pasta.rglob("*") if p.is_file())</code>. Para formatar tamanhos legíveis, crie uma função auxiliar que converte bytes para KB/MB/GB automaticamente. Ordene as extensões por contagem (mais comuns primeiro) para que o relatório mostre as informações mais relevantes no topo.
+          Use <code class="text-amber-400">collections.Counter</code> para contar extensões de forma elegante: <code class="text-amber-400">Counter(p.suffix.lower() for p in pasta.rglob("*") if p.is_file())</code>. Para formatar tamanhos legíveis, crie uma funçêo auxiliar que converte bytes para KB/MB/GB automaticamente. Ordene as extensões por contagem (mais comuns primeiro) para que o relatório mostre as informações mais relevantes no topo.
         </p>
 </div>
 </section>
@@ -332,7 +332,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A tool mais impactante do nosso assistente: <strong class="text-neutral-100">organizar_por_tipo</strong> analisa uma pasta e move cada arquivo para uma subpasta correspondente à sua extensão. Arquivos .pdf vão para uma pasta "PDFs/", .jpg e .png para "Imagens/", .py para "Python/", e assim por diante. Mas atenção: essa tool <strong class="text-neutral-100">modifica o sistema de arquivos</strong>, então precisa pedir confirmação antes de agir.
+        A tool mais impactante do nosso assistente: <strong class="text-neutral-100">organizar_por_tipo</strong> analisa uma pasta e move cada arquivo para uma subpasta correspondente à sua extensêo. Arquivos .pdf vêo para uma pasta "PDFs/", .jpg e .png para "Imagens/", .py para "Python/", e assim por diante. Mas atençêo: essa tool <strong class="text-neutral-100">modifica o sistema de arquivos</strong>, entêo precisa pedir confirmaçêo antes de agir.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -340,7 +340,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A tool <code class="text-amber-400">organizar_por_tipo(pasta: str, confirmar: bool = False)</code> funciona em dois modos. Quando <code class="text-amber-400">confirmar=False</code> (padrão), ela apenas <strong class="text-neutral-100">lista as mudanças planejadas</strong>: "Mover relatorio.pdf para PDFs/relatorio.pdf", "Mover foto.jpg para Imagens/foto.jpg", etc. Quando <code class="text-amber-400">confirmar=True</code>, ela executa as mudanças usando <code class="text-amber-400">shutil.move()</code>. O mapeamento de extensões para pastas usa um dicionário: <code class="text-amber-400">{".pdf": "PDFs", ".jpg": "Imagens", ".png": "Imagens", ".py": "Python", ...}</code>. Extensões desconhecidas vão para "Outros/".
+          A tool <code class="text-amber-400">organizar_por_tipo(pasta: str, confirmar: bool = False)</code> funciona em dois modos. Quando <code class="text-amber-400">confirmar=False</code> (padrêo), ela apenas <strong class="text-neutral-100">lista as mudanças planejadas</strong>: "Mover relatorio.pdf para PDFs/relatorio.pdf", "Mover foto.jpg para Imagens/foto.jpg", etc. Quando <code class="text-amber-400">confirmar=True</code>, ela executa as mudanças usando <code class="text-amber-400">shutil.move()</code>. O mapeamento de extensões para pastas usa um dicionário: <code class="text-amber-400">{".pdf": "PDFs", ".jpg": "Imagens", ".png": "Imagens", ".py": "Python", ...}</code>. Extensões desconhecidas vêo para "Outros/".
         </p>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -374,7 +374,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta — Sempre Confirmar Antes de Mover!</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-<strong class="text-neutral-100">Nunca mova arquivos automaticamente sem confirmação do usuário.</strong> O padrão da tool deve ser <code class="text-amber-400">confirmar=False</code>, retornando apenas a lista de mudanças planejadas. O Claude apresentará essa lista ao usuário e perguntará se deseja prosseguir. Somente quando o usuário confirmar, o Claude chamará a tool novamente com <code class="text-amber-400">confirmar=True</code>. Essa abordagem em dois passos previne movimentações acidentais de arquivos importantes.
+<strong class="text-neutral-100">Nunca mova arquivos automaticamente sem confirmaçêo do usuário.</strong> O padrêo da tool deve ser <code class="text-amber-400">confirmar=False</code>, retornando apenas a lista de mudanças planejadas. O Claude apresentará essa lista ao usuário e perguntará se deseja prosseguir. Somente quando o usuário confirmar, o Claude chamará a tool novamente com <code class="text-amber-400">confirmar=True</code>. Essa abordagem em dois passos previne movimentações acidentais de arquivos importantes.
         </p>
 </div>
 </section>
@@ -387,7 +387,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com todas as tools implementadas, vamos testar o Assistente de Arquivos em cenários reais. O objetivo é validar que o Claude consegue entender pedidos em linguagem natural, escolher a tool correta e apresentar os resultados de forma útil. Cada cenário testa uma combinação diferente de tools e capacidades.
+        Com todas as tools implementadas, vamos testar o Assistente de Arquivos em cenários reais. O objetivo é validar que o Claude consegue entender pedidos em linguagem natural, escolher a tool correta e apresentar os resultados de forma útil. Cada cenário testa uma combinaçêo diferente de tools e capacidades.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -440,7 +440,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Crie uma pasta de teste dedicada com arquivos de exemplo antes de testar — nunca teste diretamente em pastas importantes. Use <code class="text-amber-400">mkdir pasta_teste &amp;&amp; touch pasta_teste/doc.pdf pasta_teste/foto.jpg pasta_teste/notas.txt pasta_teste/script.py</code> para criar rapidamente uma estrutura de teste. Isso permite testar todas as tools sem risco de afetar arquivos reais, especialmente a tool de organização que move arquivos.
+          Crie uma pasta de teste dedicada com arquivos de exemplo antes de testar — nunca teste diretamente em pastas importantes. Use <code class="text-amber-400">mkdir pasta_teste &amp;&amp; touch pasta_teste/doc.pdf pasta_teste/foto.jpg pasta_teste/notas.txt pasta_teste/script.py</code> para criar rapidamente uma estrutura de teste. Isso permite testar todas as tools sem risco de afetar arquivos reais, especialmente a tool de organizaçêo que move arquivos.
         </p>
 </div>
 </section>
@@ -463,20 +463,20 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Implementamos estatisticas_pasta com contagem por extensão, tamanho total e identificação de extremos.</span>
+<span>Implementamos estatisticas_pasta com contagem por extensêo, tamanho total e identificaçêo de extremos.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Construímos organizar_por_tipo com confirmação em dois passos — lista primeiro, executa depois.</span>
+<span>Construímos organizar_por_tipo com confirmaçêo em dois passos — lista primeiro, executa depois.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Testamos o assistente completo com cenários reais de exploração, busca, leitura e organização.</span>
+<span>Testamos o assistente completo com cenários reais de exploraçêo, busca, leitura e organizaçêo.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
 <p class="text-neutral-400 text-sm">
-<strong class="text-neutral-100">Próximo Módulo:</strong> 4.4 — Integração com API REST
+<strong class="text-neutral-100">Próximo Módulo:</strong> 4.4 — Integraçêo com API REST
           </p>
 </div>
 <div class="flex flex-wrap gap-3">

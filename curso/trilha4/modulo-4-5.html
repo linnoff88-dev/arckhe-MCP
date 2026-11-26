@@ -145,7 +145,7 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">🔗 O Poder da Combinação</h2>
+<h2 class="text-2xl font-bold text-neutral-100">🔗 O Poder da Combinaçêo</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
@@ -157,7 +157,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Um MCP Server faz <strong class="text-neutral-100">uma coisa bem</strong> — princípio da responsabilidade única. Mas quando você configura <strong class="text-neutral-100">múltiplos servers</strong> no Claude Desktop, eles se complementam e criam um assistente completo. O Claude vê todas as tools de todos os servers como um catálogo unificado e escolhe a tool certa automaticamente. Você não precisa dizer "use o server de GitHub" — basta pedir "crie uma issue" e o Claude sabe qual tool chamar. Essa arquitetura modular é um dos grandes diferenciais do protocolo MCP.
+          Um MCP Server faz <strong class="text-neutral-100">uma coisa bem</strong> — princípio da responsabilidade única. Mas quando você configura <strong class="text-neutral-100">múltiplos servers</strong> no Claude Desktop, eles se complementam e criam um assistente completo. O Claude vê todas as tools de todos os servers como um catálogo unificado e escolhe a tool certa automaticamente. Você nêo precisa dizer "use o server de GitHub" — basta pedir "crie uma issue" e o Claude sabe qual tool chamar. Essa arquitetura modular é um dos grandes diferenciais do protocolo MCP.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -175,7 +175,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Na prática, usuários avançados do Claude Desktop configuram entre <strong class="text-neutral-100">3 a 8 MCP Servers</strong> simultâneos. A performance não é significativamente afetada porque cada server roda como um processo independente, e o Claude só chama o server necessário quando precisa de uma tool específica. O overhead de ter servers "ociosos" é mínimo — eles apenas aguardam chamadas via stdio.
+          Na prática, usuários avançados do Claude Desktop configuram entre <strong class="text-neutral-100">3 a 8 MCP Servers</strong> simultâneos. A performance nêo é significativamente afetada porque cada server roda como um processo independente, e o Claude só chama o server necessário quando precisa de uma tool específica. O overhead de ter servers "ociosos" é mínimo — eles apenas aguardam chamadas via stdio.
         </p>
 </div>
 </section>
@@ -188,7 +188,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        A configuração de múltiplos servers no Claude Desktop é surpreendentemente simples. Basta adicionar múltiplas entradas no objeto <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">mcpServers</code> do arquivo de configuração. Cada server tem seu próprio nome, comando e argumentos — e eles não interferem uns nos outros.
+        A configuraçêo de múltiplos servers no Claude Desktop é surpreendentemente simples. Basta adicionar múltiplas entradas no objeto <code class="bg-dark-700 px-2 py-0.5 rounded text-sm">mcpServers</code> do arquivo de configuraçêo. Cada server tem seu próprio nome, comando e argumentos — e eles nêo interferem uns nos outros.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -196,7 +196,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-4">Exemplo de configuração com 3 servers simultâneos:</p>
+<p class="mb-4">Exemplo de configuraçêo com 3 servers simultâneos:</p>
 <pre class="bg-dark-900 border border-dark-700 rounded-lg p-4 text-sm overflow-x-auto"><code class="text-neutral-300">{
   "mcpServers": {
     "tarefas": {
@@ -263,7 +263,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Quando múltiplos MCP Servers estão configurados, o Claude vê todas as tools de todos os servers como um catálogo unificado. Ele não pensa em "servers" — ele pensa em "tools disponíveis". A escolha de qual tool usar é baseada na descrição da tool e no contexto do pedido do usuário. Por isso, boas descrições são absolutamente essenciais.
+        Quando múltiplos MCP Servers estêo configurados, o Claude vê todas as tools de todos os servers como um catálogo unificado. Ele nêo pensa em "servers" — ele pensa em "tools disponíveis". A escolha de qual tool usar é baseada na descriçêo da tool e no contexto do pedido do usuário. Por isso, boas descrições sêo absolutamente essenciais.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -271,7 +271,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O Claude vê <strong class="text-neutral-100">TODAS as tools de TODOS os servers</strong> como uma lista plana. Quando o usuário faz um pedido, o Claude analisa o contexto e escolhe a tool mais adequada baseado em dois fatores: o <strong class="text-neutral-100">nome da tool</strong> e, principalmente, a <strong class="text-neutral-100">descrição (docstring)</strong>. Uma tool com descrição ruim como "faz coisas" será ignorada em favor de uma com descrição clara como "Lista todos os repositórios do GitHub do usuário autenticado, incluindo nome, linguagem e estrelas". Boas descrições = melhores escolhas automáticas.
+          O Claude vê <strong class="text-neutral-100">TODAS as tools de TODOS os servers</strong> como uma lista plana. Quando o usuário faz um pedido, o Claude analisa o contexto e escolhe a tool mais adequada baseado em dois fatores: o <strong class="text-neutral-100">nome da tool</strong> e, principalmente, a <strong class="text-neutral-100">descriçêo (docstring)</strong>. Uma tool com descriçêo ruim como "faz coisas" será ignorada em favor de uma com descriçêo clara como "Lista todos os repositórios do GitHub do usuário autenticado, incluindo nome, linguagem e estrelas". Boas descrições = melhores escolhas automáticas.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -289,7 +289,7 @@
 <span class="text-blue-400 font-semibold text-sm">📊 Dados e Pesquisa</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Em testes com múltiplos servers, a taxa de acerto do Claude na escolha da tool correta é de aproximadamente <strong class="text-neutral-100">95%+ quando as descrições são detalhadas</strong> e cai para cerca de <strong class="text-neutral-100">70% com descrições vagas</strong>. A diferença entre uma boa e uma má descrição pode ser a diferença entre um assistente confiável e um frustrante. Invista tempo escrevendo docstrings de qualidade — é o maior retorno sobre investimento no desenvolvimento MCP.
+          Em testes com múltiplos servers, a taxa de acerto do Claude na escolha da tool correta é de aproximadamente <strong class="text-neutral-100">95%+ quando as descrições sêo detalhadas</strong> e cai para cerca de <strong class="text-neutral-100">70% com descrições vagas</strong>. A diferença entre uma boa e uma má descriçêo pode ser a diferença entre um assistente confiável e um frustrante. Invista tempo escrevendo docstrings de qualidade — é o maior retorno sobre investimento no desenvolvimento MCP.
         </p>
 </div>
 </section>
@@ -302,7 +302,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Vamos ver um exemplo concreto de combinação: o server de tarefas (Módulo 4.1) rodando junto com o server de banco de dados (Módulo 4.2). Essa combinação permite pedidos que cruzam os dois domínios — por exemplo, "crie uma tarefa para cada produto com estoque baixo". O Claude usa ambos os servers automaticamente.
+        Vamos ver um exemplo concreto de combinaçêo: o server de tarefas (Módulo 4.1) rodando junto com o server de banco de dados (Módulo 4.2). Essa combinaçêo permite pedidos que cruzam os dois domínios — por exemplo, "crie uma tarefa para cada produto com estoque baixo". O Claude usa ambos os servers automaticamente.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -344,7 +344,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-amber-400 font-bold text-sm">Passo 4 — Resposta</span>
-<p class="text-neutral-300 text-sm mt-1">Claude apresenta: "Criei 3 tarefas de reposição para os produtos com estoque baixo."</p>
+<p class="text-neutral-300 text-sm mt-1">Claude apresenta: "Criei 3 tarefas de reposiçêo para os produtos com estoque baixo."</p>
 </div>
 </div>
 </div>
@@ -355,7 +355,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          A mágica acontece porque cada server é <strong class="text-neutral-100">independente</strong> — o server de banco não sabe que o server de tarefas existe, e vice-versa. É o Claude que faz a <strong class="text-neutral-100">orquestração inteligente</strong>, decidindo a ordem de chamadas e passando dados de um para o outro. Isso é muito mais flexível do que hardcodar a integração entre os dois sistemas.
+          A mágica acontece porque cada server é <strong class="text-neutral-100">independente</strong> — o server de banco nêo sabe que o server de tarefas existe, e vice-versa. É o Claude que faz a <strong class="text-neutral-100">orquestraçêo inteligente</strong>, decidindo a ordem de chamadas e passando dados de um para o outro. Isso é muito mais flexível do que hardcodar a integraçêo entre os dois sistemas.
         </p>
 </div>
 </section>
@@ -368,7 +368,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Outro exemplo poderoso: combinar o server de arquivos (Módulo 4.3) com o server do GitHub (Módulo 4.4). Essa combinação permite fluxos como "leia o README local e crie uma issue com os TODOs encontrados" — unindo acesso ao filesystem local com ações na nuvem.
+        Outro exemplo poderoso: combinar o server de arquivos (Módulo 4.3) com o server do GitHub (Módulo 4.4). Essa combinaçêo permite fluxos como "leia o README local e crie uma issue com os TODOs encontrados" — unindo acesso ao filesystem local com ações na nuvem.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -376,7 +376,7 @@
 <span class="text-amber-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Com os servers de <strong class="text-neutral-100">arquivos</strong> e <strong class="text-neutral-100">GitHub</strong> rodando juntos, o Claude pode ler arquivos locais e agir no GitHub com base no conteúdo encontrado. Exemplo: "Leia o README.md do projeto e crie uma issue para cada TODO encontrado." O Claude usa o server de arquivos para ler o README, identifica os TODOs no texto, e usa o server GitHub para criar uma issue para cada um. O arquivo local vira ação na nuvem — tudo automatizado.
+          Com os servers de <strong class="text-neutral-100">arquivos</strong> e <strong class="text-neutral-100">GitHub</strong> rodando juntos, o Claude pode ler arquivos locais e agir no GitHub com base no conteúdo encontrado. Exemplo: "Leia o README.md do projeto e crie uma issue para cada TODO encontrado." O Claude usa o server de arquivos para ler o README, identifica os TODOs no texto, e usa o server GitHub para criar uma issue para cada um. O arquivo local vira açêo na nuvem — tudo automatizado.
         </p>
 </div>
 <!-- Timeline -->
@@ -443,7 +443,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Com múltiplos servers configurados, é hora de testar cenários que exigem a colaboração entre eles. O objetivo é verificar que o Claude transita naturalmente entre servers, escolhendo a tool certa em cada etapa. Teste com pedidos que envolvam 2 ou mais servers em uma única conversa.
+        Com múltiplos servers configurados, é hora de testar cenários que exigem a colaboraçêo entre eles. O objetivo é verificar que o Claude transita naturalmente entre servers, escolhendo a tool certa em cada etapa. Teste com pedidos que envolvam 2 ou mais servers em uma única conversa.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-amber-900/20 to-dark-800 border border-amber-500/30 rounded-xl p-6 mb-6">
@@ -466,7 +466,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Durante os testes, observe o <strong class="text-neutral-100">indicador de tools</strong> no Claude Desktop — ele mostra qual tool está sendo chamada em cada etapa. Isso ajuda a verificar se o Claude está escolhendo corretamente. Se ele errar a escolha, revise as descrições das tools. Na maioria dos casos, uma descrição mais específica resolve o problema imediatamente.
+          Durante os testes, observe o <strong class="text-neutral-100">indicador de tools</strong> no Claude Desktop — ele mostra qual tool está sendo chamada em cada etapa. Isso ajuda a verificar se o Claude está escolhendo corretamente. Se ele errar a escolha, revise as descrições das tools. Na maioria dos casos, uma descriçêo mais específica resolve o problema imediatamente.
         </p>
 </div>
 <!-- Timeline -->
@@ -478,29 +478,29 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Verificação 1</span>
+<span class="text-amber-400 font-bold text-sm">Verificaçêo 1</span>
 <p class="text-neutral-300 text-sm mt-1">Todos os servers iniciam sem erros ao abrir o Claude Desktop (verificar logs).</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Verificação 2</span>
+<span class="text-amber-400 font-bold text-sm">Verificaçêo 2</span>
 <p class="text-neutral-300 text-sm mt-1">O Claude lista todas as tools disponíveis de todos os servers (peça "quais ferramentas você tem?").</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Verificação 3</span>
-<p class="text-neutral-300 text-sm mt-1">Pedidos que envolvem 2+ servers são executados corretamente, com o Claude transitando entre servers sem intervenção.</p>
+<span class="text-amber-400 font-bold text-sm">Verificaçêo 3</span>
+<p class="text-neutral-300 text-sm mt-1">Pedidos que envolvem 2+ servers sêo executados corretamente, com o Claude transitando entre servers sem intervençêo.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-amber-500/20 border-2 border-amber-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-amber-400 font-bold text-sm">Verificação 4</span>
-<p class="text-neutral-300 text-sm mt-1">Erros em um server não afetam o funcionamento dos outros (resiliência).</p>
+<span class="text-amber-400 font-bold text-sm">Verificaçêo 4</span>
+<p class="text-neutral-300 text-sm mt-1">Erros em um server nêo afetam o funcionamento dos outros (resiliência).</p>
 </div>
 </div>
 </div>
@@ -517,23 +517,23 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>A configuração é simples: múltiplas entradas no mcpServers do config.json, cada uma com nome único.</span>
+<span>A configuraçêo é simples: múltiplas entradas no mcpServers do config.json, cada uma com nome único.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>O Claude vê todas as tools de todos os servers e escolhe a certa baseado na descrição e no contexto.</span>
+<span>O Claude vê todas as tools de todos os servers e escolhe a certa baseado na descriçêo e no contexto.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Combinação Tarefas + Banco: consultar dados e criar tarefas automaticamente a partir dos resultados.</span>
+<span>Combinaçêo Tarefas + Banco: consultar dados e criar tarefas automaticamente a partir dos resultados.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Combinação Arquivos + GitHub: ler conteúdo local e agir na nuvem com base no que foi encontrado.</span>
+<span>Combinaçêo Arquivos + GitHub: ler conteúdo local e agir na nuvem com base no que foi encontrado.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-amber-400 mt-0.5">✓</span>
-<span>Boas descrições de tools são essenciais para que o Claude escolha corretamente entre servers.</span>
+<span>Boas descrições de tools sêo essenciais para que o Claude escolha corretamente entre servers.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">

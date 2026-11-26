@@ -145,11 +145,11 @@
 <div class="flex items-start gap-4 mb-6">
 <div class="w-12 h-12 rounded-full bg-purple-500/20 text-purple-400 flex items-center justify-center text-xl font-bold shrink-0">1</div>
 <div>
-<h2 class="text-2xl font-bold text-neutral-100">📝 O Que São Prompts no Código</h2>
+<h2 class="text-2xl font-bold text-neutral-100">📝 O Que Sêo Prompts no Código</h2>
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        No contexto do MCP, prompts são templates de instrução que o server oferece ao modelo. Eles são diferentes de tools (que executam ações) e resources (que fornecem dados). Prompts estruturam <strong class="text-neutral-100">como</strong> o modelo deve pensar e responder em cenários específicos, usando o decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> para registrá-los no server.
+        No contexto do MCP, prompts sêo templates de instruçêo que o server oferece ao modelo. Eles sêo diferentes de tools (que executam ações) e resources (que fornecem dados). Prompts estruturam <strong class="text-neutral-100">como</strong> o modelo deve pensar e responder em cenários específicos, usando o decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> para registrá-los no server.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -157,7 +157,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Um <strong class="text-neutral-100">prompt MCP</strong> é um template reutilizável que define instruções para o modelo. Enquanto tools executam ações concretas (buscar dados, enviar mensagens) e resources expõem dados estáticos (arquivos, configurações), prompts definem <strong class="text-neutral-100">padrões de interação</strong> — como o modelo deve analisar código, gerar relatórios ou formatar respostas. O decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> registra uma função Python como um prompt disponível no server, que o client pode listar e invocar.
+          Um <strong class="text-neutral-100">prompt MCP</strong> é um template reutilizável que define instruções para o modelo. Enquanto tools executam ações concretas (buscar dados, enviar mensagens) e resources expõem dados estáticos (arquivos, configurações), prompts definem <strong class="text-neutral-100">padrões de interaçêo</strong> — como o modelo deve analisar código, gerar relatórios ou formatar respostas. O decorator <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> registra uma funçêo Python como um prompt disponível no server, que o client pode listar e invocar.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -166,7 +166,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Pense em prompts como <strong class="text-neutral-100">receitas pré-definidas</strong> para o modelo. Em vez de o usuário escrever "analise este código focando em bugs, performance e legibilidade" toda vez, o server oferece um prompt "revisar_codigo" pronto. O client escolhe o prompt, o server retorna as instruções formatadas, e o modelo sabe exatamente o que fazer. É reutilização de conhecimento em forma de instruções.
+          Pense em prompts como <strong class="text-neutral-100">receitas pré-definidas</strong> para o modelo. Em vez de o usuário escrever "analise este código focando em bugs, performance e legibilidade" toda vez, o server oferece um prompt "revisar_codigo" pronto. O client escolhe o prompt, o server retorna as instruções formatadas, e o modelo sabe exatamente o que fazer. É reutilizaçêo de conhecimento em forma de instruções.
         </p>
 </div>
 </section>
@@ -179,7 +179,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        O prompt mais básico é uma função decorada com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> que retorna uma string. Essa string contém as instruções que serão enviadas ao modelo. Simples, direto e poderoso — basta definir a função e o MCP cuida do resto.
+        O prompt mais básico é uma funçêo decorada com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> que retorna uma string. Essa string contém as instruções que serêo enviadas ao modelo. Simples, direto e poderoso — basta definir a funçêo e o MCP cuida do resto.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -187,14 +187,14 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-4">Criar um prompt simples requer apenas o decorator e uma função que retorna string:</p>
+<p class="mb-4">Criar um prompt simples requer apenas o decorator e uma funçêo que retorna string:</p>
 <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
 <div class="text-purple-400">@mcp.prompt()</div>
 <div><span class="text-blue-400">def</span> <span class="text-neutral-100">revisar_codigo</span>():</div>
-<div class="pl-4"><span class="text-neutral-500">"""Prompt para revisão de código"""</span></div>
+<div class="pl-4"><span class="text-neutral-500">"""Prompt para revisêo de código"""</span></div>
 <div class="pl-4"><span class="text-blue-400">return</span> <span class="text-green-400">"Revise este código focando em bugs, performance e legibilidade."</span></div>
 </div>
-<p class="mt-4">O nome da função (<code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">revisar_codigo</code>) vira o identificador do prompt. A docstring vira a descrição. A string retornada vira o conteúdo do prompt enviado ao modelo.</p>
+<p class="mt-4">O nome da funçêo (<code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">revisar_codigo</code>) vira o identificador do prompt. A docstring vira a descriçêo. A string retornada vira o conteúdo do prompt enviado ao modelo.</p>
 </div>
 </div>
 <!-- Grid Fazer vs Evitar -->
@@ -207,7 +207,7 @@
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Prompts vagos sem foco claro</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Instruções ambíguas ou contraditórias</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Prompts enormes que tentam cobrir tudo</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (descrição vazia)</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Funções sem docstring (descriçêo vazia)</li>
 </ul>
 </div>
 <div class="bg-purple-900/20 border border-purple-500/30 rounded-xl p-5">
@@ -232,7 +232,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Prompts estáticos são úteis, mas o verdadeiro poder aparece quando você adiciona parâmetros dinâmicos. Usando type hints do Python, o MCP detecta automaticamente os parâmetros e os expõe ao client, que pode preenchê-los antes de invocar o prompt.
+        Prompts estáticos sêo úteis, mas o verdadeiro poder aparece quando você adiciona parâmetros dinâmicos. Usando type hints do Python, o MCP detecta automaticamente os parâmetros e os expõe ao client, que pode preenchê-los antes de invocar o prompt.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -240,7 +240,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <div class="text-neutral-300 leading-relaxed">
-<p class="mb-4">Parâmetros são definidos como argumentos da função com type hints:</p>
+<p class="mb-4">Parâmetros sêo definidos como argumentos da funçêo com type hints:</p>
 <div class="bg-dark-900 rounded-lg p-4 font-mono text-sm overflow-x-auto">
 <div class="text-purple-400">@mcp.prompt()</div>
 <div><span class="text-blue-400">def</span> <span class="text-neutral-100">gerar_relatorio</span>(<span class="text-neutral-300">tipo</span>: <span class="text-yellow-400">str</span>, <span class="text-neutral-300">periodo</span>: <span class="text-yellow-400">str</span>):</div>
@@ -248,7 +248,7 @@
 <div class="pl-4"><span class="text-blue-400">return</span> <span class="text-green-400">f"Gere um relatório de </span><span class="text-yellow-400">{tipo}</span><span class="text-green-400"> do período </span><span class="text-yellow-400">{periodo}</span><span class="text-green-400">. "</span></div>
 <div class="pl-4"><span class="text-green-400">       f"Inclua métricas, tendências e recomendações."</span></div>
 </div>
-<p class="mt-4">O MCP usa os type hints para informar ao client quais parâmetros são esperados. O client apresenta campos para o usuário preencher (ex: tipo="vendas", periodo="Q1 2025") antes de invocar o prompt.</p>
+<p class="mt-4">O MCP usa os type hints para informar ao client quais parâmetros sêo esperados. O client apresenta campos para o usuário preencher (ex: tipo="vendas", periodo="Q1 2025") antes de invocar o prompt.</p>
 </div>
 </div>
 <!-- Box Dica Prática -->
@@ -257,7 +257,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Use <strong class="text-neutral-100">nomes descritivos</strong> para os parâmetros — <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">tipo</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">periodo</code> são melhores que <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">t</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">p</code>. O client exibe esses nomes para o usuário, então clareza importa. Se um parâmetro é opcional, use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">Optional[str] = None</code> como type hint.
+          Use <strong class="text-neutral-100">nomes descritivos</strong> para os parâmetros — <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">tipo</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">periodo</code> sêo melhores que <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">t</code> e <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">p</code>. O client exibe esses nomes para o usuário, entêo clareza importa. Se um parâmetro é opcional, use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">Optional[str] = None</code> como type hint.
         </p>
 </div>
 <!-- Timeline -->
@@ -284,7 +284,7 @@
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
 <span class="text-purple-400 font-bold text-sm">Passo 3</span>
-<p class="text-neutral-300 text-sm mt-1">O server executa a função, substitui os parâmetros na string e retorna o prompt completo para o modelo.</p>
+<p class="text-neutral-300 text-sm mt-1">O server executa a funçêo, substitui os parâmetros na string e retorna o prompt completo para o modelo.</p>
 </div>
 </div>
 </div>
@@ -307,7 +307,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O protocolo MCP define o método <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">prompts/list</code> que retorna todos os prompts registrados no server. Para cada prompt, o client recebe: o <strong class="text-neutral-100">nome</strong> (derivado do nome da função), a <strong class="text-neutral-100">descrição</strong> (derivada da docstring da função) e a lista de <strong class="text-neutral-100">parâmetros</strong> (derivada dos type hints). Isso significa que a documentação do prompt é gerada automaticamente a partir do código Python — não é necessário manter documentação separada.
+          O protocolo MCP define o método <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">prompts/list</code> que retorna todos os prompts registrados no server. Para cada prompt, o client recebe: o <strong class="text-neutral-100">nome</strong> (derivado do nome da funçêo), a <strong class="text-neutral-100">descriçêo</strong> (derivada da docstring da funçêo) e a lista de <strong class="text-neutral-100">parâmetros</strong> (derivada dos type hints). Isso significa que a documentaçêo do prompt é gerada automaticamente a partir do código Python — nêo é necessário manter documentaçêo separada.
         </p>
 </div>
 <!-- Box Dados/Pesquisa -->
@@ -323,7 +323,7 @@
 <div class="pl-4">"prompts": [</div>
 <div class="pl-8">{</div>
 <div class="pl-12">"name": <span class="text-green-400">"revisar_codigo"</span>,</div>
-<div class="pl-12">"description": <span class="text-green-400">"Prompt para revisão de código"</span>,</div>
+<div class="pl-12">"description": <span class="text-green-400">"Prompt para revisêo de código"</span>,</div>
 <div class="pl-12">"arguments": []</div>
 <div class="pl-8">},</div>
 <div class="pl-8">{</div>
@@ -349,7 +349,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Prompts MCP brilham quando você tem padrões de interação que se repetem frequentemente. Em vez de cada usuário escrever suas próprias instruções (muitas vezes de forma inconsistente), o server oferece prompts padronizados e testados que garantem resultados de alta qualidade.
+        Prompts MCP brilham quando você tem padrões de interaçêo que se repetem frequentemente. Em vez de cada usuário escrever suas próprias instruções (muitas vezes de forma inconsistente), o server oferece prompts padronizados e testados que garantem resultados de alta qualidade.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -376,15 +376,15 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Geração de Relatórios</span>
+<span class="text-purple-400 font-bold text-sm">Geraçêo de Relatórios</span>
 <p class="text-neutral-300 text-sm mt-1">Prompt parametrizado que gera relatórios em formato específico com métricas, gráficos sugeridos e recomendações acionáveis.</p>
 </div>
 </div>
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Formatação de Dados</span>
-<p class="text-neutral-300 text-sm mt-1">Prompt que transforma dados brutos em tabelas formatadas, JSON estruturado ou CSV — com regras de validação embutidas.</p>
+<span class="text-purple-400 font-bold text-sm">Formataçêo de Dados</span>
+<p class="text-neutral-300 text-sm mt-1">Prompt que transforma dados brutos em tabelas formatadas, JSON estruturado ou CSV — com regras de validaçêo embutidas.</p>
 </div>
 </div>
 <div class="relative">
@@ -397,8 +397,8 @@
 <div class="relative">
 <div class="absolute -left-[25px] w-4 h-4 rounded-full bg-purple-500/20 border-2 border-purple-400"></div>
 <div class="bg-dark-800 border border-dark-700 rounded-lg p-4">
-<span class="text-purple-400 font-bold text-sm">Revisão de Documentação</span>
-<p class="text-neutral-300 text-sm mt-1">Prompt que analisa documentação técnica verificando clareza, completude, exemplos e consistência com padrões do projeto.</p>
+<span class="text-purple-400 font-bold text-sm">Revisêo de Documentaçêo</span>
+<p class="text-neutral-300 text-sm mt-1">Prompt que analisa documentaçêo técnica verificando clareza, completude, exemplos e consistência com padrões do projeto.</p>
 </div>
 </div>
 </div>
@@ -412,7 +412,7 @@
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Criar um único prompt genérico para tudo</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Duplicar lógica que deveria ser uma tool</li>
-<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Prompts que dependem de contexto externo não fornecido</li>
+<li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Prompts que dependem de contexto externo nêo fornecido</li>
 <li class="flex items-start gap-2"><span class="text-red-400 mt-0.5">•</span>Ignorar a diferença entre prompt, tool e resource</li>
 </ul>
 </div>
@@ -422,7 +422,7 @@
 </div>
 <ul class="space-y-2 text-sm text-neutral-300">
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Um prompt por tarefa específica</li>
-<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar prompts para instrução, tools para ação</li>
+<li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Usar prompts para instruçêo, tools para açêo</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Parametrizar o que varia entre invocações</li>
 <li class="flex items-start gap-2"><span class="text-purple-400 mt-0.5">•</span>Testar cada prompt com diferentes inputs</li>
 </ul>
@@ -438,7 +438,7 @@
 </div>
 </div>
 <p class="text-neutral-300 leading-relaxed mb-6">
-        Antes de disponibilizar prompts para uso em produção, é essencial testá-los. O MCP Inspector permite listar todos os prompts do server, visualizar parâmetros esperados e invocar prompts manualmente para verificar que as instruções geradas são corretas e completas.
+        Antes de disponibilizar prompts para uso em produçêo, é essencial testá-los. O MCP Inspector permite listar todos os prompts do server, visualizar parâmetros esperados e invocar prompts manualmente para verificar que as instruções geradas sêo corretas e completas.
       </p>
 <!-- Box Conceito Principal -->
 <div class="bg-gradient-to-r from-purple-900/20 to-dark-800 border border-purple-500/30 rounded-xl p-6 mb-6">
@@ -446,7 +446,7 @@
 <span class="text-purple-400 font-semibold text-sm">💎 Conceito Principal</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          O <strong class="text-neutral-100">MCP Inspector</strong> é a ferramenta ideal para testar prompts. Na aba "Prompts", ele lista todos os prompts registrados com seus nomes, descrições e parâmetros. Você pode preencher os parâmetros e clicar em "Get Prompt" para ver exatamente o que será enviado ao modelo. Isso permite validar que as instruções estão completas, que os parâmetros são substituídos corretamente e que o formato está adequado — tudo sem precisar conectar ao Claude Desktop.
+          O <strong class="text-neutral-100">MCP Inspector</strong> é a ferramenta ideal para testar prompts. Na aba "Prompts", ele lista todos os prompts registrados com seus nomes, descrições e parâmetros. Você pode preencher os parâmetros e clicar em "Get Prompt" para ver exatamente o que será enviado ao modelo. Isso permite validar que as instruções estêo completas, que os parâmetros sêo substituídos corretamente e que o formato está adequado — tudo sem precisar conectar ao Claude Desktop.
         </p>
 </div>
 <!-- Box Dica Prática -->
@@ -455,7 +455,7 @@
 <span class="text-primary font-semibold text-sm">💡 Dica Prática</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Teste cada prompt com <strong class="text-neutral-100">valores extremos</strong>: strings vazias, textos muito longos, caracteres especiais. Verifique que o prompt lida bem com edge cases. Se um parâmetro é opcional, teste com e sem ele. Se o prompt usa f-strings, confirme que a interpolação funciona corretamente para todos os cenários previstos.
+          Teste cada prompt com <strong class="text-neutral-100">valores extremos</strong>: strings vazias, textos muito longos, caracteres especiais. Verifique que o prompt lida bem com edge cases. Se um parâmetro é opcional, teste com e sem ele. Se o prompt usa f-strings, confirme que a interpolaçêo funciona corretamente para todos os cenários previstos.
         </p>
 </div>
 <!-- Box Alerta -->
@@ -464,7 +464,7 @@
 <span class="text-red-400 font-semibold text-sm">🚨 Alerta</span>
 </div>
 <p class="text-neutral-300 leading-relaxed">
-          Prompts não validam parâmetros automaticamente — se o client enviar uma string vazia para um parâmetro obrigatório, o prompt será gerado com o espaço em branco. <strong class="text-neutral-100">Sempre valide os parâmetros</strong> dentro da função antes de construir a string de retorno. Use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">if not tipo: raise ValueError("tipo é obrigatório")</code> para garantir que dados inválidos não passem silenciosamente.
+          Prompts nêo validam parâmetros automaticamente — se o client enviar uma string vazia para um parâmetro obrigatório, o prompt será gerado com o espaço em branco. <strong class="text-neutral-100">Sempre valide os parâmetros</strong> dentro da funçêo antes de construir a string de retorno. Use <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">if not tipo: raise ValueError("tipo é obrigatório")</code> para garantir que dados inválidos nêo passem silenciosamente.
         </p>
 </div>
 </section>
@@ -475,7 +475,7 @@
 <ul class="space-y-3 mb-8">
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Prompts MCP são templates de instrução registrados com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> — diferentes de tools e resources.</span>
+<span>Prompts MCP sêo templates de instruçêo registrados com <code class="text-purple-400 bg-purple-900/20 px-1.5 py-0.5 rounded text-sm">@mcp.prompt()</code> — diferentes de tools e resources.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
@@ -483,19 +483,19 @@
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Parâmetros dinâmicos são definidos via type hints e preenchidos pelo client antes da invocação.</span>
+<span>Parâmetros dinâmicos sêo definidos via type hints e preenchidos pelo client antes da invocaçêo.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O client pode listar prompts disponíveis com nomes, descrições e parâmetros — documentação automática.</span>
+<span>O client pode listar prompts disponíveis com nomes, descrições e parâmetros — documentaçêo automática.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>Casos de uso incluem análise de código, relatórios, formatação de dados, emails e revisão de documentação.</span>
+<span>Casos de uso incluem análise de código, relatórios, formataçêo de dados, emails e revisêo de documentaçêo.</span>
 </li>
 <li class="flex items-start gap-3 text-neutral-300">
 <span class="text-purple-400 mt-0.5">✓</span>
-<span>O MCP Inspector permite testar e validar prompts antes de colocá-los em produção.</span>
+<span>O MCP Inspector permite testar e validar prompts antes de colocá-los em produçêo.</span>
 </li>
 </ul>
 <div class="bg-dark-800 border border-dark-700 rounded-xl p-4 mb-6">
